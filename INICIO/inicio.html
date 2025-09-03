@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Inicio</title>
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="red.js" defer></script>
+  <script src="ordenadores.js" defer></script>
+  <script src="router.js" defer></script>
+  <script src="switch.js" defer></script>
+</head>
+<body>
+  <a-scene background="color: #B3EDFF">
+
+    <a-plane
+      position="0 0 0"
+      rotation="-90 0 0"
+      width="100"
+      height="100"
+      color="#7BC8A4">
+    </a-plane>
+
+    <!-- Genera red -->
+    <a-entity red="cantidadPC: 4; cantidadRouter: 3; cantidadSwitch: 3"></a-entity>
+
+    <!-- Cámara -->
+    <a-entity 
+      camera 
+      wasd-controls 
+      look-controls 
+      position="0 2 5">
+    </a-entity>
+
+  </a-scene>
+</body>
+</html>
