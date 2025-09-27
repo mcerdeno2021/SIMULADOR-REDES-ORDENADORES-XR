@@ -9,8 +9,9 @@ AFRAME.registerComponent('mensaje', {
   init: function () {
     const el = this.el;
     const data = this.data;
+    this.id = 0;
 
-    el.setAttribute('material', 'opacity: 0');
+    el.setAttribute('material', 'opacity: 0'); // como hacer que aparezca en el momento el componente (mejores formas)
 
     const movimientos = data.tiempoDestino - data.tiempoOrigen;
     const posicionesX = [];
@@ -37,6 +38,7 @@ AFRAME.registerComponent('mensaje', {
         const x = posicionesX[posicion];
         const y = posicionesY[posicion];
         const z = posicionesZ[posicion];
+
         el.setAttribute('position', `${x} ${y} ${z}`);
         el.setAttribute('material', 'opacity: 100');
 
@@ -47,15 +49,26 @@ AFRAME.registerComponent('mensaje', {
         camino.setAttribute('geometry', 'primitive: sphere; radius: 0.1');
         camino.setAttribute('material', 'color: red');
         
+        camino.setAttribute('class', 'clickeable');
         camino.addEventListener('click', evt => {
           const pos = evt.target.getAttribute('position');
-          console.log("Clic en camino:", pos);
-        }); // no funciona
+          console.log("Click en la huella:", pos);
+        });
         
         el.sceneEl.appendChild(camino); // lo ponemos en la escena para que no dependa del mensaje
+        
+        el.emit('historia', {
+            id: this.id,
+            indice: indice,
+            origen: data.posicionOrigen,
+            destino: data.posicionDestino,
+            huella: camino  
+        });
         }
       }
     });
+
+    this.id++;
   },
 });
 

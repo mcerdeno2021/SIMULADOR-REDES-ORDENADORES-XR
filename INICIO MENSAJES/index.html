@@ -6,11 +6,13 @@
   <script src="mensaje.js" defer></script>
   <script src="reloj.js" defer></script>
   <script src="historia.js" defer></script>
+  <script src="player-control.js" defer></script>
+  <script src="slider.js" defer></script>
 </head>
 <body>
   <a-scene background="color: #B3EDFF">
 
-    <a-box mensaje="posicionOrigen: 0 0 0; posicionDestino: 0 10 6; tiempoOrigen: 2; tiempoDestino: 7" reloj
+    <a-box id="miReloj" mensaje="posicionOrigen: 0 0 0; posicionDestino: 0 10 6; tiempoOrigen: 2; tiempoDestino: 15" reloj historia
       color="#b0b0b0" 
       position="0 0 0" 
       material="side: front">
@@ -22,6 +24,35 @@
       wasd-controls 
       look-controls 
       position="0 2 15">
+    </a-entity>
+
+    <a-entity cursor="rayOrigin: mouse" raycaster="objects: .clickeable, .player"></a-entity>
+
+    <!-- Panel flotante con botones -->
+    <a-entity position="0 1.5 -2" player-control>
+        <!-- Botón Play -->
+        <a-box class="player" color="green" depth="0.1" height="0.3" width="0.6"
+            position="-1 0 0"></a-box>
+        <a-text value="▶ Play" align="center" position="-1 0 0.1"></a-text>
+
+        <!-- Botón Pause -->
+        <a-box class="player" color="yellow" depth="0.1" height="0.3" width="0.6"
+            position="0 0 0"></a-box>
+        <a-text value="⏸ Pause" align="center" position="0 0 0.1"></a-text>
+
+        <!-- Botón Reset -->
+        <a-box class="player" color="red" depth="0.1" height="0.3" width="0.6"
+            position="1 0 0"></a-box>
+        <a-text value="⏮ Reset" align="center" position="1 0 0.1"></a-text>
+
+        <!-- Deslizador Velocidad Reproducción -->
+        <a-entity slider position="0 -1 0"></a-entity>
+        <a-text value="Velocidad de Reproduccion" align="center" position="0 -0.75 0"></a-text>
+
+        <!-- Botón de Marcha Atrás -->
+        <a-box class="player" color="blue" depth="0.1" height="0.3" width="0.6"
+            position="0 -2 0"></a-box>
+        <a-text value="Backward" align="center" position="0 -2 0.1"></a-text>
     </a-entity>
 
   </a-scene>
