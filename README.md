@@ -1,17 +1,13 @@
-# TRABAJO-FIN-GRADO-SIMULADOR-DE-REDES-DE-ORDENADORES-EN-REALIDAD-AUMENTADA-MIGUEL-CERDE-O
+# TFG-SIMULADOR DE REDES DE ORDENADORES EN XR-MIGUEL CERDEÑO
 
 ## Links
-- Repositorio Github: https://github.com/mcerdeno2021/TRABAJO-FIN-GRADO-SIMULADOR-DE-REDES-DE-ORDENADORES-EN-REALIDAD-AUMENTADA-MIGUEL-CERDE-O
-- Github Pages: https://mcerdeno2021.github.io/TRABAJO-FIN-GRADO-SIMULADOR-DE-REDES-DE-ORDENADORES-EN-REALIDAD-AUMENTADA-MIGUEL-CERDE-O/
+- Repositorio Github: https://github.com/mcerdeno2021/SIMULADOR-REDES-ORDENADORES-XR
+- Github Pages: https://mcerdeno2021.github.io/SIMULADOR-REDES-ORDENADORES-XR/
 
 ## Idea principal:
-- Programa en el cual, al recibir una traza de Wireshark, esta se descomponga con sus diferentes elementos (archivos, paquetes, pcs, routers, switches, etc.), generando automáticamente un escenario en Netgui, el cual dará una primera imagen del esquema.
-- Esto dará lugar, a su vez, a un escenario en A-FRAME, donde se podrán ver todos estos elementos y el flujo de paquetes en VR y XR. En este escenario se podrán usar varias de las funcionalidades del propio Wireshark, así como un control de reproducción.
+- Programa que diseñará un escenario en A-FRAME al recibir una traza de Wireshark, que se descomponga con sus diferentes elementos (archivos, paquetes, pcs, routers, switches, etc.), generando automáticamente un escenario similar al que puede haber en softwares como Netgui.
+- En el escenario se podrán ver todos estos elementos y el flujo de paquetes en VR y XR. A su vez, se podrán usar varias de las funcionalidades extraídas del software "Wireshark", así como un control de reproducción y un diagrama de secuencia de los paquetes.
 - Servirá como un apoyo didáctico con explicaciones y detalles.
-
-## ??:
-- Diagrama de secuencia para los paquetes, cómo representarla, ¿Cómo en flow graph de Wireshark?
-
 
 
 ## 1. Primer diseño de los PCs, Routers y Switches en el escenario principal.
@@ -19,10 +15,11 @@
 - En la pantalla principal aparecerá el escenario, se generará con un diseño similar al de netgui pero con un aspecto más moderno, fondo azul claro, con los pc como portátiles, y los routers y switches con un diseño más adaptado a los actuales. Los cables, aunque de lejos parezcan planos, tendrán cuerpo, al igual que todos los demás elementos, que no serán simples bloques.
 
 #### ???:
-- Interfaz Netgui
+- Los elementos ocupan demasiado al ser más complejos en lugar de un solo bloque.
+- Interfaz Netgui.
 - Tabla de elementos, la cual consistirá de los tres elementos principales del escenario, con un botón para desplegar, al hacerlo, se podrán ver, por ejemplo, todos los pcs que forman la escena. En cada uno, habrá dos botones, uno de ubicación, el cual llevará al punto de vista de ese elemento; y otro de info, que dará todos los detalles necesarios para entender el funcionamiento de ese elemento, como podría ser el flujo que pasa por él, su ubicación o el papel que tiene dentro del escenario.
 - Minimapa, que será un canvas 2D, que servirá para ver el flujo de una forma más sencilla y práctica, pudiendo acercar y alejar la vista, con unos gráficos mas sencillos, además, tendrá opción de ajustar la velocidad de reproducción.
-- Abrir y cerrar tapa pc para cuando lleguen paquetes.
+- Abrir y cerrar tapa pc cuando lleguen paquetes.
 
 
 ## 2. Primer modelo mensajes y tiempo virtual.
@@ -39,3 +36,14 @@
 - Cilindros equiespaciados para el rastro, esferas, ... 
 - Componente nuevo para el reproductor y slider.
 - Se puede arrastrar el deslizador en una escena VR.
+
+
+## 3. Modelo mensajes, tiempo virtual e historia.
+
+- Implementación mejorada del anterior apartado.
+- Siguen siendo 3 componentes, mensaje, reloj e historia; se deberían hacer por separado y haciendo programas de prueba para testear cada uno.
+- Los paquetes en el componente mensaje tendrán unos parámetros de entrada: posicionOrigen, posicionDestino, tiempoOrigen y tiempoDestino. 
+- En el componente historia se recibirán todos los datos de los paquetes, y se crearán las listas y objetos js correspondientes; una vez se reciba cada ciclo de reloj se seguirán los mismos pasos (mirar las listas y ver si hay que quitar paquetes que ya llegaron a su destino, ver si hay que añadir paquetes que estén en el ciclo que toca, comprobar todos los paquetes a los que les toca moverse y seguir almacenando los nuevos moviemientos). 
+- Por último, el componente reloj, podrá funcionar de dos maneras diferentes, trabajando con tiempos discretos (ejemplo de la historia año a año) en el que el reloj solo enviaría un tic cada "año" que pasase, que se correspondería con x tiempo en la realidad; o continuos, siendo más realista y adaptado a lo que sería trabajar con trazas de Wireshark, en las que, al no salir los paquetes al mismo tiempo (a veces con diferencias de microsegundos), se lanzarían tics, constantemente, y sería el propio componente historia al recibirlos quien viera si corresponden a alguna acción o si se descartan. En cualquiera de los dos casos, sería el reloj quien manejase las funciones de parar, seguir, ir hacia adelante, ir hacia atrás, ir a cualquier punto temporal, etc. Esto lo haría valiéndose de las listas con tiempos que tiene.
+
+#### ???:

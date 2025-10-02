@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Mensajes</title>
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="mensaje.js" defer></script>
+  <script src="reloj.js" defer></script>
+  <script src="historia.js" defer></script>
+</head>
+
+<body>
+
+  <a-scene background="color: #B3EDFF">
+
+    <a-box id="miReloj" mensaje="posicionOrigen: -2 0 0; posicionDestino: 0 10 6; tiempoOrigen: 2; tiempoDestino: 15" reloj historia
+      color="#b0b0b0" 
+      position="-2 0 0" 
+      material="side: front">
+    </a-box>
+
+    <!-- Cámara -->
+    <a-entity 
+      camera 
+      wasd-controls 
+      look-controls 
+      position="0 2 15">
+    </a-entity>
+
+  </a-scene>
+
+</body>
+
+</html>
