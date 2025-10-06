@@ -2,15 +2,14 @@ AFRAME.registerComponent('historia', {
 
     init: function () {
       const el = this.el;
-      const historia = {};
+      let historia = {};
 
-      el.addEventListener('historia', e => {
-        console.log(e.detail);
+      el.addEventListener('historico', e => {
         historia = {
-          posicionOrigen: e.detail[0],
-          posicionDestino: e.detail[1],
-          tiempoOrigen: e.detail[2],
-          tiempoDestino: e.detail[3]
+          posicionOrigen: e.detail.origen,
+          posicionDestino: e.detail.destino,
+          tiempoOrigen: e.detail.tiempoOrigen,
+          tiempoDestino: e.detail.tiempoDestino
         };
 
         const movimientos = historia.tiempoDestino - historia.tiempoOrigen;
@@ -30,7 +29,11 @@ AFRAME.registerComponent('historia', {
       
       el.addEventListener('reloj-tick', e => {
         if (e.detail >= historia.tiempoOrigen && e.detail <= historia.tiempoDestino) {
-          el.emit('mensaje', posicionesX, posicionesY, posicionesZ); 
+          el.emit('mensaje', {
+            posicionesX: this.posicionesX,
+            posicionesY: this.posicionesY,
+            posicionesZ: this.posicionesZ
+          }); 
         }
       })
     }

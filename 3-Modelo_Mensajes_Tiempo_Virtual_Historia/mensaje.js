@@ -6,21 +6,25 @@ AFRAME.registerComponent('mensaje', {
     tiempoDestino: {type: 'number'}
   },
 
+
   init: function () {
     const el = this.el;
     const data = this.data;
 
-    el.emit('historia', {
+    setTimeout(() => { // si no lo envía antes de que el listener de historia esté listo
+      el.emit('historico', {
         origen: data.posicionOrigen,
         destino: data.posicionDestino,
         tiempoOrigen: data.tiempoOrigen,
         tiempoDestino: data.tiempoDestino
     });
+    }, 0);
+    
 
     el.addEventListener('mensaje', e => {
-      const x = e.detail[0];
-      const y = e.detail[1];
-      const z = e.detail[2];
+      const x = e.detail.posicionesX;
+      const y = e.detail.posicionesY;
+      const z = e.detail.posicionesZ;
 
       el.setAttribute('position', `${x} ${y} ${z}`);
       el.setAttribute('material', 'opacity: 100');
