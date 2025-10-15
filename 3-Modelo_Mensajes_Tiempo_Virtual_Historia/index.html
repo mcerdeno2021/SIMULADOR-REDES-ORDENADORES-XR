@@ -13,18 +13,18 @@
 
   <a-scene background="color: #B3EDFF">
 
-    <a-box mensaje="posicionOrigen: -2 0 0; posicionDestino: 0 10 6; tiempoOrigen: 2; tiempoDestino: 15" reloj historia
-      color="#b0b0b0" 
-      position="-2 0 0" 
-      material="side: front">
+    <a-box mensaje="posicionOrigen: -2 0 0; posicionDestino: router1; tiempoOrigen: 1.654; tiempoDestino: 6.4353"
+      color="#b0b0b0">
     </a-box>
 
-    <!-- Cámara -->
-    <a-entity 
-      camera 
-      wasd-controls 
-      look-controls 
-      position="0 2 15">
+    <a-box mensaje="posicionOrigen: 6 0 1; posicionDestino: 1 -10 6; tiempoOrigen: 3.654; tiempoDestino: 7.4353"
+      color="#ff3b3d">
+    </a-box>
+
+    <a-cylinder id="router1" color="#fffbcf" position="0 10 -20">
+    </a-cylinder>
+
+    <a-entity camera wasd-controls look-controls position="0 2 15">
     </a-entity>
 
   </a-scene>

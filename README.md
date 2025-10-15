@@ -46,4 +46,7 @@
 - En el componente historia se recibirán todos los datos de los paquetes, y se crearán las listas y objetos js correspondientes; una vez se reciba cada ciclo de reloj se seguirán los mismos pasos (mirar las listas y ver si hay que quitar paquetes que ya llegaron a su destino, ver si hay que añadir paquetes que estén en el ciclo que toca, comprobar todos los paquetes a los que les toca moverse y seguir almacenando los nuevos moviemientos). Tras tener toda esta información sobre el ciclo de reloj que viene, se la enviará al componente mensaje.
 - Por último, el componente reloj, podrá funcionar de dos maneras diferentes, trabajando con tiempos discretos (ejemplo de la historia año a año) en el que el reloj solo enviaría un tick cada "año" que pasase, que se correspondería con x tiempo en la realidad; o continuos, siendo más realista y adaptado a lo que sería trabajar con trazas de Wireshark, en las que, al no salir los paquetes al mismo tiempo (a veces con diferencias de microsegundos), se lanzarían ticks, constantemente, y sería el propio componente historia al recibirlos quien viera si corresponden a alguna acción o si se descartan. En cualquiera de los dos casos, sería el reloj quien manejase las funciones de parar, seguir, ir hacia adelante, ir hacia atrás, ir a cualquier punto temporal, etc. Esto lo haría valiéndose de las listas con tiempos que tiene.
 
-#### ???:
+### Extras:
+Para sincronizar dos ordenadores distintos: 
+- git pull origin main -> en el que no se ha hecho el push para traer lo nuevo del repo al local.
+- git reset --hard origin/main -> si había modificaciones en el local y no deja traer lo nuevo del repo.
