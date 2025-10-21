@@ -9,11 +9,14 @@ AFRAME.registerComponent('historia', {
       this.posicionesY = {};
       this.posicionesZ = {};
       this.keysUsadas = [];
-      this.keysEventos = [];
+      this.time = 0;
+      this.times = [];
+      this.actual = null;
+      this.actual2 = null;
 
       this.pausa = false;
       this.direccion = "forward";
-      this.arranque = false;
+      this.arranque = true;
 
       el.addEventListener('historico', e => {
         this.historia = {
@@ -41,60 +44,70 @@ AFRAME.registerComponent('historia', {
       el.addEventListener('control-historia', e => {
         if (e.detail.accion === "pausar" ) {
           this.pausa = true;
-          this.arranque = true;
         } else if (e.detail.accion === "reanudar") {
           this.pausa = false;
-          this.arranque = true;
         } else if (e.detail.accion === "retroceder") {
           this.pausa = false;
           this.direccion = "backward";
-          this.arranque = true;
         } else if (e.detail.accion === "avanzar") {
           this.pausa = false;
           this.direccion = "forward";
-          this.arranque = true;
         }
       });
 
       el.addEventListener('reloj-tick', e => {
         if (this.pausa) return; //Detiene
 
-        const time = e.detail.time;
+        this.time = e.detail.time;
         const delta = e.detail.delta;
-        
-        // const keys = Object.keys(this.posicionesX).map(Number).sort((a, b) => a - b);
-        if (this.direccion === "forward") {
-          for (const key in this.posicionesX) { //con hacerlo en X vale para las tres
-              const keyNum = Number(key);
 
-              if (!(keyNum in this.keysUsadas) && ((keyNum - time) <= delta/1000)) { //dividido porque hablamos de milisegundos  
-                el.emit('mensaje', {
+        const lastTime = this.times[this.times.length - 1];
+        const timeDiff = this.time - lastTime;
+        if (this.times.length > 1 && timeDiff > 2*delta / 1000) { // time diff es casi igual que delta/1000, por eso por 2
+          if (this.actual === null) {
+            this.actual = this.time
+          }
+          this.time = this.time - (this.actual - lastTime);
+        }
+        // el fallo de los tiempos de que se haga todo de una vez tiene que ver con la actualizacion de keysUsadas
+        if (this.direccion === "backward") {
+          const lastTime = this.keysUsadas[this.keysUsadas.length - 1];
+          if (this.actual2 === null) {
+            this.actual2 = this.time
+          }
+          tiempoActual = this.actual2 - (this.time - lastTime);
+        }
+
+        for (const key in this.posicionesX) { //con hacerlo en X vale para las tres
+          const keyNum = Number(key);
+          
+          if (this.direccion === "forward") {
+            this.times.push(this.time);
+            
+            if (!this.keysUsadas.includes(keyNum) && ((keyNum - this.time) <= delta/1000)) { //dividido porque hablamos de milisegundos  
+              el.emit('mensaje', {
+                posicionesX: this.posicionesX[keyNum],
+                posicionesY: this.posicionesY[keyNum],
+                posicionesZ: this.posicionesZ[keyNum]
+              });
+
+              this.keysUsadas.push(keyNum);
+
+            }
+          }  
+          else if (this.direccion == "backward") {
+            if (this.keysUsadas.includes(keyNum) && ((tiempoActual - keyNum) <= delta/1000)) { //dividido porque hablamos de milisegundos
+              console.log(tiempoActual, this.time);
+              
+              el.emit('mensaje', {
                   posicionesX: this.posicionesX[keyNum],
                   posicionesY: this.posicionesY[keyNum],
                   posicionesZ: this.posicionesZ[keyNum]
-                });
+              });
 
-                this.keysUsadas.push(keyNum);
-              }// hacer lista con tiempos de cuando se pausa, retrocede, etc
-              else if (this.direccion === "backward") {
-                if (this.arranque) {
-                  this.keysEventos.push(keyNum);
-                  this.arranque = false;
-                }
-                tiempoActual = this.keysEventos[this.keysEventos.length - 1] - (time - this.keysEventos[this.keysEventos.length - 1]);
-
-                if (!(keyNum in this.keysUsadas) && ((keyNum - tiempoActual) <= delta/1000)) { //dividido porque hablamos de milisegundos
-
-                  el.emit('mensaje', {
-                      posicionesX: this.posicionesX[keyNum],
-                      posicionesY: this.posicionesY[keyNum],
-                      posicionesZ: this.posicionesZ[keyNum]
-                  });
-
-                  this.keysUsadas.pop();
-                }
-              }
-         }
+              this.keysUsadas.pop();
+            }
+          }
         }
       });
     }
