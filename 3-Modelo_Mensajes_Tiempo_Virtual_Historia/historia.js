@@ -13,10 +13,11 @@ AFRAME.registerComponent('historia', {
       this.times = [];
       this.actual = null;
       this.actual2 = null;
+      this.lastTimeB = null;
+      this.lastTimeP = null;
 
       this.pausa = false;
       this.direccion = "forward";
-      this.arranque = true;
 
       el.addEventListener('historico', e => {
         this.historia = {
@@ -44,11 +45,13 @@ AFRAME.registerComponent('historia', {
       el.addEventListener('control-historia', e => {
         if (e.detail.accion === "pausar" ) {
           this.pausa = true;
+          this.lastTimeP = this.times[this.times.length - 1];
         } else if (e.detail.accion === "reanudar") {
           this.pausa = false;
         } else if (e.detail.accion === "retroceder") {
           this.pausa = false;
           this.direccion = "backward";
+          this.lastTimeB = this.keysUsadas[this.keysUsadas.length - 1];
         } else if (e.detail.accion === "avanzar") {
           this.pausa = false;
           this.direccion = "forward";
@@ -61,21 +64,22 @@ AFRAME.registerComponent('historia', {
         this.time = e.detail.time;
         const delta = e.detail.delta;
 
-        const lastTime = this.times[this.times.length - 1];
-        const timeDiff = this.time - lastTime;
-        if (this.times.length > 1 && timeDiff > 2*delta / 1000) { // time diff es casi igual que delta/1000, por eso por 2
-          if (this.actual === null) {
-            this.actual = this.time
+        if (this.lastTimeP !== null) {
+          const timeDiff = this.time - this.lastTimeP;
+          if (this.times.length > 1 && timeDiff > 2*delta / 1000) { // time diff es casi igual que delta/1000, por eso por 2
+            if (this.actual === null) {
+              this.actual = this.time
+            }
+            this.time = this.time - (this.actual - lastTime);
           }
-          this.time = this.time - (this.actual - lastTime);
         }
+        
         // el fallo de los tiempos de que se haga todo de una vez tiene que ver con la actualizacion de keysUsadas
         if (this.direccion === "backward") {
-          const lastTime = this.keysUsadas[this.keysUsadas.length - 1];
           if (this.actual2 === null) {
             this.actual2 = this.time
           }
-          tiempoActual = this.actual2 - (this.time - lastTime);
+          tiempoActual = this.actual2 - (this.time - this.lastTimeB);
         }
 
         for (const key in this.posicionesX) { //con hacerlo en X vale para las tres
@@ -92,10 +96,11 @@ AFRAME.registerComponent('historia', {
               });
 
               this.keysUsadas.push(keyNum);
+              console.log(this.keysUsadas);
 
             }
           }  
-          else if (this.direccion == "backward") {
+          else if (this.direccion === "backward") {
             if (this.keysUsadas.includes(keyNum) && ((tiempoActual - keyNum) <= delta/1000)) { //dividido porque hablamos de milisegundos
               console.log(tiempoActual, this.time);
               

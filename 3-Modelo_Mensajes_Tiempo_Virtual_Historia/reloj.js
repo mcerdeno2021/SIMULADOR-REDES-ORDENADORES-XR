@@ -9,8 +9,10 @@ AFRAME.registerComponent('reloj', {
 
     let nuevaAccion;
     
-    if (time > 7) {
-      nuevaAccion = "retroceder";
+    if (time > 5) {
+      nuevaAccion = "pausar";
+      if (time > 10) {
+        nuevaAccion = "retroceder";}
     }
 
     if (this.estadoAnterior !== nuevaAccion) {
