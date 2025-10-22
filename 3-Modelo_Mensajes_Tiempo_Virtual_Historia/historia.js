@@ -70,7 +70,7 @@ AFRAME.registerComponent('historia', {
             if (this.actual === null) {
               this.actual = this.time
             }
-            this.time = this.time - (this.actual - lastTime);
+            this.time = this.time - (this.actual - this.lastTimeP);
           }
         }
         
