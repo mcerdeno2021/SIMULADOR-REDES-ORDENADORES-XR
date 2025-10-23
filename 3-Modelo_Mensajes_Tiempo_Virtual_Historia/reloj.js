@@ -15,6 +15,12 @@ AFRAME.registerComponent('reloj', {
         nuevaAccion = "reanudar";}
         if (time > 15) {
           nuevaAccion = "retroceder";}
+          if (time > 20) {
+            nuevaAccion = "pausar";}
+            if (time > 25) {
+              nuevaAccion = "reanudar";}
+              if (time > 30) {
+                nuevaAccion = "avanzar";} // es la unica que no funciona, va directamente al final (manejar keys usadas?)
     }
 
     if (this.estadoAnterior !== nuevaAccion) {

@@ -74,7 +74,6 @@ AFRAME.registerComponent('historia', {
           }
         }
         
-        // el fallo de los tiempos de que se haga todo de una vez tiene que ver con la actualizacion de keysUsadas
         if (this.direccion === "backward") {
           if (this.actual2 === null) {
             this.actual2 = this.time
@@ -96,13 +95,10 @@ AFRAME.registerComponent('historia', {
               });
 
               this.keysUsadas.push(keyNum);
-              console.log(this.keysUsadas);
-
             }
           }  
           else if (this.direccion === "backward") {
             if (this.keysUsadas.includes(keyNum) && ((tiempoActual - keyNum) <= delta/1000)) { //dividido porque hablamos de milisegundos
-              console.log(tiempoActual, this.time);
               
               el.emit('mensaje', {
                   posicionesX: this.posicionesX[keyNum],
@@ -111,6 +107,11 @@ AFRAME.registerComponent('historia', {
               });
 
               this.keysUsadas.pop();
+              el.emit('borrar-huella',
+                posiciones = {x: this.posicionesX[keyNum], 
+                y: this.posicionesY[keyNum], 
+                z: this.posicionesZ[keyNum]}
+              );
             }
           }
         }
