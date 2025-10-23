@@ -12,17 +12,17 @@ AFRAME.registerComponent('reloj', {
     if (time > 5) {
       nuevaAccion = "pausar";
       if (time > 10) {
-        nuevaAccion = "reanudar";}
+        nuevaAccion = "avanzar"}
         if (time > 15) {
-          nuevaAccion = "retroceder";}
+          nuevaAccion = "retroceder"}
           if (time > 20) {
-            nuevaAccion = "pausar";}
+            nuevaAccion = "pausar"}
             if (time > 25) {
-              nuevaAccion = "reanudar";}
+              nuevaAccion = "retroceder"}
               if (time > 30) {
-                nuevaAccion = "avanzar";} // es la unica que no funciona, va directamente al final (manejar keys usadas?)
+                nuevaAccion = "avanzar"} 
+              // no funciona porque aunque el tiempo se para con las pausas, tu vas retrodediendo y tal pero el tiempo avanza, entonces cuando quieres por ejemplo avanzar o retroceder ya no esta el tiempo dentro del rango
     }
-
     if (this.estadoAnterior !== nuevaAccion) {
       this.el.emit('control-historia', {accion: nuevaAccion});
       this.estadoAnterior = nuevaAccion;
