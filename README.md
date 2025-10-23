@@ -51,3 +51,4 @@
 - Continuación del apartado anterior.
 - Ahora los mensajes no se despliegan desde el index, sino que se utiliza un archivo JSON en el que se definen y que se reciben y se cargan en historia.
 - A la hora de dividir los movimientos que realicen los mensajes, estos se ajustarán a los ticks de forma que coincida el tiempo que se envía desde el reloj y el correspondiente movimiento; Stop and Play desde el componente reloj.
+- Para las posiciones se usarán los elementos de red de la topología (switches, routers, etc.), estos también se pueden definir en un JSON diferente.
