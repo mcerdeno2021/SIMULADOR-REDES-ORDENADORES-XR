@@ -36,6 +36,7 @@ AFRAME.registerComponent('mensaje', {
   init: function () {
     const el = this.el;
     const data = this.data;
+    this.huella = null;
 
     el.setAttribute('reloj', '')
     el.setAttribute('historia', '')
@@ -59,25 +60,49 @@ AFRAME.registerComponent('mensaje', {
     
 
     el.addEventListener('mensaje', e => {
+      this.huella = false;
+
       const x = e.detail.posicionesX;
       const y = e.detail.posicionesY;
       const z = e.detail.posicionesZ;
 
       el.setAttribute('position', `${x} ${y} ${z}`);
       
-      const camino = document.createElement('a-entity');
-      camino.setAttribute('position', `${x} ${y} ${z}`);
-      camino.setAttribute('geometry', 'primitive: sphere; radius: 0.1');
-      camino.setAttribute('material', `color: ${el.getAttribute('color')}`);
-      
-      camino.setAttribute('class', 'clickeable');
-      camino.addEventListener('click', evt => {
-        const pos = evt.target.getAttribute('position');
-        console.log("Click en la huella:", pos);
+      document.querySelectorAll('.huella').forEach(huella => {
+        if (huella.getAttribute('position').x === x &&
+            huella.getAttribute('position').y === y &&
+            huella.getAttribute('position').z === z) {
+          this.huella = true;
+          console.log(huella);
+        }
       });
-      
-      el.sceneEl.appendChild(camino);
+
+      if (!this.huella) {
+        const camino = document.createElement('a-entity');
+        camino.setAttribute('position', `${x} ${y} ${z}`);
+        camino.setAttribute('geometry', 'primitive: sphere; radius: 0.1');
+        camino.setAttribute('material', `color: ${el.getAttribute('color')}`); 
+        // Hay que borrar la huella cuando pasa por encima retrocediendo?
+        
+        camino.setAttribute('class', 'huella');
+        el.sceneEl.appendChild(camino);
+
+        camino.addEventListener('click', evt => {
+        const pos = evt.target.getAttribute('position');
+        console.log("Huella en", pos, "con: Posición Origen:", data.posicionOrigen, "Posición Destino:", data.posicionDestino, "Tiempo Origen:", data.tiempoOrigen, "Tiempo Destino:", data.tiempoDestino);
+      });
+      }
+
+      el.addEventListener('borrar-huella', e => {
+        document.querySelectorAll('.huella').forEach(huella => {
+          if (huella.getAttribute('position').x === e.detail.x &&
+              huella.getAttribute('position').y === e.detail.y &&
+              huella.getAttribute('position').z === e.detail.z) {
+            el.sceneEl.removeChild(huella);
+            console.log(huella);
+          }
+        });
+      });
     });
   },
 });
-
