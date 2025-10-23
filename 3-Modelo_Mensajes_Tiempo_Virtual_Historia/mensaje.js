@@ -73,7 +73,6 @@ AFRAME.registerComponent('mensaje', {
             huella.getAttribute('position').y === y &&
             huella.getAttribute('position').z === z) {
           this.huella = true;
-          console.log(huella);
         }
       });
 
@@ -99,7 +98,6 @@ AFRAME.registerComponent('mensaje', {
               huella.getAttribute('position').y === e.detail.y &&
               huella.getAttribute('position').z === e.detail.z) {
             el.sceneEl.removeChild(huella);
-            console.log(huella);
           }
         });
       });

@@ -42,19 +42,24 @@ AFRAME.registerComponent('historia', {
         this.currentKey = this.historia.tiempoOrigen;
       })
       
+      // es aqui donde hay que hacer los ajustes de tiempos, listas, etc etc
       el.addEventListener('control-historia', e => {
         if (e.detail.accion === "pausar" ) {
           this.pausa = true;
           this.lastTimeP = this.times[this.times.length - 1];
+          console.log(this.time, this.keysUsadas)
         } else if (e.detail.accion === "reanudar") {
           this.pausa = false;
+          console.log(this.time, this.keysUsadas)
         } else if (e.detail.accion === "retroceder") {
           this.pausa = false;
           this.direccion = "backward";
           this.lastTimeB = this.keysUsadas[this.keysUsadas.length - 1];
+          console.log(this.time, this.keysUsadas)
         } else if (e.detail.accion === "avanzar") {
           this.pausa = false;
           this.direccion = "forward";
+          console.log(this.time, this.keysUsadas)
         }
       });
 
