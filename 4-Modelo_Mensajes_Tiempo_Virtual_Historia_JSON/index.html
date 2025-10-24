@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Mensajes</title>
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="mensaje.js" defer></script>
+  <script src="reloj.js" defer></script>
+  <script src="historia.js" defer></script>
+</head>
+
+<body>
+
+  <a-scene background="color: #B3EDFF" mensaje reloj historia>
+
+    <a-cylinder id="router1" color="#fffbcf" position="0 10 -20">
+    </a-cylinder>
+
+    <a-cylinder id="router2" color="#fffbcf" position="7 2 3">
+    </a-cylinder>
+
+    <a-cylinder id="switch1" color="#fffbcf" position="-2 -4 0">
+    </a-cylinder>
+
+    <a-entity cursor="rayOrigin: mouse" raycaster="objects: .huella"></a-entity>
+
+    <a-entity camera wasd-controls look-controls position="0 2 15">
+    </a-entity>
+
+  </a-scene>
+
+</body>
+
+</html>
