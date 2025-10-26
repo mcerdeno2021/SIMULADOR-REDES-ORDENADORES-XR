@@ -1,55 +1,48 @@
 AFRAME.registerComponent('mensaje', {
-
   init: function () {
     const el = this.el;
-    const data = this.data;
-    this.huella = null;
-
-    const mensaje = document.createElement('a-entity');
-    mensaje.setAttribute('geometry', 'primitive: box');
-    mensaje.setAttribute('material', 'color: #FF0000');
-    el.appendChild(mensaje);
 
     el.addEventListener('mensaje', e => {
-      this.huella = false;
+      const { x, y, z } = e.detail;
+      let huellaExistente = false;
 
-      const x = e.detail.posicionesX;
-      const y = e.detail.posicionesY;
-      const z = e.detail.posicionesZ;
+      // El propio mensaje es la entidad "móvil"
+      el.setAttribute('geometry', 'primitive: box');
+      el.setAttribute('material', 'color: #FFF23D');
+      el.setAttribute('position', `${x} ${y} ${z}`);
 
-      mensaje.setAttribute('position', `${x} ${y} ${z}`);
-
+      // Comprobar si ya hay huella en esa posición
       document.querySelectorAll('.huella').forEach(huella => {
-        if (huella.getAttribute('position').x === x &&
-            huella.getAttribute('position').y === y &&
-            huella.getAttribute('position').z === z) {
-          this.huella = true;
+        const pos = huella.getAttribute('position');
+        if (pos.x === x && pos.y === y && pos.z === z) {
+          huellaExistente = true;
         }
       });
 
-      if (!this.huella) {
+      if (!huellaExistente) {
         const camino = document.createElement('a-entity');
         camino.setAttribute('position', `${x} ${y} ${z}`);
         camino.setAttribute('geometry', 'primitive: sphere; radius: 0.1');
-        camino.setAttribute('material', `color: ${mensaje.getAttribute('material').color}`);
+        camino.setAttribute('material', `color: ${el.getAttribute('material').color}`);
         camino.setAttribute('class', 'huella');
-        el.appendChild(camino);
+        el.sceneEl.appendChild(camino); // añadimos al scene, no dentro del mensaje
 
         camino.addEventListener('click', evt => {
           const pos = evt.target.getAttribute('position');
-          console.log("Huella en", pos, "con: Posición Origen:", data.posicionOrigen, "Posición Destino:", data.posicionDestino, "Tiempo Origen:", data.tiempoOrigen, "Tiempo Destino:", data.tiempoDestino);
+          console.log("Huella en", pos, "→ mensaje", e.detail.id);
         });
       }
+    });
 
-      el.addEventListener('borrar-huella', e => {
-        document.querySelectorAll('.huella').forEach(huella => {
-          if (huella.getAttribute('position').x === e.detail.x &&
-              huella.getAttribute('position').y === e.detail.y &&
-              huella.getAttribute('position').z === e.detail.z) {
-            el.removeChild(huella);
-          }
-        });
+    el.addEventListener('borrar-huella', e => {
+      const { x, y, z } = e.detail;
+      document.querySelectorAll('.huella').forEach(huella => {
+        const pos = huella.getAttribute('position');
+        if (pos.x === x && pos.y === y && pos.z === z) {
+          huella.remove();
+        }
       });
     });
-  },
+  }
 });
+

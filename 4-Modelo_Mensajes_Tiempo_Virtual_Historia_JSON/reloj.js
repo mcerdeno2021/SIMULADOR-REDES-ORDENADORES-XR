@@ -9,7 +9,7 @@ AFRAME.registerComponent('reloj', {
 
     let nuevaAccion;
     
-    if (time > 5) {
+    if (time > 3) {
       nuevaAccion = "pausar";
       if (time > 10) {
         nuevaAccion = "avanzar"}

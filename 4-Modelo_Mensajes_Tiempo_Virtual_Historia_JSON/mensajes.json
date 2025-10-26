@@ -8,13 +8,13 @@
   {
     "posicionOrigen": "switch1",
     "posicionDestino": "router2",
-    "tiempoOrigen": 6,
+    "tiempoOrigen": 1,
     "tiempoDestino": 10
   },
   {
     "posicionOrigen": "router2",
     "posicionDestino": "router1",
-    "tiempoOrigen": 12,
+    "tiempoOrigen": 2,
     "tiempoDestino": 15
   }
 ]
