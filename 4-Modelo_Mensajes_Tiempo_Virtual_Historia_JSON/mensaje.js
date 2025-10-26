@@ -7,7 +7,7 @@ AFRAME.registerComponent('mensaje', {
 
     const mensaje = document.createElement('a-entity');
     mensaje.setAttribute('geometry', 'primitive: box');
-    mensaje.setAttribute('material', 'color: red');
+    mensaje.setAttribute('material', 'color: #FF0000');
     el.appendChild(mensaje);
 
     el.addEventListener('mensaje', e => {
@@ -31,7 +31,7 @@ AFRAME.registerComponent('mensaje', {
         const camino = document.createElement('a-entity');
         camino.setAttribute('position', `${x} ${y} ${z}`);
         camino.setAttribute('geometry', 'primitive: sphere; radius: 0.1');
-        camino.setAttribute('material', `color: ${el.getAttribute('color')}`);
+        camino.setAttribute('material', `color: ${mensaje.getAttribute('color')}`);
 
         camino.setAttribute('class', 'huella');
         el.appendChild(camino);
