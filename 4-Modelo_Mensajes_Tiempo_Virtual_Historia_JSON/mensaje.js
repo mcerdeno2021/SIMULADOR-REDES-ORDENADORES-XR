@@ -31,8 +31,7 @@ AFRAME.registerComponent('mensaje', {
         const camino = document.createElement('a-entity');
         camino.setAttribute('position', `${x} ${y} ${z}`);
         camino.setAttribute('geometry', 'primitive: sphere; radius: 0.1');
-        camino.setAttribute('material', `color: ${mensaje.getAttribute('color')}`);
-
+        camino.setAttribute('material', `color: ${mensaje.getAttribute('material').color}`);
         camino.setAttribute('class', 'huella');
         el.appendChild(camino);
 
