@@ -1,22 +1,20 @@
-{
-  "mensajes": [
-    {
-      "posicionOrigen": "router1",
-      "posicionDestino": "switch1",
-      "tiempoOrigen": 0,
-      "tiempoDestino": 5
-    },
-    {
-      "posicionOrigen": "switch1",
-      "posicionDestino": "router2",
-      "tiempoOrigen": 6,
-      "tiempoDestino": 10
-    },
-    {
-      "posicionOrigen": "router2",
-      "posicionDestino": "router1",
-      "tiempoOrigen": 12,
-      "tiempoDestino": 15
-    }
-  ]
-}
+[
+  {
+    "posicionOrigen": "router1",
+    "posicionDestino": "switch1",
+    "tiempoOrigen": 0,
+    "tiempoDestino": 5
+  },
+  {
+    "posicionOrigen": "switch1",
+    "posicionDestino": "router2",
+    "tiempoOrigen": 6,
+    "tiempoDestino": 10
+  },
+  {
+    "posicionOrigen": "router2",
+    "posicionDestino": "router1",
+    "tiempoOrigen": 12,
+    "tiempoDestino": 15
+  }
+]
