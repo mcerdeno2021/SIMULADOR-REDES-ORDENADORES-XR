@@ -3,14 +3,6 @@ AFRAME.registerComponent('historia', {
     const el = this.el;
     
     this.historias = [];
-    this.time = 0;
-    this.times = [];
-    this.pausa = false;
-    this.direccion = "forward";
-    this.lastTimeP = null;
-    this.actual = null;
-    this.actual2 = null;
-    this.lastTimeB = null;
 
     fetch('mensajes.json')
       .then(response => response.json())
@@ -51,61 +43,39 @@ AFRAME.registerComponent('historia', {
             entidadMensaje
           });
         });
+      });
 
-        // Control de reproducción
-        el.addEventListener('control-historia', e => {
-          if (e.detail.accion === "pausar") {
-            this.pausa = true;
-            this.lastTimeP = this.times[this.times.length - 1];
-          } else if (e.detail.accion === "reanudar") {
-            this.pausa = false;
-          } else if (e.detail.accion === "retroceder") {
-            this.pausa = false;
-            this.direccion = "backward";
-          } else if (e.detail.accion === "avanzar") {
-            this.pausa = false;
-            this.direccion = "forward";
-          }
-        });
+      el.addEventListener('reloj-tick', e => {
+        let time = e.detail.time;
+        let delta = e.detail.delta;
 
-        // Ticks de reloj
-        el.addEventListener('reloj-tick', e => {
-          if (this.pausa) return;
+        this.historias.forEach(historia => {
+          const { id, posicionesX, posicionesY, posicionesZ, keysUsadas, entidadMensaje } = historia;
 
-          this.time = e.detail.time;
-          const delta = e.detail.delta;
-          this.times.push(this.time);
-
-          this.historias.forEach(historia => {
-            const { id, posicionesX, posicionesY, posicionesZ, keysUsadas, entidadMensaje } = historia;
-
-            for (const key in posicionesX) {
-              const keyNum = Number(key);
-
-              if (this.direccion === "forward") {
-                if (!keysUsadas.includes(keyNum) && ((keyNum - this.time) <= delta / 1000)) {
-                  // 🎯 Emitir el evento solo al mensaje correspondiente
-                  entidadMensaje.emit('mensaje', {
-                    id,
-                    x: posicionesX[keyNum],
-                    y: posicionesY[keyNum],
-                    z: posicionesZ[keyNum]
-                  });
-                  keysUsadas.push(keyNum);
-                }
-              } else if (this.direccion === "backward") {
-                if (keysUsadas.includes(keyNum) && ((this.time - keyNum) <= delta / 1000)) {
-                  entidadMensaje.emit('borrar-huella', {
-                    id,
-                    x: posicionesX[keyNum],
-                    y: posicionesY[keyNum],
-                    z: posicionesZ[keyNum]
-                  });
-                  keysUsadas.pop();
-                }
-              }
+          for (const key in posicionesX) {
+            const keyNum = Number(key);
+              
+            if (!keysUsadas.includes(keyNum) && ((keyNum - time) <= delta / 1000)) {
+              // 🎯 Emitir el evento solo al mensaje correspondiente
+              entidadMensaje.emit('mensaje', {
+                id,
+                x: posicionesX[keyNum],
+                y: posicionesY[keyNum],
+                z: posicionesZ[keyNum]
+              });
+              keysUsadas.push(keyNum);
             }
-          });
+
+            if (keysUsadas.includes(keyNum) && ((keyNum - time) <= delta / 1000)) {
+              entidadMensaje.emit('borrar-huella', {
+                id,
+                x: posicionesX[keyNum],
+                y: posicionesY[keyNum],
+                z: posicionesZ[keyNum]
+              });
+              keysUsadas.pop();
+            }
+          }
         });
       });
   }

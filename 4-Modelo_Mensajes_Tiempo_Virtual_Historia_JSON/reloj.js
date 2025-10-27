@@ -1,31 +1,25 @@
 AFRAME.registerComponent('reloj', {
   init: function () {
-    this.estadoAnterior = null;
+    this.time = 0;
+    this.velocidad = 1;
+    this.pausado = false;
+    this.direccion = 1; // 1 para avanzar, -1 para retroceder
+
+    this.el.addEventListener('control', e => {
+      const accion = e.detail.accion;
+      if (accion === 'pausar') this.pausado = true;
+      else if (accion === 'reanudar') this.pausado = false;
+      else if (accion === 'retroceder') this.direccion = -1;
+      else if (accion === 'avanzar') this.direccion = 1;
+    });
   },
 
   tick: function (time, delta) {
-    time = time / 1000;
-    this.el.emit('reloj-tick', {time: time, delta: delta});
+    if (this.pausado) return; // detiene
 
-    let nuevaAccion;
+    this.time += (delta / 1000) * this.direccion * this.velocidad;
+    console.log("Reloj tiempo:", this.time, delta/1000);
     
-    if (time > 3) {
-      nuevaAccion = "pausar";
-      if (time > 10) {
-        nuevaAccion = "avanzar"}
-        if (time > 15) {
-          nuevaAccion = "retroceder"}
-          if (time > 20) {
-            nuevaAccion = "pausar"}
-            if (time > 25) {
-              nuevaAccion = "retroceder"}
-              if (time > 30) {
-                nuevaAccion = "avanzar"} 
-              // no funciona porque aunque el tiempo se para con las pausas, tu vas retrodediendo y tal pero el tiempo avanza, entonces cuando quieres por ejemplo avanzar o retroceder ya no esta el tiempo dentro del rango
-    }
-    if (this.estadoAnterior !== nuevaAccion) {
-      this.el.emit('control-historia', {accion: nuevaAccion});
-      this.estadoAnterior = nuevaAccion;
-    }
+    this.el.emit('reloj-tick', {time: this.time, delta: delta });
   }
 });
