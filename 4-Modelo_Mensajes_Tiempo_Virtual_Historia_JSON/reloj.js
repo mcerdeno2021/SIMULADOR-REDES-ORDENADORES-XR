@@ -27,6 +27,6 @@ AFRAME.registerComponent('reloj', {
 
     this.time += (delta / 1000) * this.direccion * this.velocidad;
     
-    this.el.emit('reloj-tick', {time: this.time, delta: delta});
+    this.el.emit('reloj-tick', {time: this.time, direccion : this.direccion});
   }
 });
