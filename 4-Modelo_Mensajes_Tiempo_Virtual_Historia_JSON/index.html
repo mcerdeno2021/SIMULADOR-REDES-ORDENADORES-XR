@@ -22,7 +22,25 @@
     <a-cylinder id="switch1" color="#000fff" position="-2 -4 0">
     </a-cylinder>
 
-    <a-entity cursor="rayOrigin: mouse" raycaster="objects: .huella"></a-entity>
+    <!-- ====== CONTROLES DE HISTORIA ====== -->
+    <a-entity class="controles" position="0 1 -3">
+      <!-- Botón retroceder -->
+      <a-plane id="btn-retroceder" class="btn" color="#ff6666" height="0.5" width="1.2" position="-1.5 0 0">
+        <a-text value="⏪ Retroceder" align="center" color="#000" position="0 0 0.01" width="2"></a-text>
+      </a-plane>
+
+      <!-- Botón pausa -->
+      <a-plane id="btn-pausa" class="btn" color="#ffff66" height="0.5" width="1.2" position="0 0 0">
+        <a-text value="⏸️ Pausa/Reanudar" align="center" color="#000" position="0 0 0.01" width="2"></a-text>
+      </a-plane>
+
+      <!-- Botón avanzar -->
+      <a-plane id="btn-avanzar" class="btn" color="#66ff66" height="0.5" width="1.2" position="1.5 0 0">
+        <a-text value="⏩ Avanzar" align="center" color="#000" position="0 0 0.01" width="2"></a-text>
+      </a-plane>
+    </a-entity>
+
+    <a-entity cursor="rayOrigin: mouse" raycaster="objects: .huella, .btn"></a-entity>
 
     <a-entity camera wasd-controls look-controls position="3 7 25"></a-entity>
 

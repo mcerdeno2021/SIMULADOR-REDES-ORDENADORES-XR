@@ -8,7 +8,7 @@ AFRAME.registerComponent('mensaje', {
 
       // El propio mensaje es la entidad "móvil"
       el.setAttribute('geometry', 'primitive: box');
-      el.setAttribute('material', 'color: #352110');
+      el.setAttribute('material', 'color: #0ff0ff');
       el.setAttribute('position', `${x} ${y} ${z}`);
 
       // Comprobar si ya hay huella en esa posición
