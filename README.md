@@ -58,5 +58,3 @@
 - Capturar interfaces necesarias de toda la topologia, si solo se captura una, no se tendrá el contexto concreto de los paquetes, solo entrada o salida.
 - Reloj continuo o discreto y entender bien cómo funciona cada uno. Su precisión también.
 - Qué hacer con los mensajes cuando no se tiene en cuenta (fuera de su rango de movimiento).
-
-centreon (igual despues zabbix), nifi, kafka, power BI, grafana, bases de datos
