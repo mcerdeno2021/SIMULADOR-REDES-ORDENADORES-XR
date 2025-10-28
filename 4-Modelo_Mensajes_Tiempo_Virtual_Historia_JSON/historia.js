@@ -46,11 +46,11 @@ AFRAME.registerComponent('historia', {
           const y = posicionOrigen.y + (posicionDestino.y - posicionOrigen.y) * progreso;
           const z = posicionOrigen.z + (posicionDestino.z - posicionOrigen.z) * progreso;
 
-          entidadMensaje.emit('mensaje', { id, x, y, z });
+          entidadMensaje.emit('mensaje', { id, x, y, z, progreso });
 
           if (e.detail.direccion === -1 && progreso < ultimoProgreso) {
             // Retrocede → borrar huellas posteriores
-            entidadMensaje.emit('borrar-huella', { id, x, y, z });
+            entidadMensaje.emit('borrar-huella', { id, progresoActual: progreso });
           }
 
           historia.ultimoProgreso = progreso; // guardar último estado
