@@ -48,7 +48,15 @@
 
 ## 4. Modelo mensajes, tiempo virtual e historia con JSON.
 
-- Continuación del apartado anterior.
 - Ahora los mensajes no se despliegan desde el index, sino que se utiliza un archivo JSON en el que se definen y que se reciben y se cargan en historia.
-- A la hora de dividir los movimientos que realicen los mensajes, estos se ajustarán a los ticks de forma que coincida el tiempo que se envía desde el reloj y el correspondiente movimiento; Stop and Play desde el componente reloj.
-- Para las posiciones se usarán los elementos de red de la topología (switches, routers, etc.), estos también se pueden definir en un JSON diferente.
+- A la hora de dividir los movimientos que realicen los mensajes, estos ajustarán su posición al tiempo de los ticks mediante interpolación lineal.
+- El tiempo lo maneja al completo el reloj, manejando los eventos (pausa, retroceder, etc.) dentro del componente.
+- Para las posiciones se usarán los elementos de red de la topología (switches, routers, etc.) con su id, estos elementos también se pueden definir en un JSON diferente.
+- Estructurar un código más limpio y eficiente.
+
+#### ???:
+- Capturar interfaces necesarias de toda la topologia, si solo se captura una, no se tendrá el contexto concreto de los paquetes, solo entrada o salida.
+- Reloj continuo o discreto y entender bien cómo funciona cada uno. Su precisión también.
+- Qué hacer con los mensajes cuando no se tiene en cuenta (fuera de su rango de movimiento).
+
+centreon (igual despues zabbix), nifi, kafka, power BI, grafana, bases de datos
