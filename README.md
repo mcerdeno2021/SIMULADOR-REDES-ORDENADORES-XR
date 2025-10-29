@@ -5,8 +5,8 @@
 - Github Pages: https://mcerdeno2021.github.io/SIMULADOR-REDES-ORDENADORES-XR/
 
 ## Idea principal:
-- Programa que diseñará un escenario en A-FRAME al recibir una traza de Wireshark, que se descomponga con sus diferentes elementos (archivos, paquetes, pcs, routers, switches, etc.), generando automáticamente un escenario similar al que puede haber en softwares como Netgui.
-- En el escenario se podrán ver todos estos elementos y el flujo de paquetes en VR y XR. A su vez, se podrán usar varias de las funcionalidades extraídas del software "Wireshark", así como un control de reproducción y un diagrama de secuencia de los paquetes.
+- Programa que diseñará un escenario en A-FRAME al recibir una traza de Wireshark, que se descomponga con sus diferentes elementos (paquetes, pcs, routers, switches, etc.), generando automáticamente un escenario similar al que puede haber en softwares como Netgui.
+- En el escenario se podrán ver todos estos elementos y el flujo de paquetes en VR y XR. A su vez, se podrán usar varias de las funcionalidades extraídas del software "Wireshark", así como un control de reproducción o un diagrama de secuencia de los paquetes.
 - Servirá como un apoyo didáctico con explicaciones y detalles.
 
 
@@ -55,6 +55,11 @@
 - Estructurar un código más limpio y eficiente.
 
 #### ???:
-- Capturar interfaces necesarias de toda la topologia, si solo se captura una, no se tendrá el contexto concreto de los paquetes, solo entrada o salida.
+- Capturar interfaces necesarias de toda la topologia; si solo se captura una, no se tendrá el contexto completo de los paquetes, solo entrada o salida.
 - Reloj continuo o discreto y entender bien cómo funciona cada uno. Su precisión también.
-- Qué hacer con los mensajes cuando no se tiene en cuenta (fuera de su rango de movimiento).
+- Mensajes cuando no se tienen en cuenta (fuera de su rango de movimiento).
+- Vista cenital, minimapa.
+- Dos modos: en uno recibe directamente una traza y la convierte en escenario y su flujo; en el otro tú creas un escenario, solo para ping y traceroute.
+- Representación visual flujo paquetes (para que sea facil de ver).
+- Tener un wireshark a un lateral en el que puedas seleccionar un paquete y se vea, filtrar, etc.
+- Huellas hijas de su mensaje.

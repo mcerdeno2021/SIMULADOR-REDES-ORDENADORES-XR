@@ -1,61 +1,61 @@
 {
   "mensajes": [
     {
-      "posicionOrigen": "router1",
-      "posicionDestino": "switch1",
+      "posicionOrigen": "Router1",
+      "posicionDestino": "Switch1",
       "tiempoOrigen": 0,
       "tiempoDestino": 5
     },
     {
-      "posicionOrigen": "switch1",
-      "posicionDestino": "router2",
+      "posicionOrigen": "Switch1",
+      "posicionDestino": "Router2",
       "tiempoOrigen": 1,
       "tiempoDestino": 10
     },
     {
-      "posicionOrigen": "router2",
-      "posicionDestino": "router1",
+      "posicionOrigen": "Router2",
+      "posicionDestino": "Router1",
       "tiempoOrigen": 2,
       "tiempoDestino": 15
     },
     {
-      "posicionOrigen": "router1",
-      "posicionDestino": "switch2",
+      "posicionOrigen": "Router1",
+      "posicionDestino": "Switch2",
       "tiempoOrigen": 4,
       "tiempoDestino": 9
     },
     {
-      "posicionOrigen": "switch2",
-      "posicionDestino": "router3",
+      "posicionOrigen": "Switch2",
+      "posicionDestino": "Router3",
       "tiempoOrigen": 1,
       "tiempoDestino": 13
     },
     {
-      "posicionOrigen": "router3",
-      "posicionDestino": "router2",
+      "posicionOrigen": "Router3",
+      "posicionDestino": "Router2",
       "tiempoOrigen": 3,
       "tiempoDestino": 20
     }
   ],
   "topologia": [
     {
-      "id": "router1",
-      "posicionOrigen": "0 1 -20"
+      "id": "Router1",
+      "posicionOrigen": "10 1 -2"
     },
     {
-      "id": "router2",
-      "posicionOrigen": "7 1 3"
+      "id": "Router2",
+      "posicionOrigen": "17 1 3"
     },
     {
-      "id": "router3",
-      "posicionOrigen": "1 1 3"
+      "id": "Router3",
+      "posicionOrigen": "-13 1 3"
     },
     {
-      "id": "switch1",
+      "id": "Switch1",
       "posicionOrigen": "-2 1 0"
     },
     {
-      "id": "switch2",
+      "id": "Switch2",
       "posicionOrigen": "12 1 14"
     }
   ]
