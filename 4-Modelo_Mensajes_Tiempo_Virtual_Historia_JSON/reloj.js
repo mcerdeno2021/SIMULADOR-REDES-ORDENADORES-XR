@@ -1,51 +1,55 @@
 AFRAME.registerComponent('reloj', {
   init: function () {
-    this.time = 0;
+    this.tiempo = 0;
     this.velocidad = 1;
     this.pausado = false;
     this.direccion = 1; // 1 para avanzar, -1 para retroceder
+    this.mostrado = false; // Para no repetir el mensaje al llegar a 0
 
     const mostrarVelocidad = () => {
-      const texto = document.querySelector('#velocidad-valor');
-      if (texto) texto.setAttribute('value', this.velocidad.toFixed(1) + 'x');
+      const valorVelocidad = document.querySelector('#velocidad-valor');
+      valorVelocidad.setAttribute('value', this.velocidad.toFixed(1) + 'x'); // Se usa toFixed para tener solo un decimal
     };
 
-    // BOTÓN PAUSA / REANUDAR
     document.querySelector('#btn-pausa').addEventListener('click', () => {
-      this.pausado = !this.pausado;
-      console.log(this.pausado ? "⏸️ Pausado" : "▶️ Reanudado");
+      this.pausado = !this.pausado; // Cambia al booleano contrario
+      console.log(this.pausado ? "⏸️ Pausado" : "▶️ Reanudado"); // Si True: pausado; si False: reanudado
     });
-
-    // BOTÓN AVANZAR
     document.querySelector('#btn-avanzar').addEventListener('click', () => {
       this.direccion = 1;
       console.log("⏩ Avanzando")
     });
-
-    // BOTÓN RETROCEDER
     document.querySelector('#btn-retroceder').addEventListener('click', () => {
       this.direccion = -1;
       console.log("⏪ Retrocediendo")
     });
 
-    // 🔹 BOTONES DE VELOCIDAD
     document.querySelector('#btn-vel-mas').addEventListener('click', () => {
-      this.velocidad = Math.min(this.velocidad + 0.1, 5); // límite superior
+      this.velocidad = Math.min(this.velocidad + 0.1, 5); // Máximo 5
       mostrarVelocidad();
       console.log(`🚀 Velocidad: ${this.velocidad.toFixed(1)}x`);
     });
 
     document.querySelector('#btn-vel-menos').addEventListener('click', () => {
-      this.velocidad = Math.max(this.velocidad - 0.1, 0.1); // límite inferior
+      this.velocidad = Math.max(this.velocidad - 0.1, 0.1); // Mínimo 0.1
       mostrarVelocidad();
       console.log(`🐢 Velocidad: ${this.velocidad.toFixed(1)}x`);
     });
   },
 
   tick: function (time, delta) {
-    if (this.pausado) return;
-    this.time += (delta / 1000) * this.direccion * this.velocidad;
-    this.el.emit('reloj-tick', { time: this.time, direccion: this.direccion });
+    if (this.pausado) return; // Detiene
+    
+    this.tiempo += (delta / 1000) * this.direccion * this.velocidad; // Entre 1000 para milisegundos
+
+    if (this.tiempo < 0) { // Evita que el tiempo baje de 0
+      this.tiempo = 0;
+      if (!this.mostrado) {
+        console.log("⏹️ Tiempo en 0");
+        this.mostrado = true; // Ya se ha mostrado el mensaje
+      }
+    }
+
+    this.el.emit('reloj-tick', {tiempo: this.tiempo, direccion: this.direccion});
   }
 });
-

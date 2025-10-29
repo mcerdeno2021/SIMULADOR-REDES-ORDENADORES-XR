@@ -1,13 +1,14 @@
 AFRAME.registerComponent('mensaje', {
   init: function () {
     const el = this.el;
+    
     this.huellas = {}; // diccionario para huellas
 
     el.addEventListener('mensaje', e => {
-      const {id, x, y, z, progreso} = e.detail;
+      const {id, x, y, z, progreso} = e.detail; // Para coger directamente con el mismo nombre las variables en e.detail
 
       el.setAttribute('geometry', 'primitive: box; width: 0.8; height: 0.8');
-      el.setAttribute('material', 'color: #96ff2d');
+      el.setAttribute('material', 'color: #ff7700');
       el.setAttribute('position', `${x} ${y} ${z}`);
 
       if (!this.huellas[id]) this.huellas[id] = []; // Inicializar array si no existe
@@ -25,16 +26,16 @@ AFRAME.registerComponent('mensaje', {
       el.sceneEl.appendChild(huella);
 
       huella.addEventListener('click', e => {
-        const pos = e.target.getAttribute('position');
-        console.log("Huella en", pos, "→ mensaje", id);
+        const posicionHuella = e.target.getAttribute('position');
+        console.log("Huella en", posicionHuella, "→ mensaje", id);
       });
     });
 
     el.addEventListener('borrar-huella', e => {
-      const {id, progresoMensaje} = e.detail;
+      const {id, ultimoProgreso} = e.detail;
       if (!this.huellas[id]) return;
 
-      const huellasBorrar = this.huellas[id].filter(huella => huella.dataset.progreso > progresoMensaje); // Filtrar huellas a borrar: progresoHuella > progresoMensaje
+      const huellasBorrar = this.huellas[id].filter(huella => huella.dataset.progreso > ultimoProgreso); // Filtrar huellas a borrar: progresoHuella > progresoMensaje
       huellasBorrar.forEach(huella => {
         el.sceneEl.removeChild(huella);
         this.huellas[id] = this.huellas[id].filter(x => x !== huella); // Coge las huellas que ya existen y mantén todas menos la que sea igual a huella
