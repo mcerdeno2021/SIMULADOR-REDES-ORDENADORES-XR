@@ -1,32 +1,30 @@
 AFRAME.registerComponent('historia', {
   init: function () {
     const el = this.el;
-    
+
     this.historias = [];
 
-    fetch('mensajes.json')
-      .then(response => response.json())
+    fetch('escenario.json') // Para pedir el JSON, te devuelve un Response
+      .then(response => response.json()) // Lee el JSON y lo convierte a JS
       .then(datos => {
         const topologia = datos.topologia;
         const mensajes = datos.mensajes;
 
         topologia.forEach(nodo => {
-          const entidad = document.createElement('a-entity');
-          const esRouter = nodo.id.toLowerCase().includes('router');
-          const esSwitch = nodo.id.toLowerCase().includes('switch');
+          const entidadTopologia = document.createElement('a-entity');
+          const router = nodo.id.includes('Router'); // Si incluye la palabra en el campo id
+          const Switch = nodo.id.includes('Switch');
 
-          if (esRouter) {
-            entidad.setAttribute('geometry', 'primitive: cylinder; radius: 1; height: 2');
-            entidad.setAttribute('material', 'color: #ffffff');
-          } else if (esSwitch) {
-            entidad.setAttribute('geometry', 'primitive: box; width: 2; height: 1; depth: 2');
-            entidad.setAttribute('material', 'color: #cccccc');
+          if (router) {
+            entidadTopologia.setAttribute('geometry', 'primitive: cylinder; radius: 1; height: 1');
+            entidadTopologia.setAttribute('material', 'color: #a9e1f9');
+          } else if (Switch) {
+            entidadTopologia.setAttribute('geometry', 'primitive: box; width: 2; height: 1; depth: 2');
+            entidadTopologia.setAttribute('material', 'color: #b1acac');
           }
-
-          entidad.setAttribute('position', nodo.posicionOrigen);
-          entidad.setAttribute('id', nodo.id)
-
-          el.appendChild(entidad);
+          entidadTopologia.setAttribute('position', nodo.posicionOrigen);
+          entidadTopologia.setAttribute('id', nodo.id)
+          el.appendChild(entidadTopologia);
         }),
 
         mensajes.forEach((dato, i) => {
@@ -35,47 +33,42 @@ AFRAME.registerComponent('historia', {
           const posicionOrigen = origen.getAttribute("position");
           const posicionDestino = destino.getAttribute("position");
 
-          // 🔸 Crear una entidad <a-entity mensaje> separada
           const entidadMensaje = document.createElement('a-entity');
           entidadMensaje.setAttribute('mensaje', '');
-          entidadMensaje.setAttribute('id', `mensaje-${i}`);
           el.appendChild(entidadMensaje);
 
           this.historias.push({
-            id: i,
+            id: i+1, // Para empezar en 1
             tiempoOrigen: dato.tiempoOrigen,
             tiempoDestino: dato.tiempoDestino,
             posicionOrigen,
             posicionDestino,
             entidadMensaje,
-            ultimoProgreso: 0 // para seguimiento al retroceder
+            ultimoProgreso: 0 // Para seguimiento al retroceder
           });
         });
       });
 
       el.addEventListener('reloj-tick', e => {
-        let time = e.detail.time;
+        let tiempo = e.detail.tiempo;
 
         this.historias.forEach(historia => {
-          let { id, tiempoOrigen, tiempoDestino, posicionOrigen, posicionDestino, entidadMensaje, ultimoProgreso } = historia;
+          let {id, tiempoOrigen, tiempoDestino, posicionOrigen, posicionDestino, entidadMensaje, ultimoProgreso} = historia;
 
-          if (time < tiempoOrigen || time > tiempoDestino) return; // si no está en el intervalo, no hacer nada
+          if (tiempo < tiempoOrigen || tiempo > tiempoDestino) return; // Si no está en el intervalo no hace nada
 
-          // Interpolación lineal continua
-          const progreso = (time - tiempoOrigen) / (tiempoDestino - tiempoOrigen);
-
+          const progreso = (tiempo - tiempoOrigen) / (tiempoDestino - tiempoOrigen); // // Interpolación lineal continua
           const x = posicionOrigen.x + (posicionDestino.x - posicionOrigen.x) * progreso;
           const y = posicionOrigen.y + (posicionDestino.y - posicionOrigen.y) * progreso;
           const z = posicionOrigen.z + (posicionDestino.z - posicionOrigen.z) * progreso;
 
-          entidadMensaje.emit('mensaje', { id, x, y, z, progreso });
+          entidadMensaje.emit('mensaje', {id, x, y, z, progreso});
 
-          if (e.detail.direccion === -1 && progreso < ultimoProgreso) {
-            // Retrocede → borrar huellas posteriores
-            entidadMensaje.emit('borrar-huella', { id, progresoActual: progreso });
+          if (e.detail.direccion === -1 && progreso < ultimoProgreso) { // Para borrar huellas posteriores al retroceder
+            entidadMensaje.emit('borrar-huella', {id, ultimoProgreso});
           }
 
-          historia.ultimoProgreso = progreso; // guardar último estado
+          historia.ultimoProgreso = progreso; // Guardar último estado
         });
       });
   }
