@@ -11,38 +11,35 @@
 
 <body>
 
-  <a-scene background="color: #B3EDFF" reloj historia>
+  <a-scene background="color: #c2c2ff" reloj historia>
 
-    <a-cylinder id="router1" color="#ffffff" position="0 10 -20">
-    </a-cylinder>
-
-    <a-cylinder id="router2" color="#ffffff" position="7 2 3">
-    </a-cylinder>
-
-    <a-cylinder id="switch1" color="#ffffff" position="-2 -4 0">
-    </a-cylinder>
+    <a-plane position="0 0 0" height="100" width="1000" color="#58d558" rotation="-90 0 0"></a-plane>
 
     <a-entity cursor="rayOrigin: mouse" raycaster="objects: .huella, .btn"></a-entity>
 
-    <a-entity camera wasd-controls look-controls position="3 7 25">
-      <a-entity class="controles" position="0 -1 -3">
-        <a-plane id="btn-retroceder" class="btn" color="#ff6666" height="0.5" width="1.2" position="-1.5 0 0">
-          <a-text value="Retroceder" align="center" color="#000" position="0 0 0.01" width="2"></a-text>
-        </a-plane>
-        <a-plane id="btn-pausa" class="btn" color="#ffff66" height="0.5" width="1.2" position="0 0 0">
-          <a-text value="⏸Pausa/Reanudar" align="center" color="#000" position="0 0 0.01" width="2"></a-text>
-        </a-plane>
-        <a-plane id="btn-avanzar" class="btn" color="#66ff66" height="0.5" width="1.2" position="1.5 0 0">
-          <a-text value="Avanzar" align="center" color="#000" position="0 0 0.01" width="2"></a-text>
-        </a-plane>
-        <a-entity id="velocidad-control" position="0 -0.8 0">
-          <a-plane id="btn-vel-menos" class="btn" color="#ff9999" height="0.4" width="0.6" position="-1 0 0">
-            <a-text value="-" align="center" color="#000" position="0 0 0.01" width="1"></a-text>
+    <!-- Wrapper con la rotación inicial -->
+    <a-entity id="rig" position="0 15 40" rotation="-30 0 0">
+      <!-- Cámara dentro del rig -->
+      <a-entity camera wasd-controls look-controls position="0 0 0">
+        <a-entity class="controles" position="0 -1 -3">
+          <a-plane id="btn-retroceder" class="btn" color="#ff6666" height="0.5" width="1.2" position="-1.5 0 0">
+            <a-text value="Retroceder" align="center" color="#000" position="0 0 0.01" width="2"></a-text>
           </a-plane>
-          <a-text id="velocidad-valor" value="1.0x" align="center" color="#000" position="0 0 0.01" width="2"></a-text>
-          <a-plane id="btn-vel-mas" class="btn" color="#99ff99" height="0.4" width="0.6" position="1 0 0">
-            <a-text value="+" align="center" color="#000" position="0 0 0.01" width="1"></a-text>
+          <a-plane id="btn-pausa" class="btn" color="#ffff66" height="0.5" width="1.2" position="0 0 0">
+            <a-text value="Pausa / Reanudar" align="center" color="#000" position="0 0 0.01" width="2"></a-text>
           </a-plane>
+          <a-plane id="btn-avanzar" class="btn" color="#66ff66" height="0.5" width="1.2" position="1.5 0 0">
+            <a-text value="Avanzar" align="center" color="#000" position="0 0 0.01" width="2"></a-text>
+          </a-plane>
+          <a-entity id="velocidad-control" position="0 -0.8 0">
+            <a-plane id="btn-vel-menos" class="btn" color="#ff9999" height="0.4" width="0.6" position="-1 0 0">
+              <a-text value="-" align="center" color="#000" position="0 0 0.01" width="1"></a-text>
+            </a-plane>
+            <a-text id="velocidad-valor" value="1.0x" align="center" color="#000" position="0 0 0.01" width="2"></a-text>
+            <a-plane id="btn-vel-mas" class="btn" color="#99ff99" height="0.4" width="0.6" position="1 0 0">
+              <a-text value="+" align="center" color="#000" position="0 0 0.01" width="1"></a-text>
+            </a-plane>
+          </a-entity>
         </a-entity>
       </a-entity>
     </a-entity>
