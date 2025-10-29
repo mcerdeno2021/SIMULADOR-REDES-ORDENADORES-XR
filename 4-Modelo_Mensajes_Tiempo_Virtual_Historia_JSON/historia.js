@@ -7,7 +7,29 @@ AFRAME.registerComponent('historia', {
     fetch('mensajes.json')
       .then(response => response.json())
       .then(datos => {
-        datos.forEach((dato, i) => {
+        const topologia = datos.topologia;
+        const mensajes = datos.mensajes;
+
+        topologia.forEach(nodo => {
+          const entidad = document.createElement('a-entity');
+          const esRouter = nodo.id.toLowerCase().includes('router');
+          const esSwitch = nodo.id.toLowerCase().includes('switch');
+
+          if (esRouter) {
+            entidad.setAttribute('geometry', 'primitive: cylinder; radius: 1; height: 2');
+            entidad.setAttribute('material', 'color: #ffffff');
+          } else if (esSwitch) {
+            entidad.setAttribute('geometry', 'primitive: box; width: 2; height: 1; depth: 2');
+            entidad.setAttribute('material', 'color: #cccccc');
+          }
+
+          entidad.setAttribute('position', nodo.posicionOrigen);
+          entidad.setAttribute('id', nodo.id)
+
+          el.appendChild(entidad);
+        }),
+
+        mensajes.forEach((dato, i) => {
           const origen = document.querySelector(`#${dato.posicionOrigen}`);
           const destino = document.querySelector(`#${dato.posicionDestino}`);
           const posicionOrigen = origen.getAttribute("position");

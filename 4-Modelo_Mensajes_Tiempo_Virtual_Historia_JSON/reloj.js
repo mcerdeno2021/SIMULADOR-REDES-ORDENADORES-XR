@@ -19,13 +19,13 @@ AFRAME.registerComponent('reloj', {
     // BOTÓN AVANZAR
     document.querySelector('#btn-avanzar').addEventListener('click', () => {
       this.direccion = 1;
-      console.log("Avanzando")
+      console.log("⏩ Avanzando")
     });
 
     // BOTÓN RETROCEDER
     document.querySelector('#btn-retroceder').addEventListener('click', () => {
       this.direccion = -1;
-      console.log("Retrocediendo")
+      console.log("⏪ Retrocediendo")
     });
 
     // 🔹 BOTONES DE VELOCIDAD
