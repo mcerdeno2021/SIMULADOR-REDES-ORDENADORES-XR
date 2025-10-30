@@ -63,3 +63,4 @@
 - Representación visual flujo paquetes (para que sea facil de ver).
 - Tener un wireshark a un lateral en el que puedas seleccionar un paquete y se vea, filtrar, etc.
 - Huellas hijas de su mensaje.
+- Aspecto como en Apartado 1 o más simplista
