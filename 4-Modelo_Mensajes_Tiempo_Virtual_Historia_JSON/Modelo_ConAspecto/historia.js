@@ -44,6 +44,8 @@ AFRAME.registerComponent('historia', {
           const destino = document.querySelector(`#${dato.destino}`);
           const origenPos = origen.getAttribute("position");
           const destinoPos = destino.getAttribute("position");
+          const origenNom = origen.getAttribute("id");
+          const destinoNom = destino.getAttribute("id");
 
           const entidadMensaje = document.createElement('a-entity');
           entidadMensaje.setAttribute('mensaje', '');
@@ -55,6 +57,8 @@ AFRAME.registerComponent('historia', {
             tiempoDestino: dato.tiempoDestino,
             origenPos,
             destinoPos,
+            origenNom,
+            destinoNom,
             entidadMensaje,
             ultimoProgreso: 0 // Para seguimiento al retroceder
           });
@@ -63,9 +67,12 @@ AFRAME.registerComponent('historia', {
 
       el.addEventListener('reloj-tick', e => {
         let tiempo = e.detail.tiempo;
+        const resumen = document.querySelector('#control') //
 
         this.historias.forEach(historia => {
-          let {id, tiempoOrigen, tiempoDestino, origenPos, destinoPos, entidadMensaje, ultimoProgreso} = historia;
+          let {id, tiempoOrigen, tiempoDestino, origenPos, destinoPos, origenNom, destinoNom, entidadMensaje, ultimoProgreso} = historia;
+
+          resumen.emit('resumen', {historia}) //
 
           if (tiempo < tiempoOrigen || tiempo > tiempoDestino) return; // Si no está en el intervalo no hace nada
 
@@ -81,6 +88,16 @@ AFRAME.registerComponent('historia', {
           }
 
           historia.ultimoProgreso = progreso; // Guardar último estado
+        });
+      });
+
+      el.sceneEl.addEventListener('seleccionar-paquete', e => {
+        const idSeleccionado = e.detail.id;
+        this.historias.forEach(historia => {
+          if (historia.id === idSeleccionado) {
+            this.el.setAttribute('material', 'color', '#c63f00ff'); // resaltar
+            setTimeout(() => this.el.setAttribute('material', 'color', '#FFF'), 1000);
+          }
         });
       });
   }
