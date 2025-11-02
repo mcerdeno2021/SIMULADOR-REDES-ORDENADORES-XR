@@ -27,6 +27,7 @@ AFRAME.registerComponent('historia', {
           }
           entidadTopologia.setAttribute('position', nodo.posicion);
           entidadTopologia.setAttribute('id', nodo.id)
+          entidadTopologia.setAttribute('identificador', {id: nodo.id, posicion: nodo.posicion})
           el.appendChild(entidadTopologia);
         }),
 

@@ -154,3 +154,38 @@ AFRAME.registerComponent('cursor-listener', {
   }
 });
 
+AFRAME.registerComponent('identificador', {
+  schema: {
+    id: {type: 'string'},
+    posicion: {type: 'vec3'}
+  },
+  init: function() {
+    panel = document.createElement('a-plane');
+    panel.setAttribute('position', '0 1 0');
+    panel.setAttribute('width', '1');
+    panel.setAttribute('height', '0.5');
+    panel.setAttribute('color', '#111');
+    panel.setAttribute('opacity', '0.85');
+    panel.setAttribute('material', 'side: double');
+    this.el.appendChild(panel);
+
+  // 📜 Contenedor del texto — lo movemos un poco al frente (z = 0.02)
+  contenedor = document.createElement('a-entity');
+  contenedor.setAttribute('position', '1.9 0.2 0');
+  panel.appendChild(contenedor);
+
+  const texto = document.createElement('a-entity');
+    texto.setAttribute('position', '0 -0.18 0');
+    texto.setAttribute('text', {
+      value:
+        `${this.data.id}\n` +
+        `${this.data.posicion.x} ${this.data.posicion.y} ${this.data.posicion.z}`,
+      color: '#aaa',
+      align: 'left',
+      width: 4.6,
+      wrapCount: 80,
+      font: 'monoid'
+    });
+    contenedor.appendChild(texto)
+  }
+})

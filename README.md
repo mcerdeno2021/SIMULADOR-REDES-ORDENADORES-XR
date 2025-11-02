@@ -65,3 +65,4 @@
 - Huellas hijas de su mensaje.
 - Aspecto como en Apartado 1 o más simplista.
 - Tabla estilo Wireshark, con información de la topologia y paquetes.
+- Cartel identificador encima de cada elemento
