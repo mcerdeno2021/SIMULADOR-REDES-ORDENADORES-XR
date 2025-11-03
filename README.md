@@ -66,3 +66,5 @@
 - Aspecto como en Apartado 1 o más simplista.
 - Tabla estilo Wireshark, con información de la topologia y paquetes.
 - Cartel identificador encima de cada elemento
+- Como representar el flujo para que no se superpongan los mensaje sy se diferencien en el tiempo (parabolas cada vez mas altas, eje y para tiempo como otro trabajo, canales paralelos entre nodos como una carretera, cada nodo tiene una pila como estanterias de las que van saliendo cada paquete una para llegada y otroa para salida, cad allegada deja ciruclos concentricos que pueden depender su diametro de llegada etc)
+- Scrum/agile para memoria
