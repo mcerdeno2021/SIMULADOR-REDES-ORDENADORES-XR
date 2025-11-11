@@ -65,6 +65,24 @@
 - Huellas hijas de su mensaje.
 - Aspecto como en Apartado 1 o más simplista.
 - Tabla estilo Wireshark, con información de la topologia y paquetes.
-- Cartel identificador encima de cada elemento
-- Como representar el flujo para que no se superpongan los mensaje sy se diferencien en el tiempo (parabolas cada vez mas altas, eje y para tiempo como otro trabajo, canales paralelos entre nodos como una carretera, cada nodo tiene una pila como estanterias de las que van saliendo cada paquete una para llegada y otroa para salida, cad allegada deja ciruclos concentricos que pueden depender su diametro de llegada etc)
-- Scrum/agile para memoria
+- Cartel identificador encima de cada elemento.
+- Como representar el flujo para que no se superpongan los mensaje sy se diferencien en el tiempo (parabolas cada vez mas altas, eje y para tiempo como otro trabajo, canales paralelos entre nodos como una carretera, cada nodo tiene una pila como estanterias de las que van saliendo cada paquete una para llegada y otroa para salida, cad allegada deja ciruclos concentricos que pueden depender su diametro de llegada etc).
+- Scrum/agile para memoria.
+
+## 5. Modelo estructura de datos eficiente, funciones, trazas e intervalos
+
+- Mejora de estrcutura de datos y eficiencia.
+- La entidad mensaje se tiene que crear en el componente mensaje y solo una vez, y se va moviendo.
+- No es eficiente que el tick lo escuchen todos cuando solo unos pocos se van a mover, por eso (pudiendo mantener la lista this.historias) se deben crear dos diccionarios, uno que tenga en su clave el momento de incio del mensaje y otro con el final; con esto, el componente verá entre que momentos el mensaje está activo. 
+- Aparte de esta, habrá otro diccionario, que tenga cada instante de tiempo como clave, con los mensajes que hay activos en ese momento.
+- Se crearán 4 funciones, 3 de ellas recibirán como parametros de entrada los tiempos, y una será para cuando los paquetes se creen, otra para cuando se mueven y otra cuando desaparecen. La cuarta funcionará para calcular con interpolación las posiciones a las que les toca moverse a los paquetes.
+- Estas cuatro funciones una vez estén listas se pueden manejar como una sola.
+- En el programa debería plantearse que ir a cualquier instante de tiempo es el caso general, mientras que avanzar o ir marcha atrás sería un caso particular.
+- El listener de los paquetes en mensaje, debe escuchar solo a que posición se mueven.
+- Script de Python para generar paquetes automáticamente en el JSON.
+- Prueba de estrés, que consiste en generar muchos paquetes y probar cuál es el límite del programa en el que empieza a tener problemas de rendimiento.
+- La huella debería ser solo una entidad, siendo un cilindro que se va alargando o encogiendo según la trayectoria.
+- Controlador de tiempo.
+- Para ver la variable temporal se usa el eje Y; se pueden hacer cuadrículas para marcar mejor el tiempo.
+- Ir viendo cómo generar trazas (netgui o con tcpdump); de momento no preocuparse por ver si es el mismo mensaje el que entra en un lado y sale de otro. Descartar mensajes que sean el mismo al escuchar en varias interfaces. De momento nivel wifi, ethernet. Libcap para usar en Python.
+- Elegir precisión para los mensajes para definir intervalos de tiempo.
