@@ -69,7 +69,7 @@
 - Como representar el flujo para que no se superpongan los mensaje sy se diferencien en el tiempo (parabolas cada vez mas altas, eje y para tiempo como otro trabajo, canales paralelos entre nodos como una carretera, cada nodo tiene una pila como estanterias de las que van saliendo cada paquete una para llegada y otroa para salida, cad allegada deja ciruclos concentricos que pueden depender su diametro de llegada etc).
 - Scrum/agile para memoria.
 
-## 5. Modelo estructura de datos eficiente, funciones, trazas e intervalos
+## 5. Modelo estructura de datos eficiente, funciones, trazas, intervalos y Python
 
 - Mejora de estrcutura de datos y eficiencia.
 - La entidad mensaje se tiene que crear en el componente mensaje y solo una vez, y se va moviendo.

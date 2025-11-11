@@ -48,10 +48,6 @@ AFRAME.registerComponent('historia', {
           const origenNom = origen.getAttribute("id");
           const destinoNom = destino.getAttribute("id");
 
-          const entidadMensaje = document.createElement('a-entity');
-          entidadMensaje.setAttribute('mensaje', '');
-          el.appendChild(entidadMensaje);
-
           this.historias.push({
             id: i+1, // Para empezar en 1
             tiempoOrigen: dato.tiempoOrigen,
@@ -60,7 +56,6 @@ AFRAME.registerComponent('historia', {
             destinoPos,
             origenNom,
             destinoNom,
-            entidadMensaje,
             ultimoProgreso: 0 // Para seguimiento al retroceder
           });
         });
@@ -71,7 +66,7 @@ AFRAME.registerComponent('historia', {
         const resumen = document.querySelector('#control') //
 
         this.historias.forEach(historia => {
-          let {id, tiempoOrigen, tiempoDestino, origenPos, destinoPos, origenNom, destinoNom, entidadMensaje, ultimoProgreso} = historia;
+          let {id, tiempoOrigen, tiempoDestino, origenPos, destinoPos, origenNom, destinoNom, ultimoProgreso} = historia;
 
           resumen.emit('resumen', {historia}) //
 
@@ -82,7 +77,7 @@ AFRAME.registerComponent('historia', {
           const y = origenPos.y + (destinoPos.y - origenPos.y) * progreso;
           const z = origenPos.z + (destinoPos.z - origenPos.z) * progreso;
 
-          entidadMensaje.emit('mensaje', {id, x, y, z, progreso});
+          el.emit('mensaje', {id, x, y, z, progreso});
 
           if (e.detail.direccion === -1 && progreso < ultimoProgreso) { // Para borrar huellas posteriores al retroceder
             entidadMensaje.emit('borrar-huella', {id, ultimoProgreso});
