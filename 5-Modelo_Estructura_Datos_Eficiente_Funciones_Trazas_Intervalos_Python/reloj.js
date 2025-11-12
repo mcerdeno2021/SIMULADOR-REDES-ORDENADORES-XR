@@ -50,6 +50,12 @@ AFRAME.registerComponent('reloj', {
       }
     }
 
-    this.el.emit('reloj-tick', {tiempo: this.tiempo, direccion: this.direccion});
+    const tiempoEntero = Math.floor(this.tiempo);
+
+    // Solo emitir si cambia el número entero
+    if (this.ultimoEntero !== tiempoEntero) {
+      this.ultimoEntero = tiempoEntero;
+      this.el.emit('reloj-tick', { tiempo: tiempoEntero, direccion: this.direccion });
+    }
   }
 });

@@ -73,8 +73,8 @@
 
 - Mejora de estrcutura de datos y eficiencia.
 - La entidad mensaje se tiene que crear en el componente mensaje y solo una vez, y se va moviendo.
-- No es eficiente que el tick lo escuchen todos cuando solo unos pocos se van a mover, por eso (pudiendo mantener la lista this.historias) se deben crear dos diccionarios, uno que tenga en su clave el momento de incio del mensaje y otro con el final; con esto, el componente verá entre que momentos el mensaje está activo. 
-- Aparte de esta, habrá otro diccionario, que tenga cada instante de tiempo como clave, con los mensajes que hay activos en ese momento.
+- No es eficiente que el tick lo escuchen todos cuando solo unos pocos se van a mover, por eso (pudiendo mantener la lista this.historias) se deben crear dos diccionarios, uno que tenga en su clave el momento de inicio del mensaje y otro con el final; con esto, el componente verá entre que momentos el mensaje está activo. 
+- Aparte de esta, habrá otro diccionario, que tenga cada instante de tiempo como clave, con los mensajes que hay activos en ese momento. Se crea con una función que use los otro dos diccionarios anteriores.
 - Se crearán 4 funciones, 3 de ellas recibirán como parametros de entrada los tiempos, y una será para cuando los paquetes se creen, otra para cuando se mueven y otra cuando desaparecen. La cuarta funcionará para calcular con interpolación las posiciones a las que les toca moverse a los paquetes.
 - Estas cuatro funciones una vez estén listas se pueden manejar como una sola.
 - En el programa debería plantearse que ir a cualquier instante de tiempo es el caso general, mientras que avanzar o ir marcha atrás sería un caso particular.

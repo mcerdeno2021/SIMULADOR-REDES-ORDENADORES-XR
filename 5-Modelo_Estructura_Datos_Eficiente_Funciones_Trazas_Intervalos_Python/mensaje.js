@@ -7,9 +7,9 @@ AFRAME.registerComponent('mensaje', {
     this.origen = {}; // origen del mensaje para poder calcular longitud
 
     el.addEventListener('mensaje', e => {
-      const {id, x, y, z, progreso} = e.detail;
-
-      if (!this.entidades[id]) { // crear entidad mensaje si no existe
+      const {id, x, y, z, estado} = e.detail;
+      
+      if (estado === "Crear") {
         const entidad = document.createElement('a-entity');
         entidad.setAttribute('geometry', 'primitive: box; width: 0.2; height: 0.2; depth: 0.2');
         entidad.setAttribute('material', 'color: #ff7700');
