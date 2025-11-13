@@ -77,7 +77,7 @@
 - Aparte de esta, habrá otro diccionario, que tenga cada instante de tiempo como clave, con los mensajes que hay activos en ese momento. Se crea con una función que use los otro dos diccionarios anteriores.
 - Se crearán 4 funciones, 3 de ellas recibirán como parametros de entrada los tiempos, y una será para cuando los paquetes se creen, otra para cuando se mueven y otra cuando desaparecen. La cuarta funcionará para calcular con interpolación las posiciones a las que les toca moverse a los paquetes.
 - Estas cuatro funciones una vez estén listas se pueden manejar como una sola.
-- En el programa debería plantearse que ir a cualquier instante de tiempo es el caso general, mientras que avanzar o ir marcha atrás sería un caso particular.
+- En el programa debería plantearse que ir a cualquier instante de tiempo es el caso general, mientras que avanzar o ir marcha atrás sería un caso particular; es decir, que no se calculan las cosas como pensando en un recorrido, sino que cada momento está yendo a un punto concreto en el tiempo.
 - El listener de los paquetes en mensaje, debe escuchar solo a que posición se mueven.
 - Script de Python para generar paquetes automáticamente en el JSON.
 - Prueba de estrés, que consiste en generar muchos paquetes y probar cuál es el límite del programa en el que empieza a tener problemas de rendimiento.

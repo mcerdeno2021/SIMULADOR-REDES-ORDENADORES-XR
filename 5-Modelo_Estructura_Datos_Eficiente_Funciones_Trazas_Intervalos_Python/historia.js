@@ -1,4 +1,8 @@
 AFRAME.registerComponent('historia', {
+  schema: {
+    intervaloPrecision: { type: 'number', default: 0.1 } // mismo valor que en reloj
+  },
+
   init: function () {
     const el = this.el;
 
@@ -18,13 +22,9 @@ AFRAME.registerComponent('historia', {
           mapaTopologia[nodo.id] = nodo.posicion;
 
           const entidadTopologia = document.createElement('a-entity');
-          if (nodo.id.includes('PC')) {
-            entidadTopologia.setAttribute('ordenador', '');
-          } else if (nodo.id.includes('Router')) {
-            entidadTopologia.setAttribute('router', '');
-          } else if (nodo.id.includes('Switch')) {
-            entidadTopologia.setAttribute('switch', '');
-          }
+          if (nodo.id.includes('PC')) entidadTopologia.setAttribute('ordenador', '');
+          else if (nodo.id.includes('Router')) entidadTopologia.setAttribute('router', '');
+          else if (nodo.id.includes('Switch')) entidadTopologia.setAttribute('switch', '');
 
           entidadTopologia.setAttribute('position', nodo.posicion);
           entidadTopologia.setAttribute('id', nodo.id);
@@ -43,7 +43,13 @@ AFRAME.registerComponent('historia', {
         });
 
         // Registrar mensajes (historias)
+        const intervalo = this.data.intervaloPrecision;
+
         mensajes.forEach((dato, i) => {
+          // Redondear tiempos al intervalo más cercano
+          const tiempoOrigen = Math.round(dato.tiempoOrigen / intervalo) * intervalo;
+          const tiempoDestino = Math.round(dato.tiempoDestino / intervalo) * intervalo;
+
           const origen = document.querySelector(`#${dato.origen}`);
           const destino = document.querySelector(`#${dato.destino}`);
           const origenPos = origen.getAttribute("position");
@@ -51,8 +57,8 @@ AFRAME.registerComponent('historia', {
 
           this.historias.push({
             id: i + 1,
-            tiempoOrigen: dato.tiempoOrigen,
-            tiempoDestino: dato.tiempoDestino,
+            tiempoOrigen,
+            tiempoDestino,
             origenPos,
             destinoPos,
             origenNom: dato.origen,
@@ -66,14 +72,12 @@ AFRAME.registerComponent('historia', {
     setTimeout(() => {
       this.generarDiccionarios();
 
-      // Evento del reloj
       el.addEventListener('reloj-tick', e => {
         let tiempo = e.detail.tiempo;
         let direccion = e.detail.direccion;
         this.gestionarMensajes(tiempo, direccion);
       });
 
-      // Evento de selección
       el.sceneEl.addEventListener('seleccionar-paquete', e => {
         const idSeleccionado = e.detail.id;
         this.historias.forEach(historia => {
@@ -87,21 +91,25 @@ AFRAME.registerComponent('historia', {
   },
 
   generarDiccionarios: function () {
+    const intervalo = this.data.intervaloPrecision;
     this.activosPorTiempo = {};
     this.comienzos = {};
     this.finales = {};
 
     this.historias.forEach(h => {
       // Registrar comienzos
-      if (!this.comienzos[h.tiempoOrigen]) this.comienzos[h.tiempoOrigen] = [];
-      this.comienzos[h.tiempoOrigen].push(h.id);
+      const inicio = Math.round(h.tiempoOrigen / intervalo) * intervalo;
+      const fin = Math.round(h.tiempoDestino / intervalo) * intervalo;
 
-      // Registrar finales
-      if (!this.finales[h.tiempoDestino]) this.finales[h.tiempoDestino] = [];
-      this.finales[h.tiempoDestino].push(h.id);
+      if (!this.comienzos[inicio]) this.comienzos[inicio] = [];
+      this.comienzos[inicio].push(h.id);
+
+      if (!this.finales[fin]) this.finales[fin] = [];
+      this.finales[fin].push(h.id);
 
       // Registrar activos
-      for (let t = h.tiempoOrigen; t <= h.tiempoDestino; t++) {
+      for (let t = inicio; t <= fin; t += intervalo) {
+        t = parseFloat(t.toFixed(2)); // evitar errores de coma flotante
         if (!this.activosPorTiempo[t]) this.activosPorTiempo[t] = [];
         this.activosPorTiempo[t].push(h.id);
       }
@@ -109,6 +117,7 @@ AFRAME.registerComponent('historia', {
   },
 
   gestionarMensajes: function (tiempo, direccion) {
+    tiempo = parseFloat(tiempo.toFixed(1))
     const activos = this.activosPorTiempo[tiempo] || [];
     const comienzos = this.comienzos[tiempo] || [];
     const finales = this.finales[tiempo] || [];
@@ -119,9 +128,10 @@ AFRAME.registerComponent('historia', {
       resumen.emit('resumen', { historia });
 
       const progreso = (tiempo - tiempoOrigen) / (tiempoDestino - tiempoOrigen);
+
       const x = origenPos.x + (destinoPos.x - origenPos.x) * progreso;
-      const y = origenPos.y + (destinoPos.y - origenPos.y) * progreso;
       const z = origenPos.z + (destinoPos.z - origenPos.z) * progreso;
+      const y = tiempo;
 
       if (comienzos.includes(id)) {
         this.estado = "Crear";
