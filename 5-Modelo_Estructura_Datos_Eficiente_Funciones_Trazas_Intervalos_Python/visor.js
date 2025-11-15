@@ -99,8 +99,11 @@ AFRAME.registerComponent('resumen', {
     const progreso = (m.ultimoProgreso * 100).toFixed(1);
     const tOrigen = m.tiempoOrigen?.toFixed(1) ?? 0;
     const tDestino = m.tiempoDestino?.toFixed(1) ?? 0;
-    const info = progreso < 100 ? `(${progreso}%)` : '✅';
-
+    info = progreso < 100 ? `(${progreso}%)` : '';
+    if (progreso < 0) {
+      info = ""
+    }
+    
     return `${String(m.id).padStart(2, ' ')} | ${tOrigen.padStart(5)}s → ${tDestino.padStart(5)}s | ${m.origenNom || '?'} → ${m.destinoNom || '?'} | ${info}`;
   },
 

@@ -23,39 +23,55 @@ AFRAME.registerComponent('mensaje', {
       const entidadMensaje = this.entidades[id];
       entidadMensaje.setAttribute('position', `${x} ${y} ${z}`);
 
-      // Crear huella si no existe
-      if (!this.huella[id]) {
-        const cilindro = document.createElement('a-cylinder');
-        cilindro.setAttribute('radius', 0.05);
-        cilindro.setAttribute('height', 0.01);
-        cilindro.setAttribute('color', '#ff7700');
-        cilindro.setAttribute('opacity', 0.6);
-        el.sceneEl.appendChild(cilindro);
-        this.huella[id] = cilindro;
-      }
-
-      /*const huella = this.huella[id];
+      // Obtener origen fijo
       const origen = this.origen[id];
 
       const dx = x - origen.x;
       const dy = y - origen.y;
       const dz = z - origen.z;
 
-      const largo = Math.sqrt(dx * dx + dy * dy + dz * dz);
+      const largo = Math.sqrt(dx*dx + dy*dy + dz*dz);
 
+      // punto medio
       const midX = origen.x + dx / 2;
       const midY = origen.y + dy / 2;
       const midZ = origen.z + dz / 2;
 
-      // Ángulos corregidos
+      
+      // Crear si no existe
+      if (!this.huella[id]) {
+        const cilindro = document.createElement('a-cylinder');
+        cilindro.setAttribute('radius', 0.03);
+        cilindro.setAttribute('color', '#00ccff');
+        cilindro.setAttribute('opacity', 0.6);
+
+        // IMPORTANTE: A-frame crece desde el centro del cilindro
+        // así que siempre debe colocarse en el punto medio
+        this.el.sceneEl.appendChild(cilindro);
+        this.huella[id] = cilindro;
+      }
+
+      const huella = this.huella[id];
+
+      // *************
+      // ROTACIÓN CORRECTA
+      // *************
+      // yaw rota en horizontal (XZ)
       const yaw = Math.atan2(dx, dz) * 180 / Math.PI;
-      const pitch = -Math.atan2(dy, Math.sqrt(dx * dx + dz * dz)) * 180 / Math.PI;
 
-      huella.setAttribute('height', largo);
+      // pitch rota hacia arriba/abajo
+      // (ojo: distancia horizontal es sobre XZ)
+      const distHorizontal = Math.sqrt(dx*dx + dz*dz);
+      const pitch = Math.atan2(dy, distHorizontal) * 180 / Math.PI;
+
+      // *************
+      // APLICAR
+      // *************
       huella.setAttribute('position', `${midX} ${midY} ${midZ}`);
-      huella.setAttribute('rotation', `${pitch} ${yaw} 90`);*/
+      huella.setAttribute('height', largo);
+      huella.setAttribute('rotation', `${pitch} ${yaw} 0`);
     });
-
+    
     el.addEventListener('borrar-huella', e => {
       // No borra, solo recalcula cuando vuelva a recibir "mensaje"
     });
