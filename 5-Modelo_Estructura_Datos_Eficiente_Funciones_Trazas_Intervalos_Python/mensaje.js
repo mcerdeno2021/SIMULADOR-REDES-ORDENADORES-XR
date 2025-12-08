@@ -4,26 +4,32 @@ AFRAME.registerComponent('mensaje', {
 
     this.entidades = {};
     this.huella = {};
+    this.huellaCil = {}; 
     this.origen = {};
 
     el.addEventListener('mensaje', e => {
       const { id, x, y, z, estado } = e.detail;
 
-      // Crear mensaje nuevo
       if (estado === "Crear") {
         const entidad = document.createElement('a-entity');
         entidad.setAttribute('geometry', 'primitive: box; width: 0.2; height: 0.2; depth: 0.2');
         entidad.setAttribute('material', 'color: #ff7700');
         entidad.setAttribute('id', `Mensaje${id}`);
         el.sceneEl.appendChild(entidad);
+
         this.entidades[id] = entidad;
-        this.origen[id] = { x, y, z };
+        this.origen[id] = { 
+          x: x,
+          y: y,
+          z: z
+        };
+
+        entidad.setAttribute('position', `${x} ${y} ${z}`);
       }
 
       const entidadMensaje = this.entidades[id];
       entidadMensaje.setAttribute('position', `${x} ${y} ${z}`);
 
-      // Obtener origen fijo
       const origen = this.origen[id];
 
       const dx = x - origen.x;
@@ -32,48 +38,50 @@ AFRAME.registerComponent('mensaje', {
 
       const largo = Math.sqrt(dx*dx + dy*dy + dz*dz);
 
-      // punto medio
-      const midX = origen.x + dx / 2;
-      const midY = origen.y + dy / 2;
-      const midZ = origen.z + dz / 2;
+      // ======= CREACIÓN DE CONTENEDOR + CILINDRO =======
 
-      
-      // Crear si no existe
       if (!this.huella[id]) {
-        const cilindro = document.createElement('a-cylinder');
-        cilindro.setAttribute('radius', 0.03);
-        cilindro.setAttribute('color', '#00ccff');
-        cilindro.setAttribute('opacity', 0.6);
+        // Contenedor que rotaremos y moveremos
+        const cont = document.createElement('a-entity');
+        cont.setAttribute('id', `HuellaCont${id}`);
+        this.el.sceneEl.appendChild(cont);
+        this.huella[id] = cont;
 
-        // IMPORTANTE: A-frame crece desde el centro del cilindro
-        // así que siempre debe colocarse en el punto medio
-        this.el.sceneEl.appendChild(cilindro);
-        this.huella[id] = cilindro;
+        // Cilindro que crecerá y se desplazará
+        const cylind = document.createElement('a-cylinder');
+        cylind.setAttribute('radius', 0.03);
+        cylind.setAttribute('color', '#00ccff');
+        cylind.setAttribute('opacity', 0.6);
+
+        // posición inicial local — luego se actualiza en cada tick
+        cylind.setAttribute('position', `0 -0.5 0`);
+
+        cont.appendChild(cylind);
+        this.huellaCil[id] = cylind;
       }
+      
+      const cont = this.huella[id];
+      const cylind = this.huellaCil[id];
 
-      const huella = this.huella[id];
-
-      // *************
-      // ROTACIÓN CORRECTA
-      // *************
-      // yaw rota en horizontal (XZ)
+      // ======= ROTACIÓN CORRECTA =======
       const yaw = Math.atan2(dx, dz) * 180 / Math.PI;
+      const distHor = Math.sqrt(dx*dx + dz*dz);
+      const pitch = Math.atan2(dy, distHor) * 180 / Math.PI;
 
-      // pitch rota hacia arriba/abajo
-      // (ojo: distancia horizontal es sobre XZ)
-      const distHorizontal = Math.sqrt(dx*dx + dz*dz);
-      const pitch = Math.atan2(dy, distHorizontal) * 180 / Math.PI;
+      // ======= ACTUALIZAR POSICIÓN DEL CONTENEDOR =======
+      // AHORA EL CONTENEDOR SIEMPRE ESTÁ EN EL ORIGEN
+      cont.setAttribute('position', `${origen.x} ${origen.y} ${origen.z}`);
 
-      // *************
-      // APLICAR
-      // *************
-      huella.setAttribute('position', `${midX} ${midY} ${midZ}`);
-      huella.setAttribute('height', largo);
-      huella.setAttribute('rotation', `${pitch} ${yaw} 0`);
-    });
-    
-    el.addEventListener('borrar-huella', e => {
-      // No borra, solo recalcula cuando vuelva a recibir "mensaje"
+
+      // ======= ROTACIÓN DEL CONTENEDOR (apunta al origen) =======
+      cont.setAttribute('rotation', `${pitch} ${yaw} 0`);
+
+      // ======= ACTUALIZAR ALTURA DEL CILINDRO =======
+      cylind.setAttribute('height', largo);
+
+      // ======= MOVER EL CILINDRO HACIA ATRÁS PARA QUE NAZCA EN EL MENSAJE =======
+      cylind.setAttribute('position', `0 ${largo / 2} 0`);
+
     });
   }
 });

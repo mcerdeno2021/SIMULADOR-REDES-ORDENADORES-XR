@@ -106,10 +106,10 @@ AFRAME.registerComponent('historia', {
 
       if (!this.finales[fin]) this.finales[fin] = [];
       this.finales[fin].push(h.id);
-
+  
       // Registrar activos
       for (let t = inicio; t <= fin; t += intervalo) {
-        t = parseFloat(t.toFixed(2)); // evitar errores de coma flotante
+        t = parseFloat(t.toFixed(1)); // evitar errores de coma flotante
         if (!this.activosPorTiempo[t]) this.activosPorTiempo[t] = [];
         this.activosPorTiempo[t].push(h.id);
       }
@@ -139,7 +139,7 @@ AFRAME.registerComponent('historia', {
       }
 
       if (activos.includes(id) && progreso >= 0 && progreso <= 1) {
-        this.estado = "";
+        this.estado = "Mover";
         this.el.emit('mensaje', { id, x, y, z, estado: this.estado });
 
         if (direccion === -1 && progreso < ultimoProgreso) {

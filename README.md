@@ -71,7 +71,7 @@
 
 ## 5. Modelo estructura de datos eficiente, funciones, trazas, intervalos y Python
 
-- Mejora de estrcutura de datos y eficiencia.
+- Mejora de estructura de datos y eficiencia.
 - La entidad mensaje se tiene que crear en el componente mensaje y solo una vez, y se va moviendo.
 - No es eficiente que el tick lo escuchen todos cuando solo unos pocos se van a mover, por eso (pudiendo mantener la lista this.historias) se deben crear dos diccionarios, uno que tenga en su clave el momento de inicio del mensaje y otro con el final; con esto, el componente verá entre que momentos el mensaje está activo. 
 - Aparte de esta, habrá otro diccionario, que tenga cada instante de tiempo como clave, con los mensajes que hay activos en ese momento. Se crea con una función que use los otro dos diccionarios anteriores.
