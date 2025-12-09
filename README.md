@@ -85,4 +85,18 @@
 - Controlador de tiempo.
 - Para ver la variable temporal se usa el eje Y; se pueden hacer cuadrículas para marcar mejor el tiempo.
 - Ir viendo cómo generar trazas (netgui o con tcpdump); de momento no preocuparse por ver si es el mismo mensaje el que entra en un lado y sale de otro. Descartar mensajes que sean el mismo al escuchar en varias interfaces. De momento nivel wifi, ethernet. Libcap para usar en Python.
-- Elegir precisión para los mensajes para definir intervalos de tiempo.
+- Definir variable precisión para crear los intervalos de tiempo.
+
+## 6. Modelo estructura de datos eficiente y Primer modelo interfaz en XR
+
+- Continuación de la estructura de datos eficiente.
+- Se mantendrá un solo diccionario, que tenga cada instante de tiempo como clave, con una referencia a los componentes mensajes que hay activos en ese momento.
+- Las 4 funciones pueden funcionar como una sola
+- La clave del programa es que cualquier instante de tiempo es el caso general, esto reduce eficiencia, pero hace más fácil dirigirse a cualquier instante de tiempo.
+- Hacer la prueba de estrés, sin embargo, esta vez hay que comprobar cuántos paquetes al mismo tiempo es capaz de soportar el programa sin sobrecargarse.
+- Comprobar que el controlador de tiempo no desplaza la escena al usarlo usando las gafas.
+- La variable temporal está al revés, los paquetes siempre deben estar sobre los cables en la topología, son las huellas las que siguen ese recorrido siendo las más altas las más recientes.
+- Ir viendo cómo generar trazas (netgui o con tcpdump); de momento no preocuparse por ver si es el mismo mensaje el que entra en un lado y sale de otro. Descartar mensajes que sean el mismo al escuchar en varias interfaces. De momento nivel wifi, ethernet. Libcap para usar en Python.
+- Creación de una primera interfaz del programa en XR que permita ver con claridad y sencillez el flujo de paquetes.
+- En el suelo, con una vista de planta, el escenario, pudiendo ver así clara la topología de la escena.
+- Por otro lado, a la altura de los ojos, rodeando a la persona, habría distintas ventanas, translúcidas, cada una representando una conexión (R1-PC2, por ej.); al pulsar sobre alguna, esta se volverá opaca, y permitirá ver el diagrama de tiempo vertical de huellas del que se hablaba antes.
