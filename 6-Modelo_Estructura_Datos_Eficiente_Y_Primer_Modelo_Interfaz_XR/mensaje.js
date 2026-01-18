@@ -27,6 +27,22 @@ AFRAME.registerComponent('mensaje', {
         entidad.setAttribute('position', `${x} ${y} ${z}`);
       }
 
+      if (estado === "Crear") {
+        const entidad = document.createElement('a-entity');
+        entidad.setAttribute('geometry', 'primitive: box; width: 0.2; height: 0.2; depth: 0.2');
+        entidad.setAttribute('material', 'color: #ff7700');
+        entidad.setAttribute('id', `Mensaje${id}`);
+        el.sceneEl.appendChild(entidad);
+
+        this.entidades[id] = entidad;
+        this.origen[id] = { x, y, z };
+
+        entidad.setAttribute('position', `${x} ${y} ${z}`);
+      }
+
+      // 👉 PROTECCIÓN CRÍTICA
+      if (!this.entidades[id]) return;
+
       const entidadMensaje = this.entidades[id];
       entidadMensaje.setAttribute('position', `${x} ${y} ${z}`);
 
