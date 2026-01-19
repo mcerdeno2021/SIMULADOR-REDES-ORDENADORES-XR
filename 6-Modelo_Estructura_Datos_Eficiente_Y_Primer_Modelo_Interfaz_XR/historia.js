@@ -72,7 +72,7 @@ AFRAME.registerComponent('historia', {
       });
 
     setTimeout(() => {
-      this.generarDiccionarios();
+      this.generarPaquetesPorTiempo();
 
       el.addEventListener('reloj-tick', e => {
         this.gestionarMensajes(e.detail.tiempo, e.detail.direccion);
@@ -82,86 +82,92 @@ AFRAME.registerComponent('historia', {
 
   // ------------------------------------------------
 
-  generarDiccionarios: function () {
+  generarPaquetesPorTiempo: function () {
     const intervalo = this.data.intervaloPrecision;
-    this.comienzos = {};
-    this.finales = {};
-    this.activosPorTiempo = {};
+    this.paquetesPorTiempo = {};
 
-    this.historias.forEach(h => {
-      const ini = h.tiempoOrigen;
-      const fin = h.tiempoDestino;
-
-      if (!this.comienzos[ini]) this.comienzos[ini] = [];
-      if (!this.finales[fin]) this.finales[fin] = [];
-
-      this.comienzos[ini].push(h.id);
-      this.finales[fin].push(h.id);
-
-      for (let t = ini; t <= fin; t += intervalo) {
+    this.historias.forEach(p => {
+      for (let t = p.tiempoOrigen; t <= p.tiempoDestino; t += intervalo) {
         t = parseFloat(t.toFixed(1));
-        if (!this.activosPorTiempo[t]) this.activosPorTiempo[t] = [];
-        this.activosPorTiempo[t].push(h.id);
+        if (!this.paquetesPorTiempo[t]) {
+          this.paquetesPorTiempo[t] = [];
+        }
+        this.paquetesPorTiempo[t].push(p);
       }
     });
   },
 
-  // ------------------------------------------------
-
   gestionarMensajes: function (tiempo, direccion) {
     tiempo = parseFloat(tiempo.toFixed(1));
 
-    const activos = this.activosPorTiempo[tiempo] || [];
-    const comienzos = this.comienzos[tiempo] || [];
-    const finales = this.finales[tiempo] || [];
+    const paquetes = this.paquetesPorTiempo[tiempo];
+    if (!paquetes) return;
 
     const Y_SUELO = 1;
     const ALTURA_POR_TICK = 0.4;
 
-    this.historias.forEach(h => {
-      const { id, tiempoOrigen, tiempoDestino, origenPos, destinoPos, ultimoProgreso } = h;
+    paquetes.forEach(p => {
 
-      const progreso = (tiempo - tiempoOrigen) / (tiempoDestino - tiempoOrigen);
+      // -------------------------------
+      // FILTRADO POR CONEXIÓN ACTIVA
+      // -------------------------------
+      const modo = this.el.sceneEl.components['modo-escena'];
+      if (
+        modo &&
+        modo.modo === 'conexion' &&
+        !(
+          p.origenNom === modo.conexionActiva.origen &&
+          p.destinoNom === modo.conexionActiva.destino
+        )
+      ) {
+        return;
+      }
+
+      // -------------------------------
+      // CÁLCULO DE PROGRESO
+      // -------------------------------
+      const progreso = (tiempo - p.tiempoOrigen) / (p.tiempoDestino - p.tiempoOrigen);
 
       let x, y, z;
 
       if (progreso < 1) {
-        // ---- VIAJE POR EL CABLE ----
-        x = origenPos.x + (destinoPos.x - origenPos.x) * progreso;
-        z = origenPos.z + (destinoPos.z - origenPos.z) * progreso;
+        x = p.origenPos.x + (p.destinoPos.x - p.origenPos.x) * progreso;
+        z = p.origenPos.z + (p.destinoPos.z - p.origenPos.z) * progreso;
         y = Y_SUELO;
       } else {
-        // ---- COLUMNA VERTICAL DEL DESTINO ----
-        x = destinoPos.x;
-        z = destinoPos.z;
-
-        const antiguedad = tiempo - tiempoDestino;
+        x = p.destinoPos.x;
+        z = p.destinoPos.z;
+        const antiguedad = tiempo - p.tiempoDestino;
         y = Y_SUELO + antiguedad * ALTURA_POR_TICK;
       }
 
-      if (comienzos.includes(id)) {
-        this.el.emit('mensaje', { id, x, y, z, estado: 'Crear' });
+      // -------------------------------
+      // CREAR
+      // -------------------------------
+      if (progreso >= 0 && p.ultimoProgreso === 0) {
+        this.el.emit('mensaje', { id: p.id, x, y, z, estado: 'Crear' });
       }
 
-      if (activos.includes(id) && progreso >= 0) {
-        this.el.emit('mensaje', { id, x, y, z, estado: 'Mover' });
-
-        if (direccion === -1 && progreso < ultimoProgreso) {
-          this.el.emit('borrar-huella', { id, ultimoProgreso });
-        }
+      // -------------------------------
+      // MOVER
+      // -------------------------------
+      if (progreso >= 0) {
+        this.el.emit('mensaje', { id: p.id, x, y, z, estado: 'Mover' });
       }
 
-      if (finales.includes(id)) {
-        this.el.emit('mensaje', { id, x, y, z, estado: 'Acabar' });
-
+      // -------------------------------
+      // FINAL
+      // -------------------------------
+      if (progreso >= 1 && p.ultimoProgreso < 1) {
+        this.el.emit('mensaje', { id: p.id, x, y, z, estado: 'Acabar' });
         this.el.emit('mensaje-llegado', {
-        id,
-        destino: h.destinoNom,
-        tiempo
-      });
+          id: p.id,
+          destino: p.destinoNom,
+          tiempo
+        });
       }
 
-      h.ultimoProgreso = progreso;
+      p.ultimoProgreso = progreso;
     });
   }
 });

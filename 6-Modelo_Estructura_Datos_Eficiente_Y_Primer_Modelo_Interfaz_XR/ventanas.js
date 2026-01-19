@@ -46,7 +46,15 @@ AFRAME.registerComponent('ventanas', {
       ventana.setAttribute('position', `0 ${altura} 0`);
       ventana.classList.add('ventana-clickable');
 
-      ventana.addEventListener('ventana-click', () => {
+      // 👉 Nuevo: almacenar datos y emitir evento de conexión
+      ventana.dataset.origen = c.origen;
+      ventana.dataset.destino = c.destino;
+
+      ventana.addEventListener('click', () => {
+        this.el.sceneEl.emit('activar-conexion', {
+          origen: c.origen,
+          destino: c.destino
+        });
         this.seleccionarVentana(ventana);
       });
 
