@@ -29,6 +29,8 @@ AFRAME.registerComponent('historia', {
           e.setAttribute('position', nodo.posicion);
           e.setAttribute('id', nodo.id);
           el.appendChild(e);
+
+          this.crearEje(nodo.posicion);
         });
 
         // -------- CABLES --------
@@ -66,7 +68,9 @@ AFRAME.registerComponent('historia', {
             origenPos: origen.getAttribute('position'),
             destinoPos: destino.getAttribute('position'),
             destinoNom: m.destino,
-            ultimoProgreso: 0
+            ultimoProgreso: 0,
+            origenNom: origen.getAttribute('id'),
+            destinoNom: destino.getAttribute('id')
           });
         });       
       });
@@ -145,21 +149,21 @@ AFRAME.registerComponent('historia', {
       // CREAR
       // -------------------------------
       if (progreso >= 0 && p.ultimoProgreso === 0) {
-        this.el.emit('mensaje', { id: p.id, x, y, z, estado: 'Crear' });
+        this.el.emit('mensaje', { id: p.id, x, y, z, estado: 'Crear', conexion: `${p.origenNom}-${p.destinoNom}`});
       }
 
       // -------------------------------
       // MOVER
       // -------------------------------
       if (progreso >= 0) {
-        this.el.emit('mensaje', { id: p.id, x, y, z, estado: 'Mover' });
+        this.el.emit('mensaje', { id: p.id, x, y, z, estado: 'Mover', conexion: `${p.origenNom}-${p.destinoNom}`});
       }
 
       // -------------------------------
       // FINAL
       // -------------------------------
       if (progreso >= 1 && p.ultimoProgreso < 1) {
-        this.el.emit('mensaje', { id: p.id, x, y, z, estado: 'Acabar' });
+        this.el.emit('mensaje', { id: p.id, x, y, z, estado: 'Acabar', conexion: `${p.origenNom}-${p.destinoNom}`});
         this.el.emit('mensaje-llegado', {
           id: p.id,
           destino: p.destinoNom,
@@ -169,5 +173,22 @@ AFRAME.registerComponent('historia', {
 
       p.ultimoProgreso = progreso;
     });
+  },
+
+  crearEje : function(posicion) {
+    const eje = document.createElement('a-cylinder');
+    eje.setAttribute('radius', 0.02);
+    eje.setAttribute('height', 20);
+    const altura = eje.getAttribute("height")
+    eje.setAttribute('color', '#aaaaaa');
+    eje.setAttribute('opacity', 0.3);
+
+    const posiciones = posicion
+      .trim()                // Elimina espacios al inicio y final
+      .split(/\s+/)          // Divide por uno o más espacios
+      .map(num => Number(num))
+    const y = altura/2 + 1
+    eje.setAttribute('position', `${posiciones[0]} ${y} ${posiciones[2]}`);
+    this.el.sceneEl.appendChild(eje);
   }
 });
