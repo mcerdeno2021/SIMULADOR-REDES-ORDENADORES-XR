@@ -4,7 +4,7 @@ AFRAME.registerComponent('mensaje', {
 
     this.entidades = {};
     this.origen = {};
-    this.huellas = [];  // huellas por paquete
+    this.huellas = {};  // huellas por paquete
 
 
     el.addEventListener('mensaje', e => {
@@ -25,6 +25,8 @@ AFRAME.registerComponent('mensaje', {
         };
 
         entidad.setAttribute('position', `${x} ${y} ${z}`);
+
+        this.huellas[id] = [];
       }
 
       if (estado === "Mover") {
@@ -33,9 +35,9 @@ AFRAME.registerComponent('mensaje', {
         entidad.setAttribute('position', `${x} ${y} ${z}`);
 
         // subir huellas antiguas
-        this.huellas.forEach(h => {
+        this.huellas[id].forEach(h => {
             const pos = h.getAttribute('position');
-            h.setAttribute('position', { x: pos.x, y: pos.y + 0.001, z: pos.z });
+            h.setAttribute('position', { x: pos.x, y: pos.y + 0.01, z: pos.z });
         });
 
         // crear nueva huella abajo
@@ -45,7 +47,7 @@ AFRAME.registerComponent('mensaje', {
         huella.setAttribute('opacity', 0.8);
         huella.setAttribute('position', `${x} ${y} ${z}`);
         el.sceneEl.appendChild(huella);
-        this.huellas.push(huella);
+        this.huellas[id].push(huella);
       }
 
       if (estado === "Acabar") {
