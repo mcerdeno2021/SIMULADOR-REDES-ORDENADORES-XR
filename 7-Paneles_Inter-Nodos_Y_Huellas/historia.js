@@ -35,8 +35,6 @@ AFRAME.registerComponent('historia', {
         });
 
         // -------- CABLES --------
-        const contenedorVentanas = document.querySelector('#ventanas-temporales');
-
         conexiones.forEach(c => {
           const cable = document.createElement('a-entity');
           cable.setAttribute(
@@ -45,11 +43,10 @@ AFRAME.registerComponent('historia', {
           );
           el.appendChild(cable);
 
-          // REGISTRAR CONEXIÓN EN VENTANAS
-          contenedorVentanas.components.ventanas.addConexion(
-            c.origen,
-            c.destino
-          );
+          const panel = document.createElement('a-entity');
+          panel.setAttribute("panel", `origenPos:${mapaTopologia[c.origen]}; origen:${c.origen}; destinoPos:${mapaTopologia[c.destino]}; destino:${c.destino}`);
+          el.appendChild(panel)
+
         });
 
         // -------- MENSAJES --------

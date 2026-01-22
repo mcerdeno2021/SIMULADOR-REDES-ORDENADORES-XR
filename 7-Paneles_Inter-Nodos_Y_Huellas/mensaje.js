@@ -62,6 +62,9 @@ AFRAME.registerComponent('mensaje', {
     this.origen = {};
     this.huellas = {};  // huellas por paquete
 
+    el.addEventListener('panel', e => {
+      this.panel = e.detail;
+    });
 
     el.addEventListener('mensaje', e => {
       const { id, x, y, z, estado } = e.detail;
@@ -90,19 +93,13 @@ AFRAME.registerComponent('mensaje', {
         const entidad = this.entidades[id];
         entidad.setAttribute('position', `${x} ${y} ${z}`);
 
-        // subir huellas antiguas
-        this.huellas[id].forEach(h => {
-            const pos = h.getAttribute('position');
-            h.setAttribute('position', { x: pos.x, y: pos.y + 0.05, z: pos.z });
-        });
-
         // crear nueva huella abajo
         const huella = document.createElement('a-sphere');
         huella.setAttribute('radius', 0.05);
         huella.setAttribute('color', '#6dff68');
         huella.setAttribute('opacity', 0.7);
         huella.setAttribute('position', `${x} ${y} ${z}`);
-        el.sceneEl.appendChild(huella);
+        //this.panel.appendChild(huella);
         this.huellas[id].push(huella);
       }
 
