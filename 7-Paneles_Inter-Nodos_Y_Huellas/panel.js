@@ -9,14 +9,11 @@ AFRAME.registerComponent('panel', {
 
   init: function () {
     const el = this.el;
-    const data = this.data;
     const {origenPos, destinoPos, origen, destino} = this.data;
-    this.titulo = `${origen} -> ${destino}`
-    this.paneles = [];
+    this.titulo = `${origen} -> ${destino}`;
 
     const [x1, y1, z1] = origenPos.split(' ').map(Number); // Para pasar un string de tres numeros separados a x, y, z
     const [x2, y2, z2] = destinoPos.split(' ').map(Number);
-
     const dx = x2 - x1; // Distancia entre coordenadas
     const dy = y2 - y1;
     const dz = z2 - z1;
@@ -26,25 +23,26 @@ AFRAME.registerComponent('panel', {
       y: y1 + dy / 2,
       z: z1 + dz / 2
     }
+    const angulo = Math.atan2(dx, dz) * 180 / Math.PI - 90;
 
     this.panel = document.createElement('a-plane');
     this.panel.classList.add('panel');
-    this.panel.addEventListener('click', () => {
-      this.seleccionarPanel();
-      this.el.emit('activar-conexion');
-    });
     this.panel.setAttribute('height', 1);
     this.panel.setAttribute('width', distancia)
     this.panel.setAttribute('side', 'double');
     this.panel.setAttribute('opacity', 0.35);
     this.panel.setAttribute('color', '#ffffff');
     this.panel.setAttribute('position', `${puntoMedio.x} ${puntoMedio.y} ${puntoMedio.z}`)
-    
-    this.paneles.push(this.panel)
+    this.panel.setAttribute('rotation', `0 ${angulo} 0`);
+
+    this.panel.addEventListener('click', () => {
+      el.emit('activar-conexion', {origen, destino});
+    });
+
+    this.texto();
 
     el.appendChild(this.panel);
     
-    this.texto();
     this.actualizar();
   },
 
@@ -65,20 +63,6 @@ AFRAME.registerComponent('panel', {
     this.panel.setAttribute('opacity', this.data.activa ? 0.85 : 0.35);
     this.panel.setAttribute('color', this.data.activa ? '#ffffff' : '#88ccee');
   },
-
-  seleccionarPanel: function (panel) {
-    if (this.activa === panel) return;
-
-    this.paneles.forEach(p => {
-      p.components.panel.data.activa = false;
-      p.components.panel.actualizar();
-    });
-
-    panel.components.panel.data.activa = true;
-    panel.components.panel.actualizar();
-
-    this.activa = panel;
-  }
 });
   
 
