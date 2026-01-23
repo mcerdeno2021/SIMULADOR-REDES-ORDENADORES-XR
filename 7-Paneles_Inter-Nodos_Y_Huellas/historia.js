@@ -10,7 +10,8 @@ AFRAME.registerComponent('historia', {
     this.finales = {};
     this.activosPorTiempo = {};
     this.historias = [];
-    this.ejes = []
+    this.paneles = [];
+    this.ejes = [];
 
     fetch('escenario.json')
       .then(r => r.json())
@@ -43,10 +44,10 @@ AFRAME.registerComponent('historia', {
           );
           el.appendChild(cable);
 
-          const panel = document.createElement('a-entity');
+          const panel = document.createElement('a-plane');
           panel.setAttribute("panel", `origenPos:${mapaTopologia[c.origen]}; origen:${c.origen}; destinoPos:${mapaTopologia[c.destino]}; destino:${c.destino}`);
           el.appendChild(panel)
-
+          this.paneles.push(panel)
         });
 
         // -------- MENSAJES --------
@@ -77,6 +78,7 @@ AFRAME.registerComponent('historia', {
       this.generarPaquetesPorTiempo();
 
       el.addEventListener('reloj-tick', e => {
+        this.alturas()
         for (let i = 0; i < this.ejes.length; i++) {
           const altura = this.ejes[i].getAttribute("height")
           this.ejes[i].setAttribute("height", parseFloat(altura)+0.05)
@@ -177,6 +179,15 @@ AFRAME.registerComponent('historia', {
 
       p.ultimoProgreso = progreso;
     });
+  },
+
+  alturas: function () {
+    for (let i = 0; i < this.paneles.length; i++) {
+      const altura = this.paneles[i].getAttribute("height");
+      this.paneles[i].setAttribute("height", parseFloat(altura)+0.05);
+      const pos = this.paneles[i].getAttribute("position");
+      this.paneles[i].setAttribute('position', `${pos.x} ${pos.y+0.05/2} ${pos.z}`); //corregir
+    };
   },
 
   crearEje : function(posicion) {

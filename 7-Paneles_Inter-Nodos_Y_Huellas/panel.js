@@ -20,29 +20,26 @@ AFRAME.registerComponent('panel', {
     const distancia = Math.sqrt(dx * dx + dy * dy + dz * dz); // Pitágoras
     const puntoMedio = {
       x: x1 + dx / 2,
-      y: y1 + dy / 2,
       z: z1 + dz / 2
     }
     const angulo = Math.atan2(dx, dz) * 180 / Math.PI - 90;
 
-    this.panel = document.createElement('a-plane');
-    this.panel.classList.add('panel');
-    this.panel.setAttribute('height', 1);
-    this.panel.setAttribute('width', distancia)
-    this.panel.setAttribute('side', 'double');
-    this.panel.setAttribute('opacity', 0.35);
-    this.panel.setAttribute('color', '#ffffff');
-    this.panel.setAttribute('position', `${puntoMedio.x} ${puntoMedio.y} ${puntoMedio.z}`)
-    this.panel.setAttribute('rotation', `0 ${angulo} 0`);
+    el.classList.add('panel');
+    el.setAttribute('height', 1);
+    el.setAttribute('width', distancia)
+    el.setAttribute('side', 'double');
+    el.setAttribute('opacity', 0.1);
+    el.setAttribute('color', '#ffffff');
+    const y = 1/2 + 1
+    el.setAttribute('position', `${puntoMedio.x} ${y} ${puntoMedio.z}`)
+    el.setAttribute('rotation', `0 ${angulo} 0`);
 
-    this.panel.addEventListener('click', () => {
+    el.addEventListener('click', () => {
       el.emit('activar-conexion', {origen, destino});
     });
 
     this.texto();
 
-    el.appendChild(this.panel);
-    
     this.actualizar();
   },
 
@@ -60,8 +57,8 @@ AFRAME.registerComponent('panel', {
   },
 
   actualizar: function () {
-    this.panel.setAttribute('opacity', this.data.activa ? 0.85 : 0.35);
-    this.panel.setAttribute('color', this.data.activa ? '#ffffff' : '#88ccee');
+    this.el.setAttribute('opacity', this.data.activa ? 0.85 : 0.35);
+    this.el.setAttribute('color', this.data.activa ? '#ffffff' : '#88ccee');
   },
 });
   
