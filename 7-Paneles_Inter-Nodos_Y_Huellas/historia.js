@@ -69,21 +69,23 @@ AFRAME.registerComponent('historia', {
             destinoNom: m.destino,
             ultimoProgreso: 0,
             origenNom: origen.getAttribute('id'),
-            destinoNom: destino.getAttribute('id')
+            destinoNom: destino.getAttribute('id'),
+            conexion: `${origen.getAttribute('id')} -> ${destino.getAttribute('id')}`
           });
         });       
       });
 
     setTimeout(() => {
       this.generarPaquetesPorTiempo();
+      el.emit('paneles', this.paneles)
 
       el.addEventListener('reloj-tick', e => {
         this.alturas()
         for (let i = 0; i < this.ejes.length; i++) {
           const altura = this.ejes[i].getAttribute("height")
-          this.ejes[i].setAttribute("height", parseFloat(altura)+0.05)
+          this.ejes[i].setAttribute("height", parseFloat(altura)+0.03)
           let pos = this.ejes[i].getAttribute("position")
-          this.ejes[i].setAttribute('position', `${pos.x} ${pos.y+0.05/2} ${pos.z}`); //corregir
+          this.ejes[i].setAttribute('position', `${pos.x} ${pos.y+0.03/2} ${pos.z}`); //corregir
         }
         this.gestionarMensajes(e.detail.tiempo, e.detail.direccion);
       });
@@ -155,21 +157,21 @@ AFRAME.registerComponent('historia', {
       // CREAR
       // -------------------------------
       if (progreso >= 0 && p.ultimoProgreso === 0) {
-        this.el.emit('mensaje', { id: p.id, x, y, z, estado: 'Crear', conexion: `${p.origenNom}-${p.destinoNom}`, tiempo: tiempo});
+        this.el.emit('mensaje', { id: p.id, x, y, z, estado: 'Crear', conexion: `${p.origenNom}-${p.destinoNom}`, tiempo: tiempo, conexion: p.conexion});
       }
 
       // -------------------------------
       // MOVER
       // -------------------------------
       if (progreso >= 0) {
-        this.el.emit('mensaje', { id: p.id, x, y, z, estado: 'Mover', conexion: `${p.origenNom}-${p.destinoNom}`, tiempo: tiempo});
+        this.el.emit('mensaje', { id: p.id, x, y, z, estado: 'Mover', conexion: `${p.origenNom}-${p.destinoNom}`, tiempo: tiempo, conexion: p.conexion});
       }
 
       // -------------------------------
       // FINAL
       // -------------------------------
       if (progreso >= 1 && p.ultimoProgreso < 1) {
-        this.el.emit('mensaje', { id: p.id, x, y, z, estado: 'Acabar', conexion: `${p.origenNom}-${p.destinoNom}`, tiempo: tiempo});
+        this.el.emit('mensaje', { id: p.id, x, y, z, estado: 'Acabar', conexion: `${p.origenNom}-${p.destinoNom}`, tiempo: tiempo, conexion: p.conexion});
         this.el.emit('mensaje-llegado', {
           id: p.id,
           destino: p.destinoNom,
@@ -184,9 +186,9 @@ AFRAME.registerComponent('historia', {
   alturas: function () {
     for (let i = 0; i < this.paneles.length; i++) {
       const altura = this.paneles[i].getAttribute("height");
-      this.paneles[i].setAttribute("height", parseFloat(altura)+0.05);
+      this.paneles[i].setAttribute("height", parseFloat(altura)+0.03);
       const pos = this.paneles[i].getAttribute("position");
-      this.paneles[i].setAttribute('position', `${pos.x} ${pos.y+0.05/2} ${pos.z}`); //corregir
+      this.paneles[i].setAttribute('position', `${pos.x} ${pos.y+0.03/2} ${pos.z}`); //corregir
     };
   },
 

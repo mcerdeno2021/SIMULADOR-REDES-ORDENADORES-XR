@@ -4,7 +4,7 @@ AFRAME.registerComponent('panel', {
     origen: {type: 'string'},
     destinoPos: {type: 'string'},
     destino: {type: 'string'},
-    activa: { type: 'boolean', default: false }
+    activa: {type: 'boolean', default: false}
   },
 
   init: function () {
@@ -25,17 +25,17 @@ AFRAME.registerComponent('panel', {
     const angulo = Math.atan2(dx, dz) * 180 / Math.PI - 90;
 
     el.classList.add('panel');
+    el.setAttribute('id', `${this.titulo}`);
     el.setAttribute('height', 1);
     el.setAttribute('width', distancia)
     el.setAttribute('side', 'double');
-    el.setAttribute('opacity', 0.1);
-    el.setAttribute('color', '#ffffff');
     const y = 1/2 + 1
     el.setAttribute('position', `${puntoMedio.x} ${y} ${puntoMedio.z}`)
     el.setAttribute('rotation', `0 ${angulo} 0`);
 
     el.addEventListener('click', () => {
       el.emit('activar-conexion', {origen, destino});
+      this.data.activa = true;
     });
 
     this.texto();
@@ -57,8 +57,10 @@ AFRAME.registerComponent('panel', {
   },
 
   actualizar: function () {
-    this.el.setAttribute('opacity', this.data.activa ? 0.85 : 0.35);
-    this.el.setAttribute('color', this.data.activa ? '#ffffff' : '#88ccee');
+    this.el.setAttribute('material', {
+      color: this.data.activa ? '#ffffff' : '#ff3b90',
+      opacity: this.data.activa ? 0.85 : 0.15,
+      });
   },
 });
   
