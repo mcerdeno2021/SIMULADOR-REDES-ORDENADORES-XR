@@ -85,14 +85,12 @@ AFRAME.registerComponent('historia', {
           const altura = this.ejes[i].getAttribute("height")
           this.ejes[i].setAttribute("height", parseFloat(altura)+0.03)
           let pos = this.ejes[i].getAttribute("position")
-          this.ejes[i].setAttribute('position', `${pos.x} ${pos.y+0.03/2} ${pos.z}`); //corregir
+          this.ejes[i].setAttribute('position', `${pos.x} ${pos.y+0.03/2} ${pos.z}`);
         }
         this.gestionarMensajes(e.detail.tiempo, e.detail.direccion);
       });
     }, 500);
   },
-
-  // ------------------------------------------------
 
   generarPaquetesPorTiempo: function () {
     const intervalo = this.data.intervaloPrecision;
@@ -120,9 +118,7 @@ AFRAME.registerComponent('historia', {
 
     paquetes.forEach(p => {
 
-      // -------------------------------
       // FILTRADO POR CONEXIÓN ACTIVA
-      // -------------------------------
       const modo = this.el.sceneEl.components['modo-escena'];
       if (
         modo &&
@@ -135,9 +131,7 @@ AFRAME.registerComponent('historia', {
         return;
       }
 
-      // -------------------------------
       // CÁLCULO DE PROGRESO
-      // -------------------------------
       const progreso = (tiempo - p.tiempoOrigen) / (p.tiempoDestino - p.tiempoOrigen);
 
       let x, y, z;
@@ -152,24 +146,15 @@ AFRAME.registerComponent('historia', {
         const antiguedad = tiempo - p.tiempoDestino;
         y = Y_SUELO + antiguedad * ALTURA_POR_TICK;
       }
-
-      // -------------------------------
       // CREAR
-      // -------------------------------
       if (progreso >= 0 && p.ultimoProgreso === 0) {
         this.el.emit('mensaje', { id: p.id, x, y, z, estado: 'Crear', conexion: `${p.origenNom}-${p.destinoNom}`, tiempo: tiempo, conexion: p.conexion});
       }
-
-      // -------------------------------
       // MOVER
-      // -------------------------------
       if (progreso >= 0) {
         this.el.emit('mensaje', { id: p.id, x, y, z, estado: 'Mover', conexion: `${p.origenNom}-${p.destinoNom}`, tiempo: tiempo, conexion: p.conexion});
       }
-
-      // -------------------------------
       // FINAL
-      // -------------------------------
       if (progreso >= 1 && p.ultimoProgreso < 1) {
         this.el.emit('mensaje', { id: p.id, x, y, z, estado: 'Acabar', conexion: `${p.origenNom}-${p.destinoNom}`, tiempo: tiempo, conexion: p.conexion});
         this.el.emit('mensaje-llegado', {
@@ -188,7 +173,7 @@ AFRAME.registerComponent('historia', {
       const altura = this.paneles[i].getAttribute("height");
       this.paneles[i].setAttribute("height", parseFloat(altura)+0.03);
       const pos = this.paneles[i].getAttribute("position");
-      this.paneles[i].setAttribute('position', `${pos.x} ${pos.y+0.03/2} ${pos.z}`); //corregir
+      this.paneles[i].setAttribute('position', `${pos.x} ${pos.y+0.03/2} ${pos.z}`);
     };
   },
 
@@ -200,8 +185,8 @@ AFRAME.registerComponent('historia', {
     this.eje.setAttribute('color', '#000000');;
 
     const posiciones = posicion
-      .trim()                // Elimina espacios al inicio y final
-      .split(/\s+/)          // Divide por uno o más espacios
+      .trim() // Elimina espacios al inicio y final
+      .split(/\s+/) // Divide por uno o más espacios
       .map(num => Number(num))
     const y = altura/2 + 1
     this.eje.setAttribute('position', `${posiciones[0]} ${y} ${posiciones[2]}`);
