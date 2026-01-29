@@ -109,3 +109,24 @@
 - En cuanto a la interación con el usuario, estos funcionarán como lo hacían las ventanas que se plantearon en el apartado anterior, con la diferencia de que estas ya tienen directamente la vista de la conexión sobre ellas y, al pulsarlas, la idea sería que aislasen esa conexión del resto de la escena (se podría pulsar más de una conexión y tener visibles solo esas).
 - Para la gestión de los paquetes, es importante recordar que cualquier instante de tiempo es el caso general; para ello, no solo se tiene en cuenta el paquete que viene, si no el que está en el momento del cambio. Esto es importante porque usando los estados podría haber problemas con los cambios temporales.
 - Hay que ir pensando que el usuario debe ser capaz de, mediante sus controladores o manos, hacer zoom, pellizcar la escena y rotarla para verla a su gusto, etc.
+
+## 8. Paneles inter-nodos, huellas y control de reproducción temporal
+
+- En cuanto a la gestión del manejo del tiempo de las huellas y, por ende, de los paneles, hay dos soluciones: 
+    · Una más sencilla, que sería que los paneles fueran como una imagen fija, es decir, que cuando vas marcha atrás en el tiempo, las huellas que corresponde se hundan junto con el panel, dando la sensación así de que se eliminan, y cuando, por ejemplo, adelantas a un momento concreto, se dibujen todas las huellas, como si se desplegase hacia arriba el panel. Esto se harí mediante cálculos de la distancia respecto al centro del panel con el suelo, y con una lista de las huellas que hay, que, sabiendo ese dato, cortaríamos en un punto.
+    · La otra es más compleja, sobre todo en un nivel de eficiencia; esta haría algo similar a lo que se hace con los mensajes en historia, es decir, guardar un diccionario en el que la clave sea el instante de tiempo, y los valores sean las huellas que tendrían que estar activas.
+- Para disminuir la complejidad, es posible limitar el control de reproducción a avances o retrasos de x en x tiempo, no saltos temporales abruptos, esto haría que fuera suficiente con tener almacenado el momento anterior y posterior (en lo referente a las huellas también)
+- Sería interesante, pensando principalmente en la eficiencia, decidir si seguir trabajando con esferas como huellas, o si intentar usar un único cilindro que represente el camino que sigue el paquete, para hacer esto, hay que pensar que el ángulo que tiene el cilindro respecto al suelo es siempre el mismo.
+- Mensajes entre PCs y que pasen por los demás elementos o aleatorios totalmente
+- Es necesario decidir ya en qué se va a enfocar el proyecto en el tiempo que queda:
+    · Lo primero, la convocatoria objetivo para presentar es la de junio, por lo que en mayo ya tendría que estar totalmente finalizado; en el caso de no llegar, hay una convocatoria en julio (no arriesgar).
+    · Depende mucho de cada persona y su habilidad para redactar la memoria, pero, por lo general, se tarda alrededor de un mes y algo en hacerla completa.
+    · Se puede ir empezando con las partes que ya son fijas y definitivas (herramientas, intro, etc.) además de los sprints ya hechos.
+    · Estaría bien ir teniendo una versión presentable, y que se pueda seguir avanzando pero, en caso de ir con prisas, tener eso como seguro
+    · Por eso, visto todo esto, en qué se puede enfocar (puede enfocarse en más de una, no en todas):
+        · Interactividad del usuario con las gafas y mandos 
+        · Eficiencia y mucha escalabilidad
+        · Usar trazas reales de una topología con netgui, diferenciar distintos niveles (capa física, de aplicación, etc.), que se distinga que un paquete que entra por un lado y sale por el otro es el mismo
+        · Apariencia
+        · Tiempo real
+        · ...
