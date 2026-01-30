@@ -54,6 +54,8 @@ AFRAME.registerComponent('reloj', {
 
     this.tiempo += (delta / 1000) * this.direccion * this.velocidad;
 
+    this.el.emit('set-time', this.tiempo)
+
     // Evita que baje de 0
     if (this.tiempo < 0) {
       this.tiempo = 0;
@@ -83,61 +85,59 @@ AFRAME.registerComponent('slider', {
     this.min = 0;
     this.max = 50;
     this.step = 0.1;
-    this.width = 3;
+    this.width = 8;
     this.dragging = false;
 
-    // Barra
+    // === BARRA FONDO ===
     this.bar = document.createElement('a-plane');
     this.bar.setAttribute('width', this.width);
-    this.bar.setAttribute('height', 0.1);
-    this.bar.setAttribute('color', 'gray');
+    this.bar.setAttribute('height', 0.12);
+    this.bar.setAttribute('color', '#dddddd');
     this.bar.setAttribute('class', 'btn');
     this.el.appendChild(this.bar);
 
-    // Manija
+    // === BARRA PROGRESO (oscura) ===
+    this.progress = document.createElement('a-plane');
+    this.progress.setAttribute('width', 0.001);
+    this.progress.setAttribute('height', 0.12);
+    this.progress.setAttribute('color', '#666666');
+    this.progress.setAttribute('position', `${-this.width/2} 0 0.01`);
+    this.el.appendChild(this.progress);
+
+    // === MANIJA ===
     this.handle = document.createElement('a-circle');
-    this.handle.setAttribute('radius', 0.08);
-    this.handle.setAttribute('color', 'orange');
-    this.handle.setAttribute('position', `${-this.width / 2} 0 0.01`);
-    this.handle.setAttribute('class', 'btn');   // ⚠️ NECESARIO PARA EL RAYCASTER
+    this.handle.setAttribute('radius', 0.1);
+    this.handle.setAttribute('color', '#222');
+    this.handle.setAttribute('position', `${-this.width / 2} 0 0.02`);
+    this.handle.setAttribute('class', 'btn');
     this.el.appendChild(this.handle);
 
-    // Cursor con raycaster
     this.cursorEl = this.el.sceneEl.querySelector('[cursor]');
 
-    // Iniciar arrastre
-    this.handle.addEventListener('mousedown', () => {
-      this.dragging = true;
-    });
+    this.handle.addEventListener('mousedown', () => this.dragging = true);
 
-    // Soltar arrastre
     window.addEventListener('mouseup', () => {
       if (!this.dragging) return;
       this.dragging = false;
       this.emitValue();
     });
 
-    // CLICK EN LA BARRA → SALTO DIRECTO
     this.bar.addEventListener('click', (e) => {
-      const ray = this.cursorEl.components.raycaster;
-      if (!ray) return;
+      this.updateFromRay();
+      this.emitValue();
+    });
 
-      const intersection = ray.getIntersection(this.bar);
-      if (!intersection) return;
-
-      const worldPoint = intersection.point.clone();
-      this.el.object3D.worldToLocal(worldPoint);
-
-      let localX = Math.max(-this.width / 2, Math.min(this.width / 2, worldPoint.x));
-      this.handle.object3D.position.x = localX;
-
-      this.emitValue(); // emitir valor al hacer click
+    this.el.sceneEl.addEventListener('set-time', e => {
+      this.setValue(e.detail);
     });
   },
 
   tick: function () {
-    if (!this.dragging || !this.cursorEl) return;
+    if (!this.dragging) return;
+    this.updateFromRay();
+  },
 
+  updateFromRay: function () {
     const ray = this.cursorEl.components.raycaster;
     if (!ray) return;
 
@@ -147,21 +147,32 @@ AFRAME.registerComponent('slider', {
     const worldPoint = intersection.point.clone();
     this.el.object3D.worldToLocal(worldPoint);
 
-    let localX = worldPoint.x;
-    localX = Math.max(-this.width / 2, Math.min(this.width / 2, localX));
+    let localX = THREE.MathUtils.clamp(worldPoint.x, -this.width/2, this.width/2);
+    this.setHandlePosition(localX);
+  },
 
+  setHandlePosition: function(localX) {
     this.handle.object3D.position.x = localX;
+
+    // actualizar barra de progreso
+    const progressWidth = localX + this.width/2;
+    this.progress.setAttribute('width', progressWidth);
+    this.progress.setAttribute('position', `${-this.width/2 + progressWidth/2} 0 0.01`);
   },
 
   emitValue: function () {
     const localX = this.handle.object3D.position.x;
     const ratio = (localX + this.width / 2) / this.width;
-
     let value = this.min + ratio * (this.max - this.min);
-
-    // aplicar step
     value = Math.round(value / this.step) * this.step;
-
     this.el.emit('time', value);
+  },
+
+  // 👇 MOVER SLIDER AUTOMÁTICAMENTE SEGÚN TIEMPO
+  setValue: function(value) {
+    value = THREE.MathUtils.clamp(value, this.min, this.max);
+    const ratio = (value - this.min) / (this.max - this.min);
+    const localX = -this.width/2 + ratio * this.width;
+    this.setHandlePosition(localX);
   }
 });
