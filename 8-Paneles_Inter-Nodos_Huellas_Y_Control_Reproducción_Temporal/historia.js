@@ -80,14 +80,15 @@ AFRAME.registerComponent('historia', {
       el.emit('paneles', this.paneles)
 
       el.addEventListener('reloj-tick', e => {
-        this.alturas()
-        for (let i = 0; i < this.ejes.length; i++) {
-          const altura = this.ejes[i].getAttribute("height")
-          this.ejes[i].setAttribute("height", parseFloat(altura)+0.03)
-          let pos = this.ejes[i].getAttribute("position")
-          this.ejes[i].setAttribute('position', `${pos.x} ${pos.y+0.03/2} ${pos.z}`);
-        }
-        this.gestionarMensajes(e.detail.tiempo, e.detail.direccion);
+        const dir = e.detail.direccion;
+        this.alturas(dir)
+        this.ejes.forEach(eje => {
+          const altura = parseFloat(eje.getAttribute("height"));
+          eje.setAttribute("height", altura + 0.03 * dir);
+          const pos = eje.getAttribute("position");
+          eje.setAttribute('position', `${pos.x} ${pos.y + 0.03/2 * dir} ${pos.z}`);
+        });
+        this.gestionarMensajes(e.detail.tiempo, dir);
       });
     }, 500);
   },
@@ -168,13 +169,18 @@ AFRAME.registerComponent('historia', {
     });
   },
 
-  alturas: function () {
-    for (let i = 0; i < this.paneles.length; i++) {
-      const altura = this.paneles[i].getAttribute("height");
-      this.paneles[i].setAttribute("height", parseFloat(altura)+0.03);
-      const pos = this.paneles[i].getAttribute("position");
-      this.paneles[i].setAttribute('position', `${pos.x} ${pos.y+0.03/2} ${pos.z}`);
-    };
+  alturas: function(direccion = 1) {
+    const incremento = 0.03 * direccion; // + para avanzar, - para retroceder
+
+    this.paneles.forEach(panel => {
+      const alturaActual = parseFloat(panel.getAttribute("height"));
+      const nuevaAltura = Math.max(0.1, alturaActual + incremento); // evitar altura negativa
+      panel.setAttribute("height", nuevaAltura);
+
+      const pos = panel.getAttribute("position");
+      // mover la posición vertical según la mitad del incremento
+      panel.setAttribute('position', `${pos.x} ${pos.y + incremento / 2} ${pos.z}`);
+    });
   },
 
   crearEje : function(posicion, nodoId) {

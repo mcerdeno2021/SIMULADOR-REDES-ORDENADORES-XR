@@ -65,76 +65,76 @@
   ],
   "mensajes": [
     {
-      "origen": "Switch1",
-      "destino": "PC1",
-      "tiempoOrigen": 16,
-      "tiempoDestino": 22
+      "origen": "Switch3",
+      "destino": "PC3",
+      "tiempoOrigen": 0,
+      "tiempoDestino": 3
+    },
+    {
+      "origen": "Router1",
+      "destino": "Switch2",
+      "tiempoOrigen": 1,
+      "tiempoDestino": 2
+    },
+    {
+      "origen": "PC3",
+      "destino": "Switch3",
+      "tiempoOrigen": 2,
+      "tiempoDestino": 3
+    },
+    {
+      "origen": "Switch3",
+      "destino": "PC3",
+      "tiempoOrigen": 1,
+      "tiempoDestino": 2
+    },
+    {
+      "origen": "Router1",
+      "destino": "Switch1",
+      "tiempoOrigen": 2,
+      "tiempoDestino": 3
     },
     {
       "origen": "PC1",
       "destino": "Switch1",
-      "tiempoOrigen": 18,
-      "tiempoDestino": 26
+      "tiempoOrigen": 0,
+      "tiempoDestino": 1
     },
     {
       "origen": "PC4",
       "destino": "Router1",
       "tiempoOrigen": 0,
-      "tiempoDestino": 4
-    },
-    {
-      "origen": "Switch2",
-      "destino": "Router1",
-      "tiempoOrigen": 10,
-      "tiempoDestino": 12
-    },
-    {
-      "origen": "Router1",
-      "destino": "PC4",
-      "tiempoOrigen": 2,
-      "tiempoDestino": 9
-    },
-    {
-      "origen": "Switch1",
-      "destino": "PC1",
-      "tiempoOrigen": 20,
-      "tiempoDestino": 25
-    },
-    {
-      "origen": "Switch1",
-      "destino": "PC1",
-      "tiempoOrigen": 9,
-      "tiempoDestino": 11
-    },
-    {
-      "origen": "Router1",
-      "destino": "Switch2",
-      "tiempoOrigen": 5,
-      "tiempoDestino": 7
-    },
-    {
-      "origen": "Switch2",
-      "destino": "PC2",
-      "tiempoOrigen": 19,
-      "tiempoDestino": 23
-    },
-    {
-      "origen": "Switch2",
-      "destino": "PC2",
-      "tiempoOrigen": 10,
-      "tiempoDestino": 17
+      "tiempoDestino": 1
     },
     {
       "origen": "PC4",
       "destino": "Router1",
-      "tiempoOrigen": 12,
-      "tiempoDestino": 18
+      "tiempoOrigen": 2,
+      "tiempoDestino": 3
+    },
+    {
+      "origen": "Switch2",
+      "destino": "Router1",
+      "tiempoOrigen": 2,
+      "tiempoDestino": 3
+    },
+    {
+      "origen": "Switch1",
+      "destino": "Router1",
+      "tiempoOrigen": 0,
+      "tiempoDestino": 1
     },
     {
       "origen": "Switch3",
       "destino": "Router1",
-      "tiempoOrigen": 12,
-      "tiempoDestino": 21
+      "tiempoOrigen": 0,
+      "tiempoDestino": 3
+    },
+    {
+      "origen": "Switch3",
+      "destino": "Router1",
+      "tiempoOrigen": 1,
+      "tiempoDestino": 2
     }
   ]
 }

@@ -49,25 +49,40 @@ AFRAME.registerComponent('reloj', {
     });
   },
 
-  tick: function (time, delta) {
+  tick: function(time, delta) {
     if (this.pausado) return;
 
-    this.tiempo += (delta / 1000) * this.direccion * this.velocidad;
+    let deltaSeg = (delta / 1000) * this.direccion * this.velocidad;
 
-    this.el.emit('set-time', this.tiempo)
-
-    // Evita que baje de 0
-    if (this.tiempo < 0) {
+    if (this.tiempo <= 0 && this.direccion < 0) {
       this.tiempo = 0;
-      if (!this.mostrado) {
-        console.log("⏹️ Tiempo en 0");
-        this.mostrado = true;
-      }
-    } else {
-      this.mostrado = false;
+      return;
     }
 
-    // Emitir tick solo cuando se alcanza el siguiente intervalo
+    // Actualizamos el tiempo
+    this.tiempo += deltaSeg;
+
+    // Emitimos solo si está dentro de los límites
+    this.el.emit('set-time', this.tiempo);
+
+    fetch('escenario.json')
+      .then(r => r.json())
+      .then(datos => {
+        const {mensajes} = datos;
+
+        const max = Math.max(...mensajes.map(m => m.tiempoDestino));
+        // Limitar al tiempo máximo y mínimo
+        if (max !== null) {
+          if (this.direccion > 0 && this.tiempo >= max) {
+            this.tiempo = max;
+            // ⬅️ DETENER la emisión de eventos
+            return;
+          }
+        }
+        const textoTiempo = document.querySelector('#tiempo');
+        textoTiempo.setAttribute('value', `${this.tiempo.toFixed(2)} / ${max.toFixed(2)}`)
+      });
+
     const intervalo = this.intervaloPrecision;
 
     if (this.direccion === 1 && this.tiempo >= this.ultimoTick + intervalo) {
@@ -83,11 +98,18 @@ AFRAME.registerComponent('reloj', {
 AFRAME.registerComponent('slider', {
   init: function () {
     this.min = 0;
-    this.max = 50;
     this.step = 0.1;
     this.width = 8;
     this.dragging = false;
 
+    fetch('escenario.json')
+      .then(r => r.json())
+      .then(datos => {
+        const {mensajes} = datos;
+
+        this.max = Math.max(...mensajes.map(m => m.tiempoDestino));
+      });
+    
     // === BARRA FONDO ===
     this.bar = document.createElement('a-plane');
     this.bar.setAttribute('width', this.width);
