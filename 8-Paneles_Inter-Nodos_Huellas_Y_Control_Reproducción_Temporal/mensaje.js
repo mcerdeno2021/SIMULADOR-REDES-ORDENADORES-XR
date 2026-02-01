@@ -30,6 +30,18 @@ AFRAME.registerComponent('mensaje', {
   },
 
   // ===============================
+  // COMPARAR CONEXIONES SIN DIRECCIÓN
+  // ===============================
+  mismaConexion: function (idPanel, conexionMensaje) {
+    if (!idPanel || !conexionMensaje) return false;
+
+    const [a1, b1] = idPanel.split(' -> ');
+    const [a2, b2] = conexionMensaje.split(' -> ');
+
+    return (a1 === a2 && b1 === b2) || (a1 === b2 && b1 === a2);
+  },
+
+  // ===============================
   // CREAR PAQUETE
   // ===============================
   crearEntidadSiNoExiste: function (id, x, y, z) {
@@ -48,13 +60,13 @@ AFRAME.registerComponent('mensaje', {
   },
 
   // ===============================
-  // CREAR TRAZA (una sola vez)
+  // CREAR TRAZA (UNA SOLA VEZ)
   // ===============================
   crearTrazaSiNoExiste: function (id, conexion, x, y, z) {
     if (this.trazas[id]) return this.trazas[id];
     if (!this.paneles) return null;
 
-    const panel = this.paneles.find(p => p.id === conexion);
+    const panel = this.paneles.find(p => this.mismaConexion(p.id, conexion));
     if (!panel) return null;
 
     const cilindro = document.createElement('a-cylinder');
@@ -84,26 +96,19 @@ AFRAME.registerComponent('mensaje', {
   actualizarTraza: function (traza, x, y, z) {
     const { panel, cilindro, inicio } = traza;
 
-    // Posición actual del paquete en local del panel
     const worldNow = new THREE.Vector3(x, y, z);
     const localNow = panel.object3D.worldToLocal(worldNow.clone());
 
-    // Vector desde inicio hasta ahora
     const direccion = new THREE.Vector3().subVectors(localNow, inicio);
     const distancia = direccion.length();
 
     if (distancia < 0.001) return;
 
-    // Punto medio (donde se coloca el centro del cilindro)
     const medio = new THREE.Vector3().addVectors(inicio, localNow).multiplyScalar(0.5);
 
-    // Escalamos altura
     cilindro.setAttribute('height', distancia);
-
-    // Posicionamos en el punto medio
     cilindro.setAttribute('position', medio);
 
-    // Rotación: alineamos eje Y del cilindro con la dirección
     const ejeY = new THREE.Vector3(0, 1, 0);
     const quat = new THREE.Quaternion().setFromUnitVectors(ejeY, direccion.clone().normalize());
 

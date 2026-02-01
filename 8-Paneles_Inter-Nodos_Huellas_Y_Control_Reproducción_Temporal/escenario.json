@@ -89,8 +89,8 @@
       "tiempoDestino": 12
     },
     {
-      "origen": "PC4",
-      "destino": "Router1",
+      "origen": "Router1",
+      "destino": "PC4",
       "tiempoOrigen": 2,
       "tiempoDestino": 9
     },

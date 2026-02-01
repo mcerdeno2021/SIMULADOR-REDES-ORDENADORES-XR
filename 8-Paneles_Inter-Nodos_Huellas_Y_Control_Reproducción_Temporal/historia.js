@@ -32,7 +32,7 @@ AFRAME.registerComponent('historia', {
           e.setAttribute('id', nodo.id);
           el.appendChild(e);
 
-          this.crearEje(nodo.posicion);
+          this.crearEje(nodo.posicion, nodo.id);
         });
 
         // -------- CABLES --------
@@ -177,12 +177,15 @@ AFRAME.registerComponent('historia', {
     };
   },
 
-  crearEje : function(posicion) {
+  crearEje : function(posicion, nodoId) {
     this.eje = document.createElement('a-cylinder');
     this.eje.setAttribute('radius', 0.02);
     this.eje.setAttribute('height', 1);
     const altura = this.eje.getAttribute("height")
-    this.eje.setAttribute('color', '#000000');;
+    this.eje.setAttribute('color', '#000000');
+    this.eje.classList.add('eje')
+
+    this.eje.dataset.nodo = nodoId;
 
     const posiciones = posicion
       .trim() // Elimina espacios al inicio y final
