@@ -67,30 +67,28 @@ AFRAME.registerComponent('historia', {
             origenPos: origen.getAttribute('position'),
             destinoPos: destino.getAttribute('position'),
             destinoNom: m.destino,
-            ultimoProgreso: 0,
+            ultimoProgreso: null,
             origenNom: origen.getAttribute('id'),
             destinoNom: destino.getAttribute('id'),
             conexion: `${origen.getAttribute('id')} -> ${destino.getAttribute('id')}`
           });
-        });       
-      });
+        });  
+        
+        this.generarPaquetesPorTiempo();
+        el.emit('paneles', this.paneles)
 
-    setTimeout(() => {
-      this.generarPaquetesPorTiempo();
-      el.emit('paneles', this.paneles)
-
-      el.addEventListener('reloj-tick', e => {
-        const dir = e.detail.direccion;
-        this.alturas(dir)
-        this.ejes.forEach(eje => {
-          const altura = parseFloat(eje.getAttribute("height"));
-          eje.setAttribute("height", altura + 0.03 * dir);
-          const pos = eje.getAttribute("position");
-          eje.setAttribute('position', `${pos.x} ${pos.y + 0.03/2 * dir} ${pos.z}`);
+        el.addEventListener('reloj-tick', e => {
+          const dir = e.detail.direccion;
+          this.alturas(dir)
+          this.ejes.forEach(eje => {
+            const altura = parseFloat(eje.getAttribute("height"));
+            eje.setAttribute("height", altura + 0.03 * dir);
+            const pos = eje.getAttribute("position");
+            eje.setAttribute('position', `${pos.x} ${pos.y + 0.03/2 * dir} ${pos.z}`);
+          });
+          this.gestionarMensajes(e.detail.tiempo, dir);
         });
-        this.gestionarMensajes(e.detail.tiempo, dir);
       });
-    }, 500);
   },
 
   generarPaquetesPorTiempo: function () {
@@ -148,7 +146,7 @@ AFRAME.registerComponent('historia', {
         y = Y_SUELO + antiguedad * ALTURA_POR_TICK;
       }
       // CREAR
-      if (progreso >= 0 && p.ultimoProgreso === 0) {
+      if (progreso >= 0 && p.ultimoProgreso === null) {
         this.el.emit('mensaje', { id: p.id, x, y, z, estado: 'Crear', conexion: `${p.origenNom}-${p.destinoNom}`, tiempo: tiempo, conexion: p.conexion});
       }
       // MOVER
@@ -156,7 +154,7 @@ AFRAME.registerComponent('historia', {
         this.el.emit('mensaje', { id: p.id, x, y, z, estado: 'Mover', conexion: `${p.origenNom}-${p.destinoNom}`, tiempo: tiempo, conexion: p.conexion});
       }
       // FINAL
-      if (progreso >= 1 && p.ultimoProgreso < 1) {
+      if (progreso >= 1 && (p.ultimoProgreso === null || p.ultimoProgreso < 1)) {
         this.el.emit('mensaje', { id: p.id, x, y, z, estado: 'Acabar', conexion: `${p.origenNom}-${p.destinoNom}`, tiempo: tiempo, conexion: p.conexion});
         this.el.emit('mensaje-llegado', {
           id: p.id,

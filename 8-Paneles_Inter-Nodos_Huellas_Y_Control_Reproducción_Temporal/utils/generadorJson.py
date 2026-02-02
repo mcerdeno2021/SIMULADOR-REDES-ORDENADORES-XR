@@ -4,7 +4,7 @@ from collections import defaultdict
 import os
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
-ruta = os.path.join(base_dir, "escenario.json")
+ruta = os.path.join(base_dir, "../escenario.json")
 
 with open(ruta, "r", encoding="utf-8") as f:
     datos = f.read()

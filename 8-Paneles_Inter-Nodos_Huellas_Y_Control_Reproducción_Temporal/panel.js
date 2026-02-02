@@ -55,9 +55,9 @@ AFRAME.registerComponent('panel', {
     const letras = document.createElement('a-text');
     letras.setAttribute('value', this.titulo);
     letras.setAttribute('color', '#111');
-    letras.setAttribute('width', 0.6);
+    letras.setAttribute('width', 4);
     letras.setAttribute('align', 'center');
-    letras.setAttribute('position', '0 0 0');
+    letras.setAttribute('position', '0 0.5 0');
     this.el.appendChild(letras);
   },
 
@@ -99,6 +99,11 @@ AFRAME.registerComponent('modo-escena', {
       const esActivo = el.id === panelId;
       el.object3D.visible = esActivo;
       el.setAttribute('panel', 'activa', esActivo);
+    });
+
+    // 🔹 MENSAJES → solo los del panel activo
+    document.querySelectorAll(`[data-conexion="${panelId}"]`).forEach(mensaje => {
+      mensaje.object3D.visible = false;
     });
 
     // 🔹 NODOS Y CABLES → solo origen y destino

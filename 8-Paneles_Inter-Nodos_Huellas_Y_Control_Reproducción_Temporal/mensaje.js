@@ -11,7 +11,7 @@ AFRAME.registerComponent('mensaje', {
     this.el.addEventListener('mensaje', e => {
       const { id, x, y, z, estado, conexion } = e.detail;
 
-      const entidad = this.crearEntidadSiNoExiste(id, x, y, z);
+      const entidad = this.crearEntidadSiNoExiste(id, x, y, z, conexion);
 
       if (estado === "Crear" || estado === "Mover") {
         entidad.setAttribute('visible', true);
@@ -44,7 +44,7 @@ AFRAME.registerComponent('mensaje', {
   // ===============================
   // CREAR PAQUETE
   // ===============================
-  crearEntidadSiNoExiste: function (id, x, y, z) {
+  crearEntidadSiNoExiste: function (id, x, y, z, conexionMensaje) {
     if (this.entidades[id]) return this.entidades[id];
 
     const entidad = document.createElement('a-box');
@@ -53,6 +53,8 @@ AFRAME.registerComponent('mensaje', {
     entidad.setAttribute('width', 0.2);
     entidad.setAttribute('color', '#0000ff');
     entidad.setAttribute('position', `${x} ${y} ${z}`);
+    
+    entidad.dataset.conexion = conexionMensaje;
 
     this.el.sceneEl.appendChild(entidad);
     this.entidades[id] = entidad;
