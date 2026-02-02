@@ -87,6 +87,15 @@ AFRAME.registerComponent('modo-escena', {
     });
   },
 
+  mismaConexion: function (idPanel, conexionMensaje) {
+    if (!idPanel || !conexionMensaje) return false;
+
+    const [a1, b1] = idPanel.split(' -> ');
+    const [a2, b2] = conexionMensaje.split(' -> ');
+
+    return (a1 === a2 && b1 === b2) || (a1 === b2 && b1 === a2);
+  },
+
   // ===============================
   // ENTRAR EN MODO CONEXIÓN
   // ===============================
@@ -101,9 +110,16 @@ AFRAME.registerComponent('modo-escena', {
       el.setAttribute('panel', 'activa', esActivo);
     });
 
-    // 🔹 MENSAJES → solo los del panel activo
-    document.querySelectorAll(`[data-conexion="${panelId}"]`).forEach(mensaje => {
+    // 🔹 MENSAJES → oculto todos
+    document.querySelectorAll('.mensaje').forEach(mensaje => {
       mensaje.object3D.visible = false;
+    });
+
+    // Dejo los del panel activo
+    document.querySelectorAll('.mensaje').forEach(mensaje => {
+      if (this.mismaConexion(mensaje.dataset.conexion, panelId)) {
+        mensaje.object3D.visible = true;
+      }
     });
 
     // 🔹 NODOS Y CABLES → solo origen y destino
@@ -135,6 +151,11 @@ AFRAME.registerComponent('modo-escena', {
     document.querySelectorAll('[panel]').forEach(el => {
       el.object3D.visible = true;
       el.setAttribute('panel', 'activa', false);
+    });
+
+    // 🔹 Restaurar mensajes
+    document.querySelectorAll('.mensaje').forEach(mensaje => {
+      mensaje.object3D.visible = true;
     });
 
     // 🔹 Restaurar nodos

@@ -54,7 +54,9 @@ AFRAME.registerComponent('mensaje', {
     entidad.setAttribute('color', '#0000ff');
     entidad.setAttribute('position', `${x} ${y} ${z}`);
     
+    entidad.classList.add('mensaje')
     entidad.dataset.conexion = conexionMensaje;
+    console.log(conexionMensaje)
 
     this.el.sceneEl.appendChild(entidad);
     this.entidades[id] = entidad;
