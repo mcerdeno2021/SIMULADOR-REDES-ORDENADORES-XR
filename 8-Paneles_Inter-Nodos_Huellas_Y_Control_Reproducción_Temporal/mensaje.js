@@ -56,7 +56,6 @@ AFRAME.registerComponent('mensaje', {
     
     entidad.classList.add('mensaje')
     entidad.dataset.conexion = conexionMensaje;
-    console.log(conexionMensaje)
 
     this.el.sceneEl.appendChild(entidad);
     this.entidades[id] = entidad;

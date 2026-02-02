@@ -65,7 +65,8 @@ AFRAME.registerComponent('panel', {
     this.el.setAttribute('material', {
       color: this.data.activa ? '#ffffff' : '#ff3b90',
       opacity: this.data.activa ? 0.9 : 0.08,
-      transparent: true
+      transparent: true,
+      depthWrite: false
     });
   }
 });

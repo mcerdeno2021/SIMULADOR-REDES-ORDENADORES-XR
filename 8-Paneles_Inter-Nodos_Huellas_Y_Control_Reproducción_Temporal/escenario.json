@@ -65,76 +65,214 @@
   ],
   "mensajes": [
     {
-      "origen": "Switch3",
-      "destino": "PC3",
-      "tiempoOrigen": 0,
-      "tiempoDestino": 3
+      "origen": "PC1",
+      "destino": "Switch1",
+      "tiempoOrigen": 2,
+      "tiempoDestino": 9
     },
     {
       "origen": "Router1",
       "destino": "Switch2",
-      "tiempoOrigen": 1,
-      "tiempoDestino": 2
+      "tiempoOrigen": 10,
+      "tiempoDestino": 13
     },
     {
       "origen": "PC3",
       "destino": "Switch3",
-      "tiempoOrigen": 2,
-      "tiempoDestino": 3
-    },
-    {
-      "origen": "Switch3",
-      "destino": "PC3",
-      "tiempoOrigen": 1,
-      "tiempoDestino": 2
-    },
-    {
-      "origen": "Router1",
-      "destino": "Switch1",
-      "tiempoOrigen": 2,
-      "tiempoDestino": 3
-    },
-    {
-      "origen": "PC1",
-      "destino": "Switch1",
-      "tiempoOrigen": 0,
-      "tiempoDestino": 1
-    },
-    {
-      "origen": "PC4",
-      "destino": "Router1",
-      "tiempoOrigen": 0,
-      "tiempoDestino": 1
-    },
-    {
-      "origen": "PC4",
-      "destino": "Router1",
-      "tiempoOrigen": 2,
-      "tiempoDestino": 3
+      "tiempoOrigen": 12,
+      "tiempoDestino": 13
     },
     {
       "origen": "Switch2",
-      "destino": "Router1",
-      "tiempoOrigen": 2,
-      "tiempoDestino": 3
+      "destino": "PC2",
+      "tiempoOrigen": 8,
+      "tiempoDestino": 13
     },
     {
       "origen": "Switch1",
       "destino": "Router1",
-      "tiempoOrigen": 0,
-      "tiempoDestino": 1
+      "tiempoOrigen": 8,
+      "tiempoDestino": 10
+    },
+    {
+      "origen": "PC1",
+      "destino": "Switch1",
+      "tiempoOrigen": 2,
+      "tiempoDestino": 12
+    },
+    {
+      "origen": "Switch1",
+      "destino": "PC1",
+      "tiempoOrigen": 9,
+      "tiempoDestino": 15
+    },
+    {
+      "origen": "Switch1",
+      "destino": "Router1",
+      "tiempoOrigen": 5,
+      "tiempoDestino": 10
+    },
+    {
+      "origen": "PC4",
+      "destino": "Router1",
+      "tiempoOrigen": 3,
+      "tiempoDestino": 6
     },
     {
       "origen": "Switch3",
       "destino": "Router1",
-      "tiempoOrigen": 0,
-      "tiempoDestino": 3
+      "tiempoOrigen": 11,
+      "tiempoDestino": 15
+    },
+    {
+      "origen": "PC3",
+      "destino": "Switch3",
+      "tiempoOrigen": 4,
+      "tiempoDestino": 6
     },
     {
       "origen": "Switch3",
+      "destino": "PC3",
+      "tiempoOrigen": 0,
+      "tiempoDestino": 6
+    },
+    {
+      "origen": "Switch2",
+      "destino": "PC2",
+      "tiempoOrigen": 3,
+      "tiempoDestino": 5
+    },
+    {
+      "origen": "Switch2",
+      "destino": "Router1",
+      "tiempoOrigen": 14,
+      "tiempoDestino": 15
+    },
+    {
+      "origen": "Switch3",
+      "destino": "PC3",
+      "tiempoOrigen": 8,
+      "tiempoDestino": 12
+    },
+    {
+      "origen": "Router1",
+      "destino": "Switch1",
+      "tiempoOrigen": 11,
+      "tiempoDestino": 13
+    },
+    {
+      "origen": "Switch3",
+      "destino": "Router1",
+      "tiempoOrigen": 6,
+      "tiempoDestino": 7
+    },
+    {
+      "origen": "Router1",
+      "destino": "Switch2",
+      "tiempoOrigen": 10,
+      "tiempoDestino": 14
+    },
+    {
+      "origen": "Switch1",
+      "destino": "Router1",
+      "tiempoOrigen": 14,
+      "tiempoDestino": 15
+    },
+    {
+      "origen": "PC3",
+      "destino": "Switch3",
+      "tiempoOrigen": 14,
+      "tiempoDestino": 15
+    },
+    {
+      "origen": "Router1",
+      "destino": "Switch2",
+      "tiempoOrigen": 11,
+      "tiempoDestino": 13
+    },
+    {
+      "origen": "PC4",
+      "destino": "Router1",
+      "tiempoOrigen": 13,
+      "tiempoDestino": 14
+    },
+    {
+      "origen": "Switch3",
+      "destino": "Router1",
+      "tiempoOrigen": 11,
+      "tiempoDestino": 13
+    },
+    {
+      "origen": "PC1",
+      "destino": "Switch1",
+      "tiempoOrigen": 5,
+      "tiempoDestino": 14
+    },
+    {
+      "origen": "PC3",
+      "destino": "Switch3",
+      "tiempoOrigen": 11,
+      "tiempoDestino": 12
+    },
+    {
+      "origen": "PC3",
+      "destino": "Switch3",
+      "tiempoOrigen": 11,
+      "tiempoDestino": 14
+    },
+    {
+      "origen": "Switch3",
+      "destino": "PC3",
+      "tiempoOrigen": 0,
+      "tiempoDestino": 9
+    },
+    {
+      "origen": "Router1",
+      "destino": "Switch2",
+      "tiempoOrigen": 11,
+      "tiempoDestino": 14
+    },
+    {
+      "origen": "Switch1",
+      "destino": "Router1",
+      "tiempoOrigen": 4,
+      "tiempoDestino": 5
+    },
+    {
+      "origen": "PC4",
       "destino": "Router1",
       "tiempoOrigen": 1,
-      "tiempoDestino": 2
+      "tiempoDestino": 5
+    },
+    {
+      "origen": "Router1",
+      "destino": "PC4",
+      "tiempoOrigen": 13,
+      "tiempoDestino": 15
+    },
+    {
+      "origen": "PC4",
+      "destino": "Router1",
+      "tiempoOrigen": 1,
+      "tiempoDestino": 4
+    },
+    {
+      "origen": "Switch1",
+      "destino": "Router1",
+      "tiempoOrigen": 10,
+      "tiempoDestino": 14
+    },
+    {
+      "origen": "Switch2",
+      "destino": "PC2",
+      "tiempoOrigen": 14,
+      "tiempoDestino": 15
+    },
+    {
+      "origen": "PC2",
+      "destino": "Switch2",
+      "tiempoOrigen": 0,
+      "tiempoDestino": 13
     }
   ]
 }
