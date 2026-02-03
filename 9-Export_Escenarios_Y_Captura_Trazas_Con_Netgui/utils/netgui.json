@@ -1,0 +1,209 @@
+{
+  "nodes": [
+    {
+      "position": [
+        -18.45,
+        -9.9
+      ],
+      "type": "NKCompaq",
+      "name": "pc2"
+    },
+    {
+      "position": [
+        -5.5,
+        -18.1
+      ],
+      "type": "NKRouter",
+      "name": "r1"
+    },
+    {
+      "position": [
+        -19.35,
+        -21.05
+      ],
+      "type": "NKCompaq",
+      "name": "pc1"
+    },
+    {
+      "position": [
+        -12.8,
+        -20.0
+      ],
+      "type": "NKHub",
+      "name": "hub1"
+    },
+    {
+      "position": [
+        -12.55,
+        -8.55
+      ],
+      "type": "NKHub",
+      "name": "hub2"
+    },
+    {
+      "position": [
+        5.399999999999999,
+        -14.05
+      ],
+      "type": "NKRouter",
+      "name": "r"
+    },
+    {
+      "position": [
+        15.899999999999999,
+        -19.85
+      ],
+      "type": "NKRouter",
+      "name": "r3"
+    },
+    {
+      "position": [
+        17.0,
+        -8.350000000000001
+      ],
+      "type": "NKRouter",
+      "name": "r4"
+    },
+    {
+      "position": [
+        27.15,
+        -21.3
+      ],
+      "type": "NKHub",
+      "name": "hub3"
+    },
+    {
+      "position": [
+        26.35,
+        -8.350000000000001
+      ],
+      "type": "NKHub",
+      "name": "hub4"
+    },
+    {
+      "position": [
+        -5.800000000000001,
+        -8.149999999999999
+      ],
+      "type": "NKRouter",
+      "name": "r2"
+    },
+    {
+      "position": [
+        7.5,
+        -7.050000000000001
+      ],
+      "type": "NKRouter",
+      "name": "r5"
+    },
+    {
+      "position": [
+        34.75,
+        -22.8
+      ],
+      "type": "NKCompaq",
+      "name": "pc3"
+    },
+    {
+      "position": [
+        34.65,
+        -9.8
+      ],
+      "type": "NKCompaq",
+      "name": "pc4"
+    },
+    {
+      "position": [
+        -8.25,
+        -2.75
+      ],
+      "type": "NKCompaq",
+      "name": "pc5"
+    },
+    {
+      "position": [
+        1.0500000000000007,
+        -5.100000000000001
+      ],
+      "type": "NKHub",
+      "name": "hub6"
+    }
+  ],
+  "connections": [
+    {
+      "type": "link",
+      "from": "hub1",
+      "to": "pc1"
+    },
+    {
+      "type": "link",
+      "from": "hub1",
+      "to": "r1"
+    },
+    {
+      "type": "link",
+      "from": "hub2",
+      "to": "r2"
+    },
+    {
+      "type": "link",
+      "from": "pc2",
+      "to": "hub2"
+    },
+    {
+      "type": "link",
+      "from": "r",
+      "to": "r2"
+    },
+    {
+      "type": "link",
+      "from": "r",
+      "to": "r1"
+    },
+    {
+      "type": "link",
+      "from": "r3",
+      "to": "r"
+    },
+    {
+      "type": "link",
+      "from": "r4",
+      "to": "r"
+    },
+    {
+      "type": "link",
+      "from": "r5",
+      "to": "r"
+    },
+    {
+      "type": "link",
+      "from": "hub3",
+      "to": "r3"
+    },
+    {
+      "type": "link",
+      "from": "hub4",
+      "to": "r4"
+    },
+    {
+      "type": "link",
+      "from": "hub6",
+      "to": "r5"
+    },
+    {
+      "type": "link",
+      "from": "pc5",
+      "to": "hub6"
+    },
+    {
+      "type": "link",
+      "from": "pc4",
+      "to": "hub4"
+    },
+    {
+      "type": "link",
+      "from": "pc3",
+      "to": "hub3"
+    }
+  ]
+}

@@ -115,18 +115,31 @@
 - En cuanto a la gestión del manejo del tiempo de las huellas y, por ende, de los paneles, hay dos soluciones: 
     · Una más sencilla, que sería que los paneles fueran como una imagen fija, es decir, que cuando vas marcha atrás en el tiempo, las huellas que corresponde se hundan junto con el panel, dando la sensación así de que se eliminan, y cuando, por ejemplo, adelantas a un momento concreto, se dibujen todas las huellas, como si se desplegase hacia arriba el panel. Esto se harí mediante cálculos de la distancia respecto al centro del panel con el suelo, y con una lista de las huellas que hay, que, sabiendo ese dato, cortaríamos en un punto.
     · La otra es más compleja, sobre todo en un nivel de eficiencia; esta haría algo similar a lo que se hace con los mensajes en historia, es decir, guardar un diccionario en el que la clave sea el instante de tiempo, y los valores sean las huellas que tendrían que estar activas.
-- Para disminuir la complejidad, es posible limitar el control de reproducción a avances o retrasos de x en x tiempo, no saltos temporales abruptos, esto haría que fuera suficiente con tener almacenado el momento anterior y posterior (en lo referente a las huellas también)
+- Para disminuir la complejidad, es posible limitar el control de reproducción a avances o retrasos de x en x tiempo, no saltos temporales abruptos, esto haría que fuera suficiente con tener almacenado el momento anterior y posterior (en lo referente a las huellas también).
 - Sería interesante, pensando principalmente en la eficiencia, decidir si seguir trabajando con esferas como huellas, o si intentar usar un único cilindro que represente el camino que sigue el paquete, para hacer esto, hay que pensar que el ángulo que tiene el cilindro respecto al suelo es siempre el mismo.
-- Mensajes entre PCs y que pasen por los demás elementos o aleatorios totalmente
+- Mensajes entre PCs y que pasen por los demás elementos o aleatorios totalmente.
 - Es necesario decidir ya en qué se va a enfocar el proyecto en el tiempo que queda:
     · Lo primero, la convocatoria objetivo para presentar es la de junio, por lo que en mayo ya tendría que estar totalmente finalizado; en el caso de no llegar, hay una convocatoria en julio (no arriesgar).
     · Depende mucho de cada persona y su habilidad para redactar la memoria, pero, por lo general, se tarda alrededor de un mes y algo en hacerla completa.
     · Se puede ir empezando con las partes que ya son fijas y definitivas (herramientas, intro, etc.) además de los sprints ya hechos.
-    · Estaría bien ir teniendo una versión presentable, y que se pueda seguir avanzando pero, en caso de ir con prisas, tener eso como seguro
+    · Estaría bien ir teniendo una versión presentable, y que se pueda seguir avanzando pero, en caso de ir con prisas, tener eso como seguro.
     · Por eso, visto todo esto, en qué se puede enfocar (puede enfocarse en más de una, no en todas):
-        · Interactividad del usuario con las gafas y mandos 
-        · Eficiencia y mucha escalabilidad
-        · Usar trazas reales de una topología con netgui, diferenciar distintos niveles (capa física, de aplicación, etc.), que se distinga que un paquete que entra por un lado y sale por el otro es el mismo
-        · Apariencia
-        · Tiempo real
+        · Interactividad del usuario con las gafas y mandos.
+        · Eficiencia y mucha escalabilidad.
+        · Usar trazas reales de una topología con netgui, diferenciar distintos niveles (capa física, de aplicación, etc.), que se distinga que un paquete que entra por un lado y sale por el otro es el mismo.
+        · Apariencia.
+        · Tiempo real.
         · ...
+
+## 9. Export de escenarios y captura de trazas con Netgui 
+
+- Crear los escenarios y sus topologías con Netgui, se pueden exportar mediante ficheros nkp (en un fichero estarán los nodos y sus posiciones, y en otro las conexiones entre ellos).
+- Además, usarlo para lanzar los comandos que se quiera y capturar el tráfico con Wireshark (se puede hacer tcpdump). Para usarlo en el programa existen varios métodos:
+    · Se puede modificar los js para que el formato de wireshark se pegue directo.
+    · Crear un traductor (recomendado):
+        · Hay librerias de Wireshark para python que son útiles para manejar la traza resultante.
+        · Por otro lado, el fichero de Wireshark se puede exportar como un json y usar parecido a lo que se hace ahora.
+- Ahora los paquetes tienen un tiempo de inicio en un punto y otro de fin en otro lado; en la realidad con Wireshark, lo que se captura es el instante en el que un paquete ha pasado por un nodo en el que estamos capturando el tráfico. Hay que elegir entonces entre:
+    · Capturar solo en nodos que no esten conectados entre sí, ya que se si un mismo paquete entra de un lado y sale de otro estaría repetido. Con esta implementación no sabríamos lo que tarda en capturar el siguiente nodo dicho paquete (habría que darle un tiempo random de trayecto, que sería igual para todos los paquetes) ni el sentido hacia el que va.
+    · Implementar una forma de diferenciar los paquetes, así se podría capturar en todos los nodos y se identificaría que paquete es el mismo, pudiendo además ver el sentido que sigue el paquete así como el tiempo que pasa entre un nodo y otro.
+- Es posible una implementación a tiempo real de netgui haciendo que el formato se pegue directo (investigar más adelante).
