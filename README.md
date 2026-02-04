@@ -9,6 +9,9 @@
 - En el escenario se podrán ver todos estos elementos y el flujo de paquetes en VR y XR. A su vez, se podrán usar varias de las funcionalidades extraídas del software "Wireshark", así como un control de reproducción o un diagrama de secuencia de los paquetes.
 - Servirá como un apoyo didáctico con explicaciones y detalles.
 
+#### Uso con diferentes ordenadore
+git reset --hard origin/main -> por si había cambios en el local, eliminarlos.
+git pull origin main -> traer lo que se ha hecho con un push antes, a este ordenador (refrescar el git en el ordenador).
 
 ## 1. Primer diseño de los PCs, Routers y Switches en el escenario principal.
 
@@ -131,9 +134,9 @@
         · Tiempo real.
         · ...
 
-## 9. Export de escenarios y captura de trazas con Netgui 
+## 9. Export de escenarios y captura de trazas con Netgui
 
-- Crear los escenarios y sus topologías con Netgui, se pueden exportar mediante ficheros nkp (en un fichero estarán los nodos y sus posiciones, y en otro las conexiones entre ellos).
+- Crear los escenarios y sus topologías con Netgui, se pueden exportar mediante ficheros nkp, en los que estarán los nodos, sus posiciones y las conexiones entre ellos.
 - Además, usarlo para lanzar los comandos que se quiera y capturar el tráfico con Wireshark (se puede hacer tcpdump). Para usarlo en el programa existen varios métodos:
     · Se puede modificar los js para que el formato de wireshark se pegue directo.
     · Crear un traductor (recomendado):
