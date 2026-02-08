@@ -1,209 +1,130 @@
 {
-  "nodes": [
+  "topologia": [
     {
-      "position": [
-        -18.45,
-        -9.9
-      ],
-      "type": "NKCompaq",
-      "name": "pc2"
+      "id": "pc2",
+      "posicion": "-18.45 1 -9.9"
     },
     {
-      "position": [
-        -5.5,
-        -18.1
-      ],
-      "type": "NKRouter",
-      "name": "r1"
+      "id": "r1",
+      "posicion": "-5.5 1 -18.1"
     },
     {
-      "position": [
-        -19.35,
-        -21.05
-      ],
-      "type": "NKCompaq",
-      "name": "pc1"
+      "id": "pc1",
+      "posicion": "-19.35 1 -21.05"
     },
     {
-      "position": [
-        -12.8,
-        -20.0
-      ],
-      "type": "NKHub",
-      "name": "hub1"
+      "id": "hub1",
+      "posicion": "-12.8 1 -20.0"
     },
     {
-      "position": [
-        -12.55,
-        -8.55
-      ],
-      "type": "NKHub",
-      "name": "hub2"
+      "id": "hub2",
+      "posicion": "-12.55 1 -8.55"
     },
     {
-      "position": [
-        5.399999999999999,
-        -14.05
-      ],
-      "type": "NKRouter",
-      "name": "r"
+      "id": "r",
+      "posicion": "5.399999999999999 1 -14.05"
     },
     {
-      "position": [
-        15.899999999999999,
-        -19.85
-      ],
-      "type": "NKRouter",
-      "name": "r3"
+      "id": "r3",
+      "posicion": "15.899999999999999 1 -19.85"
     },
     {
-      "position": [
-        17.0,
-        -8.350000000000001
-      ],
-      "type": "NKRouter",
-      "name": "r4"
+      "id": "r4",
+      "posicion": "17.0 1 -8.350000000000001"
     },
     {
-      "position": [
-        27.15,
-        -21.3
-      ],
-      "type": "NKHub",
-      "name": "hub3"
+      "id": "hub3",
+      "posicion": "27.15 1 -21.3"
     },
     {
-      "position": [
-        26.35,
-        -8.350000000000001
-      ],
-      "type": "NKHub",
-      "name": "hub4"
+      "id": "hub4",
+      "posicion": "26.35 1 -8.350000000000001"
     },
     {
-      "position": [
-        -5.800000000000001,
-        -8.149999999999999
-      ],
-      "type": "NKRouter",
-      "name": "r2"
+      "id": "r2",
+      "posicion": "-5.800000000000001 1 -8.149999999999999"
     },
     {
-      "position": [
-        7.5,
-        -7.050000000000001
-      ],
-      "type": "NKRouter",
-      "name": "r5"
+      "id": "r5",
+      "posicion": "7.5 1 -7.050000000000001"
     },
     {
-      "position": [
-        34.75,
-        -22.8
-      ],
-      "type": "NKCompaq",
-      "name": "pc3"
+      "id": "pc3",
+      "posicion": "34.75 1 -22.8"
     },
     {
-      "position": [
-        34.65,
-        -9.8
-      ],
-      "type": "NKCompaq",
-      "name": "pc4"
+      "id": "pc4",
+      "posicion": "34.65 1 -9.8"
     },
     {
-      "position": [
-        -8.25,
-        -2.75
-      ],
-      "type": "NKCompaq",
-      "name": "pc5"
+      "id": "pc5",
+      "posicion": "-8.25 1 -2.75"
     },
     {
-      "position": [
-        1.0500000000000007,
-        -5.100000000000001
-      ],
-      "type": "NKHub",
-      "name": "hub6"
+      "id": "hub6",
+      "posicion": "1.0500000000000007 1 -5.100000000000001"
     }
   ],
-  "connections": [
+  "conexiones": [
     {
-      "type": "link",
-      "from": "hub1",
-      "to": "pc1"
+      "origen": "hub1",
+      "destino": "pc1"
     },
     {
-      "type": "link",
-      "from": "hub1",
-      "to": "r1"
+      "origen": "hub1",
+      "destino": "r1"
     },
     {
-      "type": "link",
-      "from": "hub2",
-      "to": "r2"
+      "origen": "hub2",
+      "destino": "r2"
     },
     {
-      "type": "link",
-      "from": "pc2",
-      "to": "hub2"
+      "origen": "pc2",
+      "destino": "hub2"
     },
     {
-      "type": "link",
-      "from": "r",
-      "to": "r2"
+      "origen": "r",
+      "destino": "r2"
     },
     {
-      "type": "link",
-      "from": "r",
-      "to": "r1"
+      "origen": "r",
+      "destino": "r1"
     },
     {
-      "type": "link",
-      "from": "r3",
-      "to": "r"
+      "origen": "r3",
+      "destino": "r"
     },
     {
-      "type": "link",
-      "from": "r4",
-      "to": "r"
+      "origen": "r4",
+      "destino": "r"
     },
     {
-      "type": "link",
-      "from": "r5",
-      "to": "r"
+      "origen": "r5",
+      "destino": "r"
     },
     {
-      "type": "link",
-      "from": "hub3",
-      "to": "r3"
+      "origen": "hub3",
+      "destino": "r3"
     },
     {
-      "type": "link",
-      "from": "hub4",
-      "to": "r4"
+      "origen": "hub4",
+      "destino": "r4"
     },
     {
-      "type": "link",
-      "from": "hub6",
-      "to": "r5"
+      "origen": "hub6",
+      "destino": "r5"
     },
     {
-      "type": "link",
-      "from": "pc5",
-      "to": "hub6"
+      "origen": "pc5",
+      "destino": "hub6"
     },
     {
-      "type": "link",
-      "from": "pc4",
-      "to": "hub4"
+      "origen": "pc4",
+      "destino": "hub4"
     },
     {
-      "type": "link",
-      "from": "pc3",
-      "to": "hub3"
+      "origen": "pc3",
+      "destino": "hub3"
     }
   ]
 }

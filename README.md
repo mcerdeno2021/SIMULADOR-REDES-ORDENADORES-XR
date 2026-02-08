@@ -9,7 +9,7 @@
 - En el escenario se podrán ver todos estos elementos y el flujo de paquetes en VR y XR. A su vez, se podrán usar varias de las funcionalidades extraídas del software "Wireshark", así como un control de reproducción o un diagrama de secuencia de los paquetes.
 - Servirá como un apoyo didáctico con explicaciones y detalles.
 
-#### Uso con diferentes ordenadore
+#### Uso con diferentes ordenadores
 git reset --hard origin/main -> por si había cambios en el local, eliminarlos.
 git pull origin main -> traer lo que se ha hecho con un push antes, a este ordenador (refrescar el git en el ordenador).
 
@@ -23,7 +23,6 @@ git pull origin main -> traer lo que se ha hecho con un push antes, a este orden
 - Tabla de elementos, la cual consistirá de los tres elementos principales del escenario, con un botón para desplegar, al hacerlo, se podrán ver, por ejemplo, todos los pcs que forman la escena. En cada uno, habrá dos botones, uno de ubicación, el cual llevará al punto de vista de ese elemento; y otro de info, que dará todos los detalles necesarios para entender el funcionamiento de ese elemento, como podría ser el flujo que pasa por él, su ubicación o el papel que tiene dentro del escenario.
 - Minimapa, que será un canvas 2D, que servirá para ver el flujo de una forma más sencilla y práctica, pudiendo acercar y alejar la vista, con unos gráficos mas sencillos, además, tendrá opción de ajustar la velocidad de reproducción.
 - Abrir y cerrar tapa pc cuando lleguen paquetes.
-
 
 ## 2. Primer modelo mensajes y tiempo virtual.
 
@@ -39,7 +38,6 @@ git pull origin main -> traer lo que se ha hecho con un push antes, a este orden
 - Cilindros equiespaciados para el rastro, esferas, ... 
 - Componente nuevo para el reproductor y slider.
 - Se puede arrastrar el deslizador en una escena VR.
-
 
 ## 3. Modelo mensajes, tiempo virtual e historia.
 

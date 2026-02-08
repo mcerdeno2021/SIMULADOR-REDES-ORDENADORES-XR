@@ -139,13 +139,7 @@ AFRAME.registerComponent('slider', {
     this.progress.setAttribute('color', '#666666');
     this.progress.setAttribute('position', `${-this.width/2} 0 0.01`);
     this.el.appendChild(this.progress);
-
-    this.handle = document.createElement('a-circle');
-    this.handle.setAttribute('radius', 0.1);
-    this.handle.setAttribute('color', '#222');
-    this.handle.setAttribute('position', `${-this.width/2} 0 0.02`);
-    this.el.appendChild(this.handle);
-
+  
     // 🔄 Cuando el reloj avanza solo
     this.el.sceneEl.addEventListener('set-time', e => {
       this.setValue(e.detail);
@@ -153,8 +147,6 @@ AFRAME.registerComponent('slider', {
   },
 
   setHandlePosition(localX) {
-    this.handle.object3D.position.x = localX;
-
     const progressWidth = localX + this.width/2;
     this.progress.setAttribute('width', progressWidth);
     this.progress.setAttribute('position', `${-this.width/2 + progressWidth/2} 0 0.01`);
