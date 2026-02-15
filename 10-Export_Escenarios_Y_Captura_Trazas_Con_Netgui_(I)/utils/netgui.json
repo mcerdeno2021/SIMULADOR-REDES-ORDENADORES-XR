@@ -1,0 +1,130 @@
+{
+  "topologia": [
+    {
+      "id": "pc2",
+      "posicion": "-18.45 1 -9.9"
+    },
+    {
+      "id": "r1",
+      "posicion": "-5.5 1 -18.1"
+    },
+    {
+      "id": "pc1",
+      "posicion": "-19.35 1 -21.05"
+    },
+    {
+      "id": "hub1",
+      "posicion": "-12.8 1 -20.0"
+    },
+    {
+      "id": "hub2",
+      "posicion": "-12.55 1 -8.55"
+    },
+    {
+      "id": "r",
+      "posicion": "5.399999999999999 1 -14.05"
+    },
+    {
+      "id": "r3",
+      "posicion": "15.899999999999999 1 -19.85"
+    },
+    {
+      "id": "r4",
+      "posicion": "17.0 1 -8.350000000000001"
+    },
+    {
+      "id": "hub3",
+      "posicion": "27.15 1 -21.3"
+    },
+    {
+      "id": "hub4",
+      "posicion": "26.35 1 -8.350000000000001"
+    },
+    {
+      "id": "r2",
+      "posicion": "-5.800000000000001 1 -8.149999999999999"
+    },
+    {
+      "id": "r5",
+      "posicion": "7.5 1 -7.050000000000001"
+    },
+    {
+      "id": "pc3",
+      "posicion": "34.75 1 -22.8"
+    },
+    {
+      "id": "pc4",
+      "posicion": "34.65 1 -9.8"
+    },
+    {
+      "id": "pc5",
+      "posicion": "-8.25 1 -2.75"
+    },
+    {
+      "id": "hub6",
+      "posicion": "1.0500000000000007 1 -5.100000000000001"
+    }
+  ],
+  "conexiones": [
+    {
+      "origen": "hub1",
+      "destino": "pc1"
+    },
+    {
+      "origen": "hub1",
+      "destino": "r1"
+    },
+    {
+      "origen": "hub2",
+      "destino": "r2"
+    },
+    {
+      "origen": "pc2",
+      "destino": "hub2"
+    },
+    {
+      "origen": "r",
+      "destino": "r2"
+    },
+    {
+      "origen": "r",
+      "destino": "r1"
+    },
+    {
+      "origen": "r3",
+      "destino": "r"
+    },
+    {
+      "origen": "r4",
+      "destino": "r"
+    },
+    {
+      "origen": "r5",
+      "destino": "r"
+    },
+    {
+      "origen": "hub3",
+      "destino": "r3"
+    },
+    {
+      "origen": "hub4",
+      "destino": "r4"
+    },
+    {
+      "origen": "hub6",
+      "destino": "r5"
+    },
+    {
+      "origen": "pc5",
+      "destino": "hub6"
+    },
+    {
+      "origen": "pc4",
+      "destino": "hub4"
+    },
+    {
+      "origen": "pc3",
+      "destino": "hub3"
+    }
+  ]
+}

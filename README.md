@@ -144,3 +144,23 @@ git pull origin main -> traer lo que se ha hecho con un push antes, a este orden
     · Capturar solo en nodos que no esten conectados entre sí, ya que se si un mismo paquete entra de un lado y sale de otro estaría repetido. Con esta implementación no sabríamos lo que tarda en capturar el siguiente nodo dicho paquete (habría que darle un tiempo random de trayecto, que sería igual para todos los paquetes) ni el sentido hacia el que va.
     · Implementar una forma de diferenciar los paquetes, así se podría capturar en todos los nodos y se identificaría que paquete es el mismo, pudiendo además ver el sentido que sigue el paquete así como el tiempo que pasa entre un nodo y otro.
 - Es posible una implementación a tiempo real de netgui haciendo que el formato se pegue directo (investigar más adelante).
+
+#### ???:
+- Qué hace falta para usar el traductor de wireshark?? pip install, tshark??
+- Entender bien el concepto de cómo introducir las cap de wireshark.
+    Se captura desde los terminales de netgui con tcpdump? se usa una que ya exista?
+- Despueś de responder eso, cómo funcionaba lo de que se pegara en el formato necesario en tiempo real la captura en el script.
+- Cuánta info sacar de la cap de Wireshark.
+- Pasar de las capas 1, 2, 3 y 4 del modelo OSI a más altas, qué cambiaría.
+- Cómo hacer la memoria (qué web usar, consejos, ...).
+
+## 10. Export de escenarios y captura de trazas con Netgui (I)
+
+- Una solución sencilla es exportar las capturas como json (quizá peor para pegar directo).
+- La otra opción es usar pyshark, docu: https://github.com/KimiNewt/pyshark/
+    Con esto se puede hacer un parsing de paquetes de Wireshark.
+    También se puede hacer una lectura del fichero en tiempo real.
+    Y escuchar un servidor remoto.
+- Siguiendo esta última opción, el programa se podría montar en un servidor web y escuchar en directo los cambios.
+- En cuanto a la info que usar de los paquetes, el objetivo final sería tener un Wireshark dentro del propio programa, pudiendo interactuar con los paquetes y ver todos los niveles de información.
+- Comenzar la memoria con la documentación en el correo que ha mandado Jesús.
