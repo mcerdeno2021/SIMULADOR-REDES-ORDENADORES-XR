@@ -10,7 +10,7 @@
 - Servirá como un apoyo didáctico con explicaciones y detalles.
 
 #### Uso con diferentes ordenadores
-git reset --hard origin/main -> por si había cambios en el local, eliminarlos.
+git reset --hard origin/main -> borrar cambios en local y volver al último commit (necesario si hay cambios y quieres hacer pull)
 git pull origin main -> traer lo que se ha hecho con un push antes, a este ordenador (refrescar el git en el ordenador).
 
 ## 1. Primer diseño de los PCs, Routers y Switches en el escenario principal.
@@ -164,3 +164,15 @@ git pull origin main -> traer lo que se ha hecho con un push antes, a este orden
 - Siguiendo esta última opción, el programa se podría montar en un servidor web y escuchar en directo los cambios.
 - En cuanto a la info que usar de los paquetes, el objetivo final sería tener un Wireshark dentro del propio programa, pudiendo interactuar con los paquetes y ver todos los niveles de información.
 - Comenzar la memoria con la documentación en el correo que ha mandado Jesús.
+
+#### ???:
+- Cómo se va a usar el proyecto (y presentar):
+    - Desplegado en un servidor
+    - En un enlace en la web
+    - Con el repo clonado
+    Según la opción hay que decidir cómo se gestiona el import de pyshark (requirements para instalar con un venv, web con backend)
+- Hay que leer más de un pcap (uno por cada elemento e interfaz)
+- En Netgui hay que configurar los routers
+- Para relacionar IPs de la cap y nkp:
+    - Definir la relación en el conversor de antemano
+    - Opción automática (detectar qué IP solo aparece en un extremo → probablemente PC?)
