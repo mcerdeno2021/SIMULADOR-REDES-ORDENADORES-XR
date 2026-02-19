@@ -167,12 +167,27 @@ git pull origin main -> traer lo que se ha hecho con un push antes, a este orden
 
 #### ???:
 - Cómo se va a usar el proyecto (y presentar):
-    - Desplegado en un servidor
-    - En un enlace en la web
-    - Con el repo clonado
-    Según la opción hay que decidir cómo se gestiona el import de pyshark (requirements para instalar con un venv, web con backend)
-- Hay que leer más de un pcap (uno por cada elemento e interfaz)
-- En Netgui hay que configurar los routers
+    - Desplegado en un servidor.
+    - En un enlace en la web.
+    - Con el repo clonado.
+    Según la opción hay que decidir cómo se gestiona el import de pyshark (requirements para instalar con un venv, web con backend).
+- Hay que leer más de un pcap (uno por cada elemento e interfaz).
+- En Netgui hay que configurar los routers.
 - Para relacionar IPs de la cap y nkp:
-    - Definir la relación en el conversor de antemano
-    - Opción automática (detectar qué IP solo aparece en un extremo → probablemente PC?)
+    - Definir la relación en el conversor de antemano.
+    - Opción automática (detectar qué IP solo aparece en un extremo → probablemente PC?).
+- Solo hay origen, destino y momento en el que pasa se captura el paquete, cómo puedo relacionarlo para mostrarlo.
+
+## 11. Export de escenarios y captura de trazas con Netgui (II)
+- No hay problema por tener más de una captura (aunque para una prueba de concepto valdría con usar un solo router entre dos pcs y capturar con any), pero hay que tener en cuenta que habría que relacionar todas las capturas para saber que paquetes corresponden con otros, borrar repetidos, etc.
+    Hay que tener en cuenta también para esto que los tiempos de entrada en un lado y de salida en otro no van a coincidir por completo.
+    De momento para la prueba de concepto es viable poner el timestamp que se captura en la traza y añadirle un tiempo x que es lo que tardará en llegar.
+- En cuanto a la relación entre los datos de Netgui y las trazas:
+    - Para las pruebas de concepto es viable escribir manualmente la relación IP - Nombre Netgui.
+    - Es posible desde Netgui sacar también la IP (Eva, Pedro?).
+- El objetivo ideal sería:
+    - Mediante websockets mantener una conexión cliente - servidor, esta será a tiempo real, escuchando todas las peticiones necesarias.
+    1. El cliente inicia en una web donde elige el escenario (entre varias posibilidades o generándolo a mano?).
+    2. Una vez definido eso, mediante unos scripts, se obtendrá el nkp y el socket se quedará escuchando.
+    3. El cliente podrá ver en XR el escenario y con un script que pueda conectarse con Netgui se ejecutarán en los terminales de cada equipo los comandos necesarios (entre ellos las capturas a realizar, sacar las IPs, incluso el ping, por ej.).
+- Definir hacia qué lado avanzar (hacer lo más parecido a un wireshark interactivo, el objetivo en un servidor que he puesto, ...).
