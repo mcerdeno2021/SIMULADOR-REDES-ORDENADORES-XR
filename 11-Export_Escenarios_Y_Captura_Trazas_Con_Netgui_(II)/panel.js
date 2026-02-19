@@ -9,19 +9,39 @@ AFRAME.registerComponent('panel', {
 
   init: function () {
     const el = this.el;
-    const {origenPos, destinoPos, origen, destino} = this.data;
+    const { origenPos, destinoPos, origen, destino } = this.data;
+
     this.titulo = `${origen} -> ${destino}`;
 
-    const [x1, y1, z1] = origenPos.split(' ').map(Number);
-    const [x2, y2, z2] = destinoPos.split(' ').map(Number);
+    // 🔎 Validación fuerte de strings
+    if (!origenPos || !destinoPos) {
+      console.warn("Panel sin posiciones válidas:", this.data);
+      return;
+    }
 
-    const dx = x2 - x1;
-    const dz = z2 - z1;
+    const parseVec = (str) => {
+      const parts = str.trim().split(/\s+/).map(n => parseFloat(n));
+      if (parts.length !== 3 || parts.some(n => !Number.isFinite(n))) {
+        return null;
+      }
+      return { x: parts[0], y: parts[1], z: parts[2] };
+    };
+
+    const o = parseVec(origenPos);
+    const d = parseVec(destinoPos);
+
+    if (!o || !d) {
+      console.warn("Posiciones mal formadas:", origenPos, destinoPos);
+      return;
+    }
+
+    const dx = d.x - o.x;
+    const dz = d.z - o.z;
     const distancia = Math.sqrt(dx * dx + dz * dz);
 
     const puntoMedio = {
-      x: x1 + dx / 2,
-      z: z1 + dz / 2
+      x: o.x + dx / 2,
+      z: o.z + dz / 2
     };
 
     const angulo = Math.atan2(dx, dz) * 180 / Math.PI - 90;
@@ -40,8 +60,8 @@ AFRAME.registerComponent('panel', {
     // CLICK → alternar modo conexión
     el.addEventListener('click', () => {
       el.sceneEl.emit('toggle-conexion', {
-        origen: this.data.origen,
-        destino: this.data.destino,
+        origen,
+        destino,
         panelId: el.id
       });
     });

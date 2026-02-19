@@ -27,7 +27,7 @@ AFRAME.registerComponent('historia', {
           if (nodo.id.includes('pc')) e.setAttribute('ordenador', '');
           else if (nodo.id.includes('r')) e.setAttribute('router', '');
           else if (nodo.id.includes('s')) e.setAttribute('switch', '');
-          else if (nodo.id.includes('h')) e.setAttribute('hub', '');
+          else if (nodo.id.includes('hub')) e.setAttribute('hub', '');
 
           e.setAttribute('position', nodo.posicion);
           e.setAttribute('id', nodo.id);
@@ -54,15 +54,15 @@ AFRAME.registerComponent('historia', {
         // -------- MENSAJES --------
         const intervalo = this.data.intervaloPrecision;
 
-        mensajes.forEach((m, i) => {
+        mensajes.forEach((m) => {
           const t0 = Math.round(m.timestamp / intervalo) * intervalo;
-          const t1 = t0 + 0.2;
+          const t1 = t0 + 5;
 
           const origen = document.querySelector(`#${m.origen}`);
           const destino = document.querySelector(`#${m.destino}`);
 
           this.historias.push({
-            id: i + 1,
+            id: m.id,
             tiempoOrigen: t0,
             tiempoDestino: t1,
             origenPos: origen.getAttribute('position'),
@@ -75,7 +75,14 @@ AFRAME.registerComponent('historia', {
           });
 
           el.emit('nuevoPaquete', m)
+
+          this.max = 0;
+          if (t1 > this.max) {
+            this.max = t1;
+          }
         });  
+
+        el.emit('max', this.max);
 
         this.el.sceneEl.addEventListener('salto-temporal', e => {
           this.forzarEstadoPorSaltoTemporal(e.detail.tiempo);
@@ -152,6 +159,7 @@ AFRAME.registerComponent('historia', {
         const antiguedad = tiempo - p.tiempoDestino;
         y = Y_SUELO + antiguedad * ALTURA_POR_TICK;
       }
+
       // CREAR
       if (progreso >= 0 && p.ultimoProgreso === null) {
         this.el.emit('mensaje', { id: p.id, x, y, z, estado: 'Crear', conexion: `${p.origenNom}-${p.destinoNom}`, tiempo: tiempo, conexion: p.conexion});

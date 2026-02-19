@@ -10,19 +10,16 @@ AFRAME.registerComponent('reloj', {
 
     const textoTiempo = document.querySelector('#texto-tiempo');
 
-    // 🔹 Cargar tiempo máximo UNA sola vez
-    fetch('escenario.json')
-      .then(r => r.json())
-      .then(datos => {
-        const { mensajes } = datos;
-        this.maxTiempo = Math.max(...mensajes.map(m => m.tiempoDestino));
-        actualizarHUD(0, this.maxTiempo);
-      });
+    this.el.sceneEl.addEventListener('max', e => {
+      this.maxTiempo = e.detail;
+    });
 
     const actualizarHUD = (actual, max) => {
       if (!textoTiempo) return;
       textoTiempo.setAttribute('value', `${actual.toFixed(2)} / ${max.toFixed(2)}`);
     };
+
+    actualizarHUD(0, this.maxTiempo);
 
     // 🎮 BOTONES
     document.querySelector('#btn-pausa').addEventListener('click', () => {
@@ -124,12 +121,9 @@ AFRAME.registerComponent('slider', {
     this.dragging = false;
     this.max = 1;
 
-    fetch('escenario.json')
-      .then(r => r.json())
-      .then(datos => {
-        const { mensajes } = datos;
-        this.max = Math.max(...mensajes.map(m => m.tiempoDestino));
-      });
+    this.el.sceneEl.addEventListener('max', e => {
+      this.max = e.detail;
+    });
 
     this.bar = document.createElement('a-plane');
     this.bar.setAttribute('width', this.width);
