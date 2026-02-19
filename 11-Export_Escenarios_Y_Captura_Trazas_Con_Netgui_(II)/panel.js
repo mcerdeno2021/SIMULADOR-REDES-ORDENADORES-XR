@@ -124,7 +124,7 @@ AFRAME.registerComponent('modo-escena', {
     });
 
     // 🔹 NODOS Y CABLES → solo origen y destino
-    document.querySelectorAll('[ordenador],[router],[switch],[cable]').forEach(el => {
+    document.querySelectorAll('[ordenador],[router],[switch],[hub],[cable]').forEach(el => {
       el.object3D.visible = (el.id === origen || el.id === destino);
     });
 
@@ -160,7 +160,7 @@ AFRAME.registerComponent('modo-escena', {
     });
 
     // 🔹 Restaurar nodos
-    document.querySelectorAll('[ordenador],[router],[switch],[cable]').forEach(el => {
+    document.querySelectorAll('[ordenador],[router],[switch],[hub],[cable]').forEach(el => {
       el.object3D.visible = true;
     });
 

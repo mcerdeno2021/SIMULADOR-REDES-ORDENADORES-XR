@@ -11,7 +11,7 @@ AFRAME.registerComponent('resumen', {
     this.panel.setAttribute('position', '-2 3.5 -3');
     this.panel.setAttribute('width', '6');
     this.panel.setAttribute('height', '4.5');
-    this.panel.setAttribute('color', '#111');
+    this.panel.setAttribute('color', '#bb0808');
     this.panel.setAttribute('opacity', '0.92');
     this.panel.setAttribute('material', 'side: double');
     el.appendChild(this.panel);
@@ -95,9 +95,9 @@ AFRAME.registerComponent('resumen', {
 
   generarTextoFila: function (m) {
     const id = String(m.id).padStart(3, ' ');
-    const time = m.timestamp.toFixed(6).padStart(9);
-    const source = (m.origen_id || '?').padEnd(6);
-    const dest = (m.destino_id || '?').padEnd(6);
+    const time = m.timestamp.toFixed(6).padStart(8);
+    const source = (m.origen || '?').padEnd(6);
+    const dest = (m.destino || '?').padEnd(6);
     const proto = (m.protocol || '').padEnd(5);
     const len = String(m.length || 0).padStart(4);
     const info = m.info || '';

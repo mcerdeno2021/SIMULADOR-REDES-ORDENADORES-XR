@@ -24,9 +24,10 @@ AFRAME.registerComponent('historia', {
           mapaTopologia[nodo.id] = nodo.posicion;
 
           const e = document.createElement('a-entity');
-          if (nodo.id.includes('PC')) e.setAttribute('ordenador', '');
-          else if (nodo.id.includes('Router')) e.setAttribute('router', '');
-          else if (nodo.id.includes('Switch')) e.setAttribute('switch', '');
+          if (nodo.id.includes('pc')) e.setAttribute('ordenador', '');
+          else if (nodo.id.includes('r')) e.setAttribute('router', '');
+          else if (nodo.id.includes('s')) e.setAttribute('switch', '');
+          else if (nodo.id.includes('h')) e.setAttribute('hub', '');
 
           e.setAttribute('position', nodo.posicion);
           e.setAttribute('id', nodo.id);
@@ -54,14 +55,16 @@ AFRAME.registerComponent('historia', {
         const intervalo = this.data.intervaloPrecision;
 
         mensajes.forEach((m, i) => {
-          const t0 = Math.round(m.tiempoOrigen / intervalo) * intervalo;
+          const t0 = Math.round(m.timestamp / intervalo) * intervalo;
+          const t1 = t0 + 0.2;
 
           const origen = document.querySelector(`#${m.origen}`);
           const destino = document.querySelector(`#${m.destino}`);
 
           this.historias.push({
             id: i + 1,
-            timestamp: t0,
+            tiempoOrigen: t0,
+            tiempoDestino: t1,
             origenPos: origen.getAttribute('position'),
             destinoPos: destino.getAttribute('position'),
             destinoNom: m.destino,
@@ -70,7 +73,8 @@ AFRAME.registerComponent('historia', {
             destinoNom: destino.getAttribute('id'),
             conexion: `${origen.getAttribute('id')} -> ${destino.getAttribute('id')}`
           });
-          el.emit('nuevoPaquete', mensajes)
+
+          el.emit('nuevoPaquete', m)
         });  
 
         this.el.sceneEl.addEventListener('salto-temporal', e => {

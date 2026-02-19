@@ -125,7 +125,7 @@ if __name__ == "__main__":
     OUTPUT_FILE = os.path.join(BASE_DIR, "../escenario.json")
 
     topologia, conexiones = convertir_nkp(NKP_FILE)
-    mensajes = convertir_pcap(PCAP_FILE)
+    mensajes = convertir_pcap(PCAP_FILE, MAPA_IP_NODO)
 
     escenario = {
         "topologia": topologia,

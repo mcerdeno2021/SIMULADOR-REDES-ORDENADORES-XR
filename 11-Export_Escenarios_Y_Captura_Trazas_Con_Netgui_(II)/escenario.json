@@ -131,6 +131,8 @@
     {
       "id": 1,
       "timestamp": 0.0,
+      "origen": "pc1",
+      "destino": "pc2",
       "ethernet": {
         "src_mac": "00:00:bb:10:20:10",
         "dst_mac": "00:00:bb:02:04:01"
@@ -148,6 +150,8 @@
     {
       "id": 2,
       "timestamp": 0.002682924270629883,
+      "origen": "pc2",
+      "destino": "pc1",
       "ethernet": {
         "src_mac": "00:00:bb:02:04:01",
         "dst_mac": "00:00:bb:10:20:10"
@@ -165,6 +169,8 @@
     {
       "id": 3,
       "timestamp": 0.004737138748168945,
+      "origen": "pc1",
+      "destino": "pc2",
       "ethernet": {
         "src_mac": "00:00:bb:10:20:10",
         "dst_mac": "00:00:bb:02:04:01"
@@ -182,6 +188,8 @@
     {
       "id": 4,
       "timestamp": 0.031080007553100586,
+      "origen": "pc2",
+      "destino": "pc1",
       "ethernet": {
         "src_mac": "00:00:bb:02:04:01",
         "dst_mac": "00:00:bb:10:20:10"
@@ -199,6 +207,8 @@
     {
       "id": 5,
       "timestamp": 0.03416013717651367,
+      "origen": "pc1",
+      "destino": "pc2",
       "ethernet": {
         "src_mac": "00:00:bb:10:20:10",
         "dst_mac": "00:00:bb:02:04:01"
@@ -216,6 +226,8 @@
     {
       "id": 6,
       "timestamp": 0.06254696846008301,
+      "origen": "pc2",
+      "destino": "pc1",
       "ethernet": {
         "src_mac": "00:00:bb:02:04:01",
         "dst_mac": "00:00:bb:10:20:10"
@@ -233,6 +245,8 @@
     {
       "id": 7,
       "timestamp": 19.799397945404053,
+      "origen": "pc1",
+      "destino": "pc2",
       "ethernet": {
         "src_mac": "00:00:bb:10:20:10",
         "dst_mac": "00:00:bb:02:04:01"
@@ -246,6 +260,8 @@
     {
       "id": 8,
       "timestamp": 19.80124807357788,
+      "origen": "pc2",
+      "destino": "pc1",
       "ethernet": {
         "src_mac": "00:00:bb:02:04:01",
         "dst_mac": "00:00:bb:10:20:10"
@@ -259,6 +275,8 @@
     {
       "id": 9,
       "timestamp": 20.801121950149536,
+      "origen": "pc1",
+      "destino": "pc2",
       "ethernet": {
         "src_mac": "00:00:bb:10:20:10",
         "dst_mac": "00:00:bb:02:04:01"
@@ -272,6 +290,8 @@
     {
       "id": 10,
       "timestamp": 20.80993103981018,
+      "origen": "pc2",
+      "destino": "pc1",
       "ethernet": {
         "src_mac": "00:00:bb:02:04:01",
         "dst_mac": "00:00:bb:10:20:10"
@@ -285,6 +305,8 @@
     {
       "id": 11,
       "timestamp": 21.811080932617188,
+      "origen": "pc1",
+      "destino": "pc2",
       "ethernet": {
         "src_mac": "00:00:bb:10:20:10",
         "dst_mac": "00:00:bb:02:04:01"
@@ -298,6 +320,8 @@
     {
       "id": 12,
       "timestamp": 21.812747955322266,
+      "origen": "pc2",
+      "destino": "pc1",
       "ethernet": {
         "src_mac": "00:00:bb:02:04:01",
         "dst_mac": "00:00:bb:10:20:10"
@@ -311,6 +335,8 @@
     {
       "id": 13,
       "timestamp": 22.81106996536255,
+      "origen": "pc1",
+      "destino": "pc2",
       "ethernet": {
         "src_mac": "00:00:bb:10:20:10",
         "dst_mac": "00:00:bb:02:04:01"
@@ -324,6 +350,8 @@
     {
       "id": 14,
       "timestamp": 22.813290119171143,
+      "origen": "pc2",
+      "destino": "pc1",
       "ethernet": {
         "src_mac": "00:00:bb:02:04:01",
         "dst_mac": "00:00:bb:10:20:10"
@@ -337,6 +365,8 @@
     {
       "id": 15,
       "timestamp": 31.56993007659912,
+      "origen": "pc1",
+      "destino": "pc2",
       "ethernet": {
         "src_mac": "00:00:bb:10:20:10",
         "dst_mac": "00:00:bb:02:04:01"
@@ -355,6 +385,8 @@
     {
       "id": 16,
       "timestamp": 31.572418928146362,
+      "origen": "pc2",
+      "destino": "pc1",
       "ethernet": {
         "src_mac": "00:00:bb:02:04:01",
         "dst_mac": "00:00:bb:10:20:10"
@@ -373,6 +405,8 @@
     {
       "id": 17,
       "timestamp": 31.572580099105835,
+      "origen": "pc1",
+      "destino": "pc2",
       "ethernet": {
         "src_mac": "00:00:bb:10:20:10",
         "dst_mac": "00:00:bb:02:04:01"
@@ -391,6 +425,8 @@
     {
       "id": 18,
       "timestamp": 31.572768926620483,
+      "origen": "pc1",
+      "destino": "pc2",
       "ethernet": {
         "src_mac": "00:00:bb:10:20:10",
         "dst_mac": "00:00:bb:02:04:01"
@@ -409,6 +445,8 @@
     {
       "id": 19,
       "timestamp": 31.574597120285034,
+      "origen": "pc2",
+      "destino": "pc1",
       "ethernet": {
         "src_mac": "00:00:bb:02:04:01",
         "dst_mac": "00:00:bb:10:20:10"
@@ -427,6 +465,8 @@
     {
       "id": 20,
       "timestamp": 31.57553195953369,
+      "origen": "pc2",
+      "destino": "pc1",
       "ethernet": {
         "src_mac": "00:00:bb:02:04:01",
         "dst_mac": "00:00:bb:10:20:10"
@@ -445,6 +485,8 @@
     {
       "id": 21,
       "timestamp": 31.576378107070923,
+      "origen": "pc2",
+      "destino": "pc1",
       "ethernet": {
         "src_mac": "00:00:bb:02:04:01",
         "dst_mac": "00:00:bb:10:20:10"
@@ -463,6 +505,8 @@
     {
       "id": 22,
       "timestamp": 31.576442003250122,
+      "origen": "pc1",
+      "destino": "pc2",
       "ethernet": {
         "src_mac": "00:00:bb:10:20:10",
         "dst_mac": "00:00:bb:02:04:01"
@@ -481,6 +525,8 @@
     {
       "id": 23,
       "timestamp": 31.577502965927124,
+      "origen": "pc1",
+      "destino": "pc2",
       "ethernet": {
         "src_mac": "00:00:bb:10:20:10",
         "dst_mac": "00:00:bb:02:04:01"
@@ -499,6 +545,8 @@
     {
       "id": 24,
       "timestamp": 31.5786030292511,
+      "origen": "pc2",
+      "destino": "pc1",
       "ethernet": {
         "src_mac": "00:00:bb:02:04:01",
         "dst_mac": "00:00:bb:10:20:10"
