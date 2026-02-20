@@ -9,24 +9,24 @@ AFRAME.registerComponent('mensaje', {
     });
 
     this.el.addEventListener('mensaje', e => {
-      const { id, x, y, z, estado, conexion } = e.detail;
+    const { id, x, y, z, estado, conexion, visible } = e.detail;
 
-      const entidad = this.crearEntidadSiNoExiste(id, x, y, z, conexion);
+    const entidad = this.crearEntidadSiNoExiste(id, x, y, z, conexion);
 
-      if (estado === "Crear" || estado === "Mover") {
-        entidad.setAttribute('visible', true);
-        entidad.setAttribute('position', `${x} ${y} ${z}`);
-      }
+    if (estado === "Crear" || estado === "Mover") {
+      entidad.setAttribute('visible', visible);
+      entidad.setAttribute('position', `${x} ${y} ${z}`);
+    }
 
-      if (estado === "Acabar") {
-        entidad.setAttribute('visible', false);
-      }
+    if (estado === "Acabar") {
+      entidad.setAttribute('visible', false);
+    }
 
-      const traza = this.crearTrazaSiNoExiste(id, conexion, x, y, z);
-      if (traza) {
-        this.actualizarTraza(traza, x, y, z);
-      }
-    });
+    const traza = this.crearTrazaSiNoExiste(id, conexion, x, y, z);
+    if (traza) {
+      this.actualizarTraza(traza, x, y, z);
+    }
+  });
   },
 
   // ===============================

@@ -8,16 +8,16 @@ AFRAME.registerComponent('resumen', {
 
     // 🪟 PANEL PRINCIPAL
     this.panel = document.createElement('a-plane');
-    this.panel.setAttribute('position', '-2 3.5 -3');
+    this.panel.setAttribute('position', '0 5 -20');
     this.panel.setAttribute('width', '6');
-    this.panel.setAttribute('height', '4.5');
-    this.panel.setAttribute('color', '#bb0808');
+    this.panel.setAttribute('height', '6');
+    this.panel.setAttribute('color', '#000000');
     this.panel.setAttribute('opacity', '0.92');
     this.panel.setAttribute('material', 'side: double');
     el.appendChild(this.panel);
 
     this.contenedor = document.createElement('a-entity');
-    this.contenedor.setAttribute('position', '0.5 1.8 0.02');
+    this.contenedor.setAttribute('position', '0.5 2.5 0.02');
     this.panel.appendChild(this.contenedor);
 
     // 🧾 CABECERA estilo Wireshark
@@ -150,7 +150,7 @@ AFRAME.registerComponent('resumen', {
     }
 
     const detalle = document.createElement('a-entity');
-    detalle.setAttribute('position', '0 -0.22 0');
+    detalle.setAttribute('position', '3 -0.22 0');
     detalle.setAttribute('text', {
       value: detalleTexto,
       color: '#bbbbbb',

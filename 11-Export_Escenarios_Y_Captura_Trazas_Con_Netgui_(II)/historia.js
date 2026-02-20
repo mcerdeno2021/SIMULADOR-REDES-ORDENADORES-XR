@@ -131,17 +131,17 @@ AFRAME.registerComponent('historia', {
 
     paquetes.forEach(p => {
 
-      // FILTRADO POR CONEXIÓN ACTIVA
+      // FILTRADO POR CONEXIÓN ACTIVA (solo visibilidad)
       const modo = this.el.sceneEl.components['modo-escena'];
-      if (
-        modo &&
-        modo.modo === 'conexion' &&
-        !(
-          p.origenNom === modo.conexionActiva.origen &&
-          p.destinoNom === modo.conexionActiva.destino
-        )
-      ) {
-        return;
+
+      let visible = true;
+
+      if (modo && modo.modo === 'conexion') {
+        visible =
+          (p.origenNom === modo.conexionActiva.origen &&
+          p.destinoNom === modo.conexionActiva.destino) ||
+          (p.origenNom === modo.conexionActiva.destino &&
+          p.destinoNom === modo.conexionActiva.origen);
       }
 
       // CÁLCULO DE PROGRESO
@@ -162,15 +162,36 @@ AFRAME.registerComponent('historia', {
 
       // CREAR
       if (progreso >= 0 && p.ultimoProgreso === null) {
-        this.el.emit('mensaje', { id: p.id, x, y, z, estado: 'Crear', conexion: `${p.origenNom}-${p.destinoNom}`, tiempo: tiempo, conexion: p.conexion});
+        this.el.emit('mensaje', {
+          id: p.id,
+          x, y, z,
+          estado: 'Crear',
+          conexion: p.conexion,
+          visible
+        });
       }
+
       // MOVER
       if (progreso >= 0) {
-        this.el.emit('mensaje', { id: p.id, x, y, z, estado: 'Mover', conexion: `${p.origenNom}-${p.destinoNom}`, tiempo: tiempo, conexion: p.conexion});
+        this.el.emit('mensaje', {
+          id: p.id,
+          x, y, z,
+          estado: 'Mover',
+          conexion: p.conexion,
+          visible
+        });
       }
+
       // FINAL
       if (progreso >= 1 && (p.ultimoProgreso === null || p.ultimoProgreso < 1)) {
-        this.el.emit('mensaje', { id: p.id, x, y, z, estado: 'Acabar', conexion: `${p.origenNom}-${p.destinoNom}`, tiempo: tiempo, conexion: p.conexion});
+        this.el.emit('mensaje', {
+          id: p.id,
+          x, y, z,
+          estado: 'Acabar',
+          conexion: p.conexion,
+          visible
+        });
+
         this.el.emit('mensaje-llegado', {
           id: p.id,
           destino: p.destinoNom,

@@ -131,11 +131,6 @@ AFRAME.registerComponent('modo-escena', {
       el.setAttribute('panel', 'activa', esActivo);
     });
 
-    // 🔹 MENSAJES → oculto todos
-    document.querySelectorAll('.mensaje').forEach(mensaje => {
-      mensaje.object3D.visible = false;
-    });
-
     // Dejo los del panel activo
     document.querySelectorAll('.mensaje').forEach(mensaje => {
       if (this.mismaConexion(mensaje.dataset.conexion, panelId)) {
