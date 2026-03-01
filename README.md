@@ -179,6 +179,7 @@ git pull origin main -> traer lo que se ha hecho con un push antes, a este orden
 - Solo hay origen, destino y momento en el que pasa se captura el paquete, cómo puedo relacionarlo para mostrarlo.
 
 ## 11. Export de escenarios y captura de trazas con Netgui (II)
+
 - No hay problema por tener más de una captura (aunque para una prueba de concepto valdría con usar un solo router entre dos pcs y capturar con any), pero hay que tener en cuenta que habría que relacionar todas las capturas para saber que paquetes corresponden con otros, borrar repetidos, etc.
     Hay que tener en cuenta también para esto que los tiempos de entrada en un lado y de salida en otro no van a coincidir por completo.
     De momento para la prueba de concepto es viable poner el timestamp que se captura en la traza y añadirle un tiempo x que es lo que tardará en llegar.
@@ -191,3 +192,31 @@ git pull origin main -> traer lo que se ha hecho con un push antes, a este orden
     2. Una vez definido eso, mediante unos scripts, se obtendrá el nkp y el socket se quedará escuchando.
     3. El cliente podrá ver en XR el escenario y con un script que pueda conectarse con Netgui se ejecutarán en los terminales de cada equipo los comandos necesarios (entre ellos las capturas a realizar, sacar las IPs, incluso el ping, por ej.).
 - Definir hacia qué lado avanzar (hacer lo más parecido a un wireshark interactivo, el objetivo en un servidor que he puesto, ...).
+
+# 12. Export con Netgui/Kathará
+
+- Lo primero es que el formato de exportado de los paquetes funcione.
+- El objetivo no será con tiempo real:
+    La idea sería que se desplegase un servidor web como hace live server, que serviria el html con la realidad aumentada (vale igual el servidor de una línea de python).
+    Este servidor estará pegado a netgui (esto puedo más adelante ser más profesional, de momento con que reciba los ficheros) y deje los ficheros que genera en un sitio en el que al programa le sirva.
+    Una vez funcionase cada segundo (por ej.) se volvería a reconectar al fichero y vería si ha cambiado y pondría un icono para indicar que hay novedades.
+        Esto recargaría solo ese fichero no toda la escena, sin tener que salir de la escena y volver a entrar.
+            En un ejemplo de ping que se haga cada cinco segundos, cuando vaya actualizando tendré otro ping, por ej.
+- Para la información se puede:
+    Leer en un panel que va pegado con el paquete.
+    Usar un panel como wireshark.
+    Usar como referencia para los temas visuales -> https://pheras.gitlab.io/wirexrk/demos/ping/
+- Sobre Netgui/Kathará
+    Tiene la función "start pcap"/"stop pcap"
+        Se usa eso para cada captura.
+    Usa los dominios de colisión.
+        Es donde el paquete es el mismo.
+        Genera cada captura con dominiocolision.pcap en cada uno.
+    En la carpeta donde he lanzado el escenario se crea una caperta shared y se guardan las captura ahí.
+        En el domain.conf se puede ver a q dominio pertecene cada elemento.
+    Las capturas dominio"c" son las capturas en la que se comenta en cada paquete con todas las relaciones.
+    Con all_c se hace un merge donde estan también los comentarios (también se ha visto como merged_capture).
+        Aparece además de como pcap como json (se usa pyshark).
+    machineNames.json genera todas los relaciones IP, links, ... Lo que es la topología.
+- Sería útil representar los diagramas de TCP.
+- Necesario usar el componente lookat en la mayoria de elementos, carteles, ¿topología?.

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>ExportConNetgui-Kathará</title>
+
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+
+  <script src="mensaje.js" defer></script>
+  <script src="reloj.js" defer></script>
+  <script src="historia.js" defer></script>
+  <script src="aspecto.js" defer></script>
+  <script src="panel.js" defer></script>
+  <script src="visor.js" defer></script>
+</head>
+
+<body>
+
+  <a-scene
+    fog="type: exponential; color: #cbe8ff; density: 0"
+    mensaje
+    reloj
+    historia
+    modo-escena
+    resumen>
+
+    <!-- CIELO Y LUCES -->
+    <a-sky color="#87CEEB"></a-sky>
+
+    <a-entity
+      light="type: ambient; color: #fff1c1; intensity: 0.8"
+      position="0 40 0">
+    </a-entity>
+
+    <!-- SUELO -->
+    <a-plane
+      position="0 0 0"
+      height="500"
+      width="500"
+      color="#caffba"
+      rotation="-90 0 0">
+    </a-plane>
+
+    <!-- RAYCASTER -->
+    <a-entity
+      cursor="rayOrigin: mouse"
+      raycaster="objects: .btn, .huella, .fila, .panel">
+    </a-entity>
+
+    <!-- CÁMARA Y UI -->
+    <a-entity position="5 2 17" rotation="0 0 0">
+      <a-entity camera wasd-controls look-controls>
+
+        <a-entity id="camara" position="0 -1 -3">
+          <a-entity id="control"></a-entity>
+          
+          <a-circle id="btn-inicio" class="btn"
+            color="#000000" radius="0.2"
+            position="-1.2 -0.3 0">
+            <a-text value="|<" align="center" width="2"></a-text>
+          </a-circle>
+
+          <a-circle id="btn-retroceder" class="btn"
+            color="#000000" radius="0.2"
+            position="-0.6 -0.3 0">
+            <a-text value="<<" align="center" width="2"></a-text>
+          </a-circle>
+
+          <a-circle id="btn-pausa" class="btn"
+            color="#000000" radius="0.2"
+            position="0 -0.3 0">
+            <a-text value="||" align="center" width="2"></a-text>
+          </a-circle>
+
+          <a-circle id="btn-avanzar" class="btn"
+            color="#000000" radius="0.2"
+            position="0.6 -0.3 0">
+            <a-text value=">>" align="center" width="2"></a-text>
+          </a-circle>
+
+          <a-circle id="btn-final" class="btn"
+            color="#000000" radius="0.2"
+            position="1.2 -0.3 0">
+            <a-text value=">|" align="center" width="2"></a-text>
+          </a-circle>
+
+          <a-entity position="3.25 -0.3 0">
+            <a-circle id="btn-vel-menos" class="btn"
+              color="#000000" radius="0.1"
+              position="-0.55 0 0">
+              <a-text value="-" align="center" width="3"></a-text>
+            </a-circle>
+
+            <a-text position="0 0 0" id="velocidad-valor"
+                value="1.0x" align="center" color="#000" width="3.5">
+            </a-text>
+
+            <a-circle id="btn-vel-mas" class="btn"
+              color="#000000" radius="0.1"
+              position="0.55 0 0">
+              <a-text value="+" align="center" width="2"></a-text>
+            </a-circle>
+          </a-entity>
+
+          <a-entity position="-3.25 -0.3 0">
+            <a-text id="texto-tiempo" align="center" width="3.5" color="#000000" value="0.0 / 0.0"></a-text>
+          </a-entity>
+
+          <a-entity slider position="0 0.2 0"></a-entity>
+
+        </a-entity>
+      </a-entity>
+    </a-entity>
+
+  </a-scene>
+
+</body>
+</html>
