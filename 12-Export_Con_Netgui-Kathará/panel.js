@@ -51,7 +51,7 @@ AFRAME.registerComponent('panel', {
     el.setAttribute('height', 1);
     el.setAttribute('width', distancia);
     el.setAttribute('side', 'double');
-    el.setAttribute('position', `${puntoMedio.x} 0 ${puntoMedio.z}`);
+    el.setAttribute('position', `${puntoMedio.x} 0.5 ${puntoMedio.z}`);
     el.setAttribute('rotation', `0 ${angulo} 0`);
 
     this.texto();

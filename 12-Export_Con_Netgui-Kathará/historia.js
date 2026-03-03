@@ -13,6 +13,9 @@ AFRAME.registerComponent('historia', {
     this.paneles = [];
     this.ejes = [];
 
+    this.interfacesVisuales = [];
+    this.dominiosVisuales = [];
+
     fetch('handlers/escenario.json')
       .then(r => r.json())
       .then(datos => {
@@ -101,6 +104,12 @@ AFRAME.registerComponent('historia', {
 
           el.appendChild(panel);
           this.paneles.push(panel);
+
+          // ⬇️ IMPORTANTE
+          setTimeout(() => {
+            this.crearCartelesInterfaces(links);
+            this.crearDominiosColision(links);
+          }, 0);
         });
     });
     
@@ -227,7 +236,7 @@ AFRAME.registerComponent('historia', {
 
 
         // =================================
-        // RESTO DE TU LÓGICA (igual)
+        // RESTO DE LÓGICA (igual)
         // =================================
 
         this.el.emit('max', this.max);
@@ -250,10 +259,70 @@ AFRAME.registerComponent('historia', {
 
             const pos = eje.getAttribute("position");
             eje.setAttribute('position', `${pos.x} ${pos.y + 0.03/2 * dir} ${pos.z}`);
+            
+            // AHORA MOVEMOS EL BANDERÍN
+            if (eje.bandera) {
+              eje.bandera.setAttribute(
+                'position',
+                `0 ${altura/2-0.25/2} 0` // 0.25 es la aletura del banderín
+              );
+            }
           });
-
           this.gestionarMensajes(e.detail.tiempo, dir);
         });
+      });
+
+      document.querySelector('#btn-interfaces').addEventListener('click', () => {
+
+        const visible = this.interfacesVisuales[0]?.getAttribute("visible");
+
+        this.interfacesVisuales.forEach(cartel => {
+          cartel.setAttribute("visible", !visible);
+        });
+
+      });
+
+      this.el.sceneEl.addEventListener("click", (evt) => {
+
+        const target = evt.target;
+
+        if (!target.classList.contains("iface-label")) return;
+
+        const nodoId = target.dataset.nodo;
+        const iface = target.dataset.iface;
+
+        const nodo = document.getElementById(nodoId);
+        const interfaces = JSON.parse(nodo.dataset.interfaces);
+
+        const datos = interfaces[iface];
+
+        this.mostrarPanelInterfaz(nodoId, iface, datos);
+
+      });
+
+      this.el.sceneEl.addEventListener("click", (evt) => {
+
+        const target = evt.target;
+
+        if (!target.id) return;
+
+        const nodo = document.getElementById(target.id);
+        if (!nodo || !nodo.dataset.routing) return;
+
+        const routing = JSON.parse(nodo.dataset.routing);
+
+        this.mostrarRouting(target.id, routing);
+
+      });
+
+      document.querySelector('#btn-dominios').addEventListener('click', () => {
+
+        const visible = this.dominiosVisuales[0]?.getAttribute("visible");
+
+        this.dominiosVisuales.forEach(dom => {
+          dom.setAttribute("visible", !visible);
+        });
+
       });
   },
 
@@ -388,6 +457,36 @@ AFRAME.registerComponent('historia', {
     this.el.sceneEl.appendChild(this.eje);
     this.el.emit('eje', this.eje)
     this.ejes.push(this.eje)
+
+    // =============================
+    // BANDERÍN
+    // =============================
+    const bandera = document.createElement('a-entity');
+
+    // Fondo
+    const fondo = document.createElement('a-plane');
+    fondo.setAttribute('width', 0.6);
+    fondo.setAttribute('height', 0.25);
+    fondo.setAttribute('color', '#ff0000');
+    fondo.setAttribute('position', '0.3 0 0');
+    bandera.appendChild(fondo);
+
+    // Texto
+    const texto = document.createElement('a-text');
+    texto.setAttribute('value', nodoId);
+    texto.setAttribute('align', 'center');
+    texto.setAttribute('color', '#FFF');
+    texto.setAttribute('width', 2);
+    texto.setAttribute('position', '0.3 0 0.01');
+    bandera.appendChild(texto);
+
+    // Posición inicial arriba del eje
+    bandera.setAttribute('position', `0 2 0`);
+    bandera.classList.add('banderin');
+    bandera.setAttribute('look-at', '[camera]');
+    
+    this.eje.bandera = bandera
+    this.eje.appendChild(bandera);
   },
 
   forzarEstadoPorSaltoTemporal: function(tiempoObjetivo) {
@@ -435,5 +534,132 @@ AFRAME.registerComponent('historia', {
       // Gestionar mensajes como si el reloj hubiese emitido ticks
       this.gestionarMensajes(t, 1);
     }
-  }
+  },
+
+  crearCartelesInterfaces: function(links) {
+
+    links.forEach(link => {
+
+      if (!link.src_iface) return;
+
+      const nodoOrigen = document.getElementById(link.source);
+      const nodoDestino = document.getElementById(link.target);
+
+      if (!nodoOrigen || !nodoDestino) return;
+
+      const posOrigen = nodoOrigen.getAttribute("position");
+      const posDestino = nodoDestino.getAttribute("position");
+
+      const dx = posDestino.x - posOrigen.x;
+      const dy = posDestino.y - posOrigen.y;
+      const dz = posDestino.z - posOrigen.z;
+
+      const longitud = Math.sqrt(dx*dx + dy*dy + dz*dz);
+      if (longitud === 0) return;
+
+      const nx = dx / longitud;
+      const ny = dy / longitud;
+      const nz = dz / longitud;
+
+      const offset = 0.35;
+
+      const x = posOrigen.x + nx * offset;
+      const y = posOrigen.y + ny * offset + 0.15;
+      const z = posOrigen.z + nz * offset;
+
+      const cartel = document.createElement("a-plane");
+
+      cartel.setAttribute("width", 0.35);
+      cartel.setAttribute("height", 0.18);
+      cartel.setAttribute("color", "#222");
+      cartel.setAttribute("position", `${x} ${y} ${z}`);
+      cartel.setAttribute("class", "iface-label");
+      cartel.setAttribute("visible", "false");
+
+      cartel.dataset.nodo = link.source;
+      cartel.dataset.iface = link.src_iface;
+
+      const anguloY = Math.atan2(dx, dz) * (180 / Math.PI);
+      cartel.setAttribute("rotation", `0 ${anguloY} 0`);
+
+      const texto = document.createElement("a-text");
+      texto.setAttribute("value", link.src_iface);
+      texto.setAttribute("align", "center");
+      texto.setAttribute("color", "#FFF");
+      texto.setAttribute("width", 2);
+      texto.setAttribute("position", "0 0 0.01");
+
+      cartel.appendChild(texto);
+
+      this.el.sceneEl.appendChild(cartel);
+
+      this.interfacesVisuales.push(cartel);
+
+    });
+  },
+
+  crearDominiosColision: function(links) {
+
+    const dominios = {};
+
+    links.forEach(link => {
+      if (!link.col_domain) return;
+
+      if (!dominios[link.col_domain])
+        dominios[link.col_domain] = new Set();
+
+      dominios[link.col_domain].add(link.source);
+      dominios[link.col_domain].add(link.target);
+    });
+
+    Object.keys(dominios).forEach(dom => {
+
+      const nodos = Array.from(dominios[dom]);
+      const posiciones = [];
+
+      nodos.forEach(id => {
+        const nodo = document.getElementById(id);
+        if (!nodo) return;
+        posiciones.push(nodo.getAttribute("position"));
+      });
+
+      if (!posiciones.length) return;
+
+      let cx = 0, cz = 0;
+
+      posiciones.forEach(p => {
+        cx += p.x;
+        cz += p.z;
+      });
+
+      cx /= posiciones.length;
+      cz /= posiciones.length;
+
+      let radio = 0;
+
+      posiciones.forEach(p => {
+        const dx = p.x - cx;
+        const dz = p.z - cz;
+        const dist = Math.sqrt(dx*dx + dz*dz);
+        if (dist > radio) radio = dist;
+      });
+
+      radio += 0.8;
+
+      const circulo = document.createElement("a-ring");
+
+      circulo.setAttribute("radius-inner", radio - 0.1);
+      circulo.setAttribute("radius-outer", radio);
+      circulo.setAttribute("color", "#00FFFF");
+      circulo.setAttribute("rotation", "-90 0 0");
+      circulo.setAttribute("position", `${cx} 0.05 ${cz}`);
+      circulo.setAttribute("opacity", "0.35");
+      circulo.setAttribute("transparent", "true");
+      circulo.setAttribute("visible", "false");
+
+      this.el.sceneEl.appendChild(circulo);
+
+      this.dominiosVisuales.push(circulo);
+    });
+}
 });
