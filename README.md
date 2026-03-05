@@ -220,3 +220,28 @@ git pull origin main -> traer lo que se ha hecho con un push antes, a este orden
     machineNames.json genera todas los relaciones IP, links, ... Lo que es la topología.
 - Sería útil representar los diagramas de TCP.
 - Necesario usar el componente lookat en la mayoria de elementos, carteles, ¿topología?.
+
+
+Cómo desplegar servidor??
+Cómo pegado a netgui???
+start stop pcap?
+diagramas tcp?
+
+# 13. Demo ping con despliegue de un servidor y XRVR con las gafas
+
+- Es importante darse cuenta de como enfocar las entidades paneles; en el caso de los de los nodos, por ejemplo, r1 deberá ser la entidad padre, debajo de la cual estará todo lo demás, incluido el panel correspondiente.
+- La idea es desplegar un servidor que apunte al directorio donde se crean los json tras las capturas en netgui (capture y escenario), teniendo ahí todos los programas (index, mensaje, historia, ...).
+    Hay que hacer un script que, cuando lo ejecutemos, lance el servidor apuntando ahí, entonces iremos a Netgui, crearemos la topología y esperará a recibir el fichero de captura.
+    El servidor, que ya estaba corriendo en un puerto, lo abriremos en el navegador
+    Cuando eso esté funcionando, lo ideal sería guardar la fecha que viene en el HEAD del fichero captura (es el único que nos interesa ir actualizando).
+        Cuando se detecte que la fecha ha cambiado hay dos opciones:
+            1. Se actualiza en cuanto haya un cambio en el fichero, simplemente añadiendo los cambios que haya respecto al anterior.
+            2. Se da al usuario la opción de recargar, botón que aparecerá cuando haya cambios.
+- Esto junto a un funcionamiento claro y correcto de un escenario concreto (ping, en este caso), son suficientes para crear una demo, que ya sería posible llevar como proyecto final.
+    Todo lo que se hiciera a partir de ahí serían mejoras.
+- En cuanto al XR/VR es importante ir depurando detalles de la interacción del usuario con las gafas:
+    Que se distinga todo bien.
+    Que pueda manejarse con los botones.
+    Que pueda pellizcar elementos como paneles y moverlos para ponerlos donde mejor le venga, etc.
+    Hay que distinguir los dos escenarios, el de VR, en una habitación; por otro lado, el de XR, sobre una mesa (por ejemplo).
+- Sería muy interesante, a modo de tener toda la info posible, que, tanto pinchando sobre el paquete, como sobre el paquete en el panel de Wireshark, me sacara la info y me lo recalcase.
