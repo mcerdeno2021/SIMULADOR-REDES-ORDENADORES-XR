@@ -14,7 +14,8 @@ AFRAME.registerComponent('ordenador', { // Crea los ordenadores
     base.setAttribute('width', ancho);
     base.setAttribute('height', 0.02);
     base.setAttribute('position', `0 0 0`);
-    base.setAttribute('material', 'src: img/teclado.jpg')
+    base.setAttribute('material', 'src: img/teclado.jpg');
+    base.classList.add('nodo');
     el.appendChild(base);
 
     const front = document.createElement('a-plane');
@@ -63,6 +64,7 @@ AFRAME.registerComponent('router', {
     top.setAttribute('height', fondo);
     top.setAttribute('position', `0 ${alto/2} 0`);
     top.setAttribute('rotation', '-90 0 0');
+    top.classList.add('nodo')
     el.appendChild(top);
 
     const back = document.createElement('a-plane');
@@ -129,7 +131,7 @@ AFRAME.registerComponent('switch', {
     el.appendChild(front);
 
     const sides = [
-      {pos: `0 ${alto/2} 0`, rot: '-90 0 0', w: ancho, h: fondo},
+      {pos: `0 ${alto/2} 0`, rot: '-90 0 0', w: ancho, h: fondo, class: 'nodo'},
       {pos: `0 ${-alto/2} 0`, rot: '90 0 0', w: ancho, h: fondo},
       {pos: `${-ancho/2} 0 0`, rot: '0 90 0', w: fondo, h: alto},
       {pos: `${ancho/2} 0 0`, rot: '0 -90 0', w: fondo, h: alto},
@@ -144,6 +146,7 @@ AFRAME.registerComponent('switch', {
       plane.setAttribute('position', side.pos);
       plane.setAttribute('rotation', side.rot);
       plane.setAttribute('material', 'side: double');
+      plane.classList.add(side.class);
       el.appendChild(plane);
    });
  }
@@ -163,7 +166,7 @@ AFRAME.registerComponent('hub', {
     const sides = [
       {pos: `0 0 ${fondo/2}`, rot: '0 0 0', w: ancho, h: alto},
       {pos: `0 0 ${-fondo/2}`, rot: '0 180 0', w: ancho, h: alto},
-      {pos: `0 ${alto/2} 0`, rot: '-90 0 0', w: ancho, h: fondo},
+      {pos: `0 ${alto/2} 0`, rot: '-90 0 0', w: ancho, h: fondo, class: 'nodo'},
       {pos: `0 ${-alto/2} 0`, rot: '90 0 0', w: ancho, h: fondo},
       {pos: `${-ancho/2} 0 0`, rot: '0 90 0', w: fondo, h: alto},
       {pos: `${ancho/2} 0 0`, rot: '0 -90 0', w: fondo, h: alto},
@@ -176,6 +179,7 @@ AFRAME.registerComponent('hub', {
       plane.setAttribute('height', side.h);
       plane.setAttribute('position', side.pos);
       plane.setAttribute('rotation', side.rot);
+      plane.classList.add(side.class);
       plane.setAttribute('material', 'side: double');
       el.appendChild(plane);
     });

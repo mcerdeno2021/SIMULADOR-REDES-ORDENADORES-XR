@@ -274,10 +274,22 @@ AFRAME.registerComponent('historia', {
 
       document.querySelector('#btn-interfaces').addEventListener('click', () => {
 
-        const visible = this.interfacesVisuales[0]?.getAttribute("visible");
+        const visibles = this.interfacesVisuales[0]?.getAttribute("visible");
 
         this.interfacesVisuales.forEach(cartel => {
-          cartel.setAttribute("visible", !visible);
+
+          if (visibles) {
+            // OCULTAR
+            cartel.setAttribute("visible", false);
+            cartel.classList.remove("iface");
+            cartel.removeAttribute("raycastable");
+          } else {
+            // MOSTRAR
+            cartel.setAttribute("visible", true);
+            cartel.classList.add("iface");
+            cartel.setAttribute("raycastable", "");
+          }
+
         });
 
       });
@@ -286,41 +298,53 @@ AFRAME.registerComponent('historia', {
 
         const target = evt.target;
 
-        if (!target.classList.contains("iface-label")) return;
+        if (target.classList.contains("iface")) {
 
-        const nodoId = target.dataset.nodo;
-        const iface = target.dataset.iface;
+          const nodoId = target.dataset.nodo;
+          const iface = target.dataset.iface;
 
-        const nodo = document.getElementById(nodoId);
-        const interfaces = JSON.parse(nodo.dataset.interfaces);
+          const nodo = document.getElementById(nodoId);
+          const interfaces = JSON.parse(nodo.dataset.interfaces);
 
-        const datos = interfaces[iface];
+          this.mostrarPanelInterfaz(nodoId, iface, interfaces[iface]);
+          return;
+        }
 
-        this.mostrarPanelInterfaz(nodoId, iface, datos);
+        if (target.classList.contains("dominio")) {
 
-      });
+          const dominio = target.dataset.domain;
+          const nodos = JSON.parse(target.dataset.nodos);
 
-      this.el.sceneEl.addEventListener("click", (evt) => {
+          this.mostrarPanelDominio(dominio, nodos);
+          return;
+        }
 
-        const target = evt.target;
+        if (target.classList.contains("nodo")) {
 
-        if (!target.id) return;
+          const nodo = evt.target.closest('[id]');
+          if (!nodo || !nodo.dataset.routing) return;
 
-        const nodo = document.getElementById(target.id);
-        if (!nodo || !nodo.dataset.routing) return;
-
-        const routing = JSON.parse(nodo.dataset.routing);
-
-        this.mostrarRouting(target.id, routing);
+          this.mostrarRouting(target.id, JSON.parse(nodo.dataset.routing));
+        }
 
       });
 
       document.querySelector('#btn-dominios').addEventListener('click', () => {
 
-        const visible = this.dominiosVisuales[0]?.getAttribute("visible");
+        const visibles = this.dominiosVisuales[0]?.getAttribute("visible");
 
         this.dominiosVisuales.forEach(dom => {
-          dom.setAttribute("visible", !visible);
+
+          if (visibles) {
+            dom.setAttribute("visible", false);
+            dom.classList.remove("dominio");
+            dom.removeAttribute("raycastable");
+          } else {
+            dom.setAttribute("visible", true);
+            dom.classList.add("dominio");
+            dom.setAttribute("raycastable", "");
+          }
+
         });
 
       });
@@ -590,6 +614,10 @@ AFRAME.registerComponent('historia', {
       texto.setAttribute("position", "0 0 0.01");
 
       cartel.appendChild(texto);
+      
+      cartel.setAttribute("visible", false);
+      cartel.classList.remove("iface");
+      cartel.removeAttribute("raycastable");
 
       this.el.sceneEl.appendChild(cartel);
 
@@ -646,20 +674,175 @@ AFRAME.registerComponent('historia', {
 
       radio += 0.8;
 
-      const circulo = document.createElement("a-ring");
+      const circulo = document.createElement("a-circle");
 
-      circulo.setAttribute("radius-inner", radio - 0.1);
-      circulo.setAttribute("radius-outer", radio);
+      circulo.setAttribute("radius", radio);
       circulo.setAttribute("color", "#00FFFF");
       circulo.setAttribute("rotation", "-90 0 0");
       circulo.setAttribute("position", `${cx} 0.05 ${cz}`);
-      circulo.setAttribute("opacity", "0.35");
+      circulo.setAttribute("opacity", "0.05");
       circulo.setAttribute("transparent", "true");
       circulo.setAttribute("visible", "false");
+
+      circulo.classList.add("dominio");
+      circulo.dataset.domain = dom;
+      circulo.dataset.nodos = JSON.stringify(nodos);
+
+      circulo.setAttribute("visible", false);
+      circulo.classList.remove("dominio");
+      circulo.removeAttribute("raycastable");
 
       this.el.sceneEl.appendChild(circulo);
 
       this.dominiosVisuales.push(circulo);
     });
-}
+  },
+
+  mostrarPanelInterfaz: function(nodoId, iface, datos) {
+
+    // ==============================
+    // Eliminar panel anterior
+    // ==============================
+    const viejo = document.getElementById("panel-interfaz");
+    if (viejo) viejo.remove();
+
+    // ==============================
+    // Crear panel
+    // ==============================
+    const panel = document.createElement("a-plane");
+
+    panel.setAttribute("id", "panel-interfaz");
+    panel.setAttribute("width", 2.8);
+    panel.setAttribute("height", 1.6);
+    panel.setAttribute("color", "#111");
+    panel.setAttribute("position", "0 1.6 -2");
+    panel.setAttribute("look-at", "[camera]");
+    panel.setAttribute("material", "opacity:0.95; transparent:true");
+
+    // ==============================
+    // Construir texto
+    // ==============================
+    let contenido = `Interfaz ${iface} - ${nodoId}\n\n`;
+
+    if (!datos) {
+      contenido += "Sin datos disponibles";
+    } else {
+
+      contenido += `MAC: ${datos.hwaddr || "-"}\n`;
+      contenido += `IP: ${datos.ipaddr || "-"}\n`;
+      contenido += `Mask: ${datos.mask || "-"}\n`;
+
+      if (datos.broadcast)
+        contenido += `Broadcast: ${datos.broadcast}\n`;
+    }
+
+    // ==============================
+    // Texto
+    // ==============================
+    const texto = document.createElement("a-text");
+
+    texto.setAttribute("value", contenido);
+    texto.setAttribute("align", "left");
+    texto.setAttribute("color", "#00FFFF");
+    texto.setAttribute("width", 4);
+    texto.setAttribute("position", "-1.3 0.6 0.01");
+
+    panel.appendChild(texto);
+
+    this.el.sceneEl.appendChild(panel);
+  },
+
+  mostrarPanelDominio: function(dominio, nodos) {
+
+    // Eliminar panel anterior si existe
+    const viejo = document.getElementById("panel-dominio");
+    if (viejo) viejo.remove();
+
+    const panel = document.createElement("a-plane");
+    panel.setAttribute("id", "panel-dominio");
+    panel.setAttribute("width", 2);
+    panel.setAttribute("height", 1);
+    panel.setAttribute("color", "#111");
+    panel.setAttribute("position", "0 1.5 -2");
+    panel.setAttribute("look-at", "[camera]");
+
+    const texto = document.createElement("a-text");
+
+    let contenido = `Dominio ${dominio}\n\n`;
+
+    nodos.forEach(n => {
+      contenido += `• ${n}\n`;
+    });
+
+    texto.setAttribute("value", contenido);
+    texto.setAttribute("align", "center");
+    texto.setAttribute("color", "#00FFFF");
+    texto.setAttribute("width", 4);
+    texto.setAttribute("position", "0 0 0.01");
+
+    panel.appendChild(texto);
+
+    this.el.sceneEl.appendChild(panel);
+  },
+
+  mostrarRouting: function(nodoId, routing) {
+
+    // ==============================
+    // Eliminar panel anterior
+    // ==============================
+    const viejo = document.getElementById("panel-routing");
+    if (viejo) viejo.remove();
+
+    // ==============================
+    // Crear panel
+    // ==============================
+    const panel = document.createElement("a-plane");
+
+    panel.setAttribute("id", "panel-routing");
+    panel.setAttribute("width", 3);
+    panel.setAttribute("height", 1.8);
+    panel.setAttribute("color", "#111");
+    panel.setAttribute("position", "0 1.6 -2");
+    panel.setAttribute("look-at", "[camera]");
+    panel.setAttribute("material", "opacity:0.95; transparent:true");
+
+    // ==============================
+    // Construir texto
+    // ==============================
+    let contenido = `Routing Table - ${nodoId}\n\n`;
+
+    if (!routing || routing.length === 0) {
+      contenido += "No hay rutas configuradas.";
+    } else {
+
+      contenido += "Destino        Gateway        Mask        Iface\n";
+      contenido += "------------------------------------------------\n";
+
+      routing.forEach(r => {
+
+        const destino = r.destination || r.dest || "-";
+        const gateway = r.gateway || r.gw || "-";
+        const mask = r.mask || "-";
+        const iface = r.interface || r.iface || "-";
+
+        contenido += `${destino}   ${gateway}   ${mask}   ${iface}\n`;
+      });
+    }
+
+    // ==============================
+    // Texto
+    // ==============================
+    const texto = document.createElement("a-text");
+
+    texto.setAttribute("value", contenido);
+    texto.setAttribute("align", "left");
+    texto.setAttribute("color", "#00FF00");
+    texto.setAttribute("width", 5);
+    texto.setAttribute("position", "-1.4 0.7 0.01");
+
+    panel.appendChild(texto);
+
+    this.el.sceneEl.appendChild(panel);
+  }
+
 });
