@@ -6,7 +6,7 @@ AFRAME.registerComponent('historia', {
   init: function () {
     const el = this.el;
 
-    this.comienzos = {};
+    this.comienzos = {};f
     this.finales = {};
     this.activosPorTiempo = {};
     this.historias = [];
@@ -19,7 +19,7 @@ AFRAME.registerComponent('historia', {
     this.coloresProtocolos = {};
     this.protocolosDetectados = new Set();
 
-    fetch('handlers/escenario.json')
+    fetch('../escenario.json')
       .then(r => r.json())
       .then(datos => {
 
@@ -116,7 +116,7 @@ AFRAME.registerComponent('historia', {
         });
     });
     
-    fetch('handlers/captura.json')
+    fetch('../captura.json')
       .then(r => r.json())
       .then(datos => {
         // -------- MENSAJES DESDE CAPTURA WIRESHARK --------

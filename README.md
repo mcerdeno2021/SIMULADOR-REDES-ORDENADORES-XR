@@ -221,17 +221,11 @@ git pull origin main -> traer lo que se ha hecho con un push antes, a este orden
 - Sería útil representar los diagramas de TCP.
 - Necesario usar el componente lookat en la mayoria de elementos, carteles, ¿topología?.
 
-
-Cómo desplegar servidor??
-Cómo pegado a netgui???
-start stop pcap?
-diagramas tcp?
-
 # 13. Demo ping con despliegue de un servidor y XRVR con las gafas
 
 - Es importante darse cuenta de como enfocar las entidades paneles; en el caso de los de los nodos, por ejemplo, r1 deberá ser la entidad padre, debajo de la cual estará todo lo demás, incluido el panel correspondiente.
 - La idea es desplegar un servidor que apunte al directorio donde se crean los json tras las capturas en netgui (capture y escenario), teniendo ahí todos los programas (index, mensaje, historia, ...).
-    Hay que hacer un script que, cuando lo ejecutemos, lance el servidor apuntando ahí, entonces iremos a Netgui, crearemos la topología y esperará a recibir el fichero de captura.
+    Hay que hacer un script que, cuando lo ejecutemos, lance el servidor (python con HTTP) apuntando ahí y que también lance Netgui (mirar si existe la opción de usar un comando que diga donde se dejarán los ficheros), crearemos la topología y esperará a recibir el fichero de captura.
     El servidor, que ya estaba corriendo en un puerto, lo abriremos en el navegador
     Cuando eso esté funcionando, lo ideal sería guardar la fecha que viene en el HEAD del fichero captura (es el único que nos interesa ir actualizando).
         Cuando se detecte que la fecha ha cambiado hay dos opciones:
