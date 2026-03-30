@@ -1,0 +1,13 @@
+#! /bin/bash
+
+HOST=`hostname`
+
+
+if [ -d /shared/${HOST} ]; then
+	echo "cp -r /shared/${HOST}/* /"
+        cp -r /shared/${HOST}/* /
+fi
+
+echo "Restarting network"
+systemctl restart networking
+

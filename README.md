@@ -239,3 +239,12 @@ git pull origin main -> traer lo que se ha hecho con un push antes, a este orden
     Que pueda pellizcar elementos como paneles y moverlos para ponerlos donde mejor le venga, etc.
     Hay que distinguir los dos escenarios, el de VR, en una habitación; por otro lado, el de XR, sobre una mesa (por ejemplo).
 - Sería muy interesante, a modo de tener toda la info posible, que, tanto pinchando sobre el paquete, como sobre el paquete en el panel de Wireshark, me sacara la info y me lo recalcase.
+
+# 14. Demo ping con despliegue de un servidor y XRVR con las gafas (I)
+
+- Seguir completando el anterior sprint.
+- La idea sin embargo en cuanto al despliegue de las aplicaciones es diferente:
+    1. Se crea una interfaz de usuario inicial en la que el usuario verá un menú en el que podrá levantar el servidor, el cual recogerá el index y el resto de js. Este servidor se quedará escuchando en las carpetas donde se encuentran el json de la topología y donde se creará la captura.
+    2. El usuario abre Netgui y escoge una topología (ping en este caso).
+    3. El programa carga los datos del escenario y se queda esperando la captura, con todos los detalles que se hablan en el anterior punto de la recarga, etc.
+- Empezar memoria antes de la Semana Santa, se puede completar la mayor parte de la memoria con lo hecho hasta ahora.
