@@ -19,7 +19,7 @@ AFRAME.registerComponent('historia', {
     this.coloresProtocolos = {};
     this.protocolosDetectados = new Set();
 
-    fetch('lab-ping/shared/machineNames.json')
+    fetch(`/labs/${ESCENARIO}/wireXRk_files/machineNames.json`)
       .then(r => r.json())
       .then(datos => {
 
@@ -116,7 +116,7 @@ AFRAME.registerComponent('historia', {
         });
     });
     
-    fetch('lab-ping/shared/merged_capture.json')
+    fetch(`/labs/${ESCENARIO}/lab-${ESCENARIO}/lab-${ESCENARIO}/shared/merged_capture.json`)
       .then(r => r.json())
       .then(datos => {
         // -------- MENSAJES DESDE CAPTURA WIRESHARK --------
