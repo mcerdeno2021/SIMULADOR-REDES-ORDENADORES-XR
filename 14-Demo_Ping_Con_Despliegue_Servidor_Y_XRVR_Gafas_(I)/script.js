@@ -24,6 +24,8 @@ fetch("/escenarios")
 
 function seleccionar(nombre) {
 
+    if (escenarioSeleccionado === nombre) return // 🔥 evita spam
+
     fetch("/seleccionar?nombre=" + nombre)
 
     escenarioSeleccionado = nombre

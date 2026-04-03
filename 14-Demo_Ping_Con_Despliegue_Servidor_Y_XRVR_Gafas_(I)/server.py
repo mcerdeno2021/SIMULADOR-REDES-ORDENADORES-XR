@@ -6,8 +6,9 @@ import time
 import json
 
 PORT = 8001
-WEB_DIR = "/home/usuario/Escritorio/UNI/5UNI/TFG/SIMULADOR-REDES-ORDENADORES-XR/14-Demo_Ping_Con_Despliegue_Servidor_Y_XRVR_Gafas_(I)/"
-LABS_DIR = "/home/usuario/Escritorio/UNI/5UNI/TFG/SIMULADOR-REDES-ORDENADORES-XR/14-Demo_Ping_Con_Despliegue_Servidor_Y_XRVR_Gafas_(I)/labs/"
+
+WEB_DIR = "/home/usuario/Escritorio/UNI/5º UNI/TFG/SIMULADOR-REDES-ORDENADORES-XR/14-Demo_Ping_Con_Despliegue_Servidor_Y_XRVR_Gafas_(I)/"
+LABS_DIR = "/usr/local/share/netgui-kathara/labs/"
 
 estado = {
     "paquetes": [],
@@ -17,24 +18,31 @@ estado = {
 lock = threading.Lock()
 
 hilo_captura = None
+stop_event = threading.Event()
 
 
 # ---------- VIGILAR CAPTURA ----------
-def vigilar_captura(ruta):
+def vigilar_captura(ruta, stop_event):
 
     ultima_fecha = 0
     ultimo_paquete = 0
 
     print(f"[CAPTURA] Escuchando: {ruta}")
 
-    while True:
+    while not stop_event.is_set():
 
         if not os.path.exists(ruta):
             time.sleep(1)
             continue
 
-        fecha = os.path.getmtime(ruta)
+        try:
+            fecha = os.path.getmtime(ruta)
+            size = os.path.getsize(ruta)
+        except:
+            time.sleep(1)
+            continue
 
+        # 🔥 Detecta cambios por fecha O tamaño
         if fecha != ultima_fecha:
 
             try:
@@ -47,7 +55,11 @@ def vigilar_captura(ruta):
             nuevos = []
 
             for pkt in datos:
-                num = int(pkt["_source"]["layers"]["frame"]["frame.number"])
+                try:
+                    num = int(pkt["_source"]["layers"]["frame"]["frame.number"])
+                    print(num)
+                except:
+                    continue
 
                 if num > ultimo_paquete:
                     nuevos.append(num)
@@ -76,7 +88,7 @@ class MiHandler(http.server.SimpleHTTPRequestHandler):
         if self.path == "/escenarios":
             self.listar_escenarios()
 
-        elif self.path.startswith("/labs/"):
+        elif self.path.startswith("/usr/"):
             self.servir_lab()
 
         elif self.path.startswith("/seleccionar"):
@@ -88,32 +100,48 @@ class MiHandler(http.server.SimpleHTTPRequestHandler):
         else:
             super().do_GET()
 
-        # Llamar a vigilar_captura con ruta_captura como argumento
-        if MiHandler.ruta_captura:
-            hilo_captura = threading.Thread(target=vigilar_captura, args=(MiHandler.ruta_captura,))
-            hilo_captura.start()
+    # 🔹 listar escenarios
+    def listar_escenarios(self):
+        carpetas = [
+            d for d in os.listdir(LABS_DIR)
+            if os.path.isdir(os.path.join(LABS_DIR, d))
+        ]
 
-    # 🔹 listar carpetas 
-    def listar_escenarios(self): 
-        carpetas = [ 
-            d for d in os.listdir(LABS_DIR) 
-            if os.path.isdir(os.path.join(LABS_DIR, d)) 
-        ] 
-        
         self.responder_json(carpetas)
 
     # 🔹 seleccionar escenario
     def seleccionar_escenario(self):
+        global hilo_captura, stop_event
+
         nombre = self.path.split("=")[-1]
 
         ruta_base = f"{LABS_DIR}{nombre}/lab-{nombre}/lab-{nombre}/shared/merged_capture.json"
 
-        escenario = os.path.join(ruta_base, "escenario.json")
+        print(f"[SERVER] Nuevo escenario: {nombre}")
 
-        print(f"Escuchando escenario: {nombre}")
+        # 🔥 reset estado
+        with lock:
+            estado["paquetes"] = []
+            estado["nombre_escenario"] = nombre
 
-        # Establecer ruta_captura con la ruta obtenida
-        MiHandler.ruta_captura = ruta_base
+        # 🔥 parar hilo anterior
+        if hilo_captura and hilo_captura.is_alive():
+            print("[SERVER] Parando captura anterior...")
+            stop_event.set()
+            hilo_captura.join()
+
+        # 🔥 nuevo evento
+        stop_event = threading.Event()
+
+        # 🔥 lanzar nuevo hilo
+        hilo_captura = threading.Thread(
+            target=vigilar_captura,
+            args=(ruta_base, stop_event),
+            daemon=True
+        )
+        hilo_captura.start()
+
+        self.responder_json({"ok": True})
 
     # 🔹 estado
     def enviar_estado(self):
@@ -125,31 +153,32 @@ class MiHandler(http.server.SimpleHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(data.encode())
 
-    def responder_json(self, data): 
-        self.send_response(200) 
-        self.send_header("Content-type", "application/json") 
-        self.end_headers() 
-        self.wfile.write(json.dumps(data).encode()) 
-        
-    def servir_lab(self): 
-        ruta = self.path.replace("/labs/", "") 
-        archivo = os.path.join(LABS_DIR, ruta) 
-        
-        if not os.path.exists(archivo): 
-            self.send_error(404) 
-            return 
-            
-        self.send_response(200) 
-            
-        if archivo.endswith(".json"): 
-            self.send_header("Content-type", "application/json") 
-            
-        self.end_headers() 
-            
-        with open(archivo, "rb") as f: 
+    def responder_json(self, data):
+        self.send_response(200)
+        self.send_header("Content-type", "application/json")
+        self.end_headers()
+        self.wfile.write(json.dumps(data).encode())
+
+    def servir_lab(self):
+        ruta = self.path.replace("/usr/", "")
+        archivo = os.path.join(LABS_DIR, ruta)
+
+        if not os.path.exists(archivo):
+            self.send_error(404)
+            return
+
+        self.send_response(200)
+
+        if archivo.endswith(".json"):
+            self.send_header("Content-type", "application/json")
+
+        self.end_headers()
+
+        with open(archivo, "rb") as f:
             self.wfile.write(f.read())
 
 
-with socketserver.TCPServer(("", PORT), MiHandler) as httpd:
+# 🔥 servidor multihilo (IMPORTANTE)
+with socketserver.ThreadingTCPServer(("", PORT), MiHandler) as httpd:
     print(f"Servidor en http://localhost:{PORT}")
     httpd.serve_forever()
